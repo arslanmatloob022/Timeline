@@ -205,7 +205,7 @@ import Breadcrumbs from "../Breadcrumbs.vue";
 import { mapMutations, mapActions } from "vuex";
 
 export default {
-  name: "navbar",
+  name: "TopNavbar",
   data() {
     return {
       showMenu: false,

@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Dashboard from "@/views/Dashboard.vue";
+import Dashboard from "@/views/Admin/AdminPage.vue";
+
 import Tables from "@/views/Tables.vue";
 import Billing from "@/views/Billing.vue";
 import VirtualReality from "@/views/VirtualReality.vue";
@@ -57,6 +58,7 @@ const routes = [
 ];
 
 const router = createRouter({
+  // eslint-disable-next-line no-undef
   history: createWebHistory(process.env.BASE_URL),
   routes,
   linkActiveClass: "active",
