@@ -4,26 +4,50 @@
     id="sidenav-collapse-main"
   >
     <ul class="navbar-nav">
-      <li class="nav-item">
-        <sidenav-collapse navText="Dashboard" :to="{ name: 'Dashboard' }">
-          <template #icon>
-            <shop />
-          </template>
-        </sidenav-collapse>
+      <li @click="selectComponent('Dashboard')" class="nav-item">
+        <div
+          class="text-center bg-white shadow icon icon-shape icon-sm border-radius-md d-flex align-items-center justify-content-center"
+          :class="this.$store.state.isRTL ? ' ms-2' : 'me-2'"
+        >
+          <slot name="icon"></slot>
+        </div>
+        <span
+          class="nav-link-text"
+          :class="this.$store.state.isRTL ? ' me-1' : 'ms-1'"
+          >{{ navText }}</span
+        >
       </li>
+
       <li class="nav-item">
-        <sidenav-collapse navText="Tables" :to="{ name: 'Tables' }">
-          <template #icon>
+        <div class="nav-link" @click="selectComponent('AdminProjects')">
+          <div
+            class="text-center bg-white shadow icon icon-shape icon-sm border-radius-md d-flex align-items-center justify-content-center"
+            :class="this.$store.state.isRTL ? ' ms-2' : 'me-2'"
+          >
             <office />
-          </template>
-        </sidenav-collapse>
+          </div>
+          <span
+            class="nav-link-text"
+            :class="this.$store.state.isRTL ? ' me-1' : 'ms-1'"
+            >Projects</span
+          >
+        </div>
       </li>
+
       <li class="nav-item">
-        <sidenav-collapse navText="Billing" :to="{ name: 'Billing' }">
-          <template #icon>
-            <credit-card />
-          </template>
-        </sidenav-collapse>
+        <div class="nav-link" @click="selectComponent('ManagersView')">
+          <div
+            class="text-center bg-white shadow icon icon-shape icon-sm border-radius-md d-flex align-items-center justify-content-center"
+            :class="this.$store.state.isRTL ? ' ms-2' : 'me-2'"
+          >
+            <office />
+          </div>
+          <span
+            class="nav-link-text"
+            :class="this.$store.state.isRTL ? ' me-1' : 'ms-1'"
+            >Managers</span
+          >
+        </div>
       </li>
 
       <li class="nav-item">
@@ -94,9 +118,8 @@
 <script lang="js">
 import SidenavCollapse from "./SidenavCollapse.vue";
 // import SidenavCard from "./SidenavCard.vue";
-import Shop from "@/components/Icon/Shop.vue";
 import Office from "@/components/Icon/Office.vue";
-import CreditCard from "@/components/Icon/CreditCard.vue";
+// import CreditCard from "@/components/Icon/CreditCard.vue";
 import Box3d from "@/components/Icon/Box3d.vue";
 import CustomerSupport from "@/components/Icon/CustomerSupport.vue";
 import Document from "@/components/Icon/Document.vue";
@@ -118,9 +141,8 @@ export default {
   components: {
     SidenavCollapse,
     // SidenavCard,
-    Shop,
     Office,
-    CreditCard,
+    // CreditCard,
     Box3d,
     CustomerSupport,
     Document,
@@ -128,10 +150,10 @@ export default {
     Settings,
   },
   methods: {
-    // getRoute() {
-    //   const routeArr = this.$route.path.split("/");
-    //   return routeArr[1];
-    // },
+    selectComponent(componentName) {
+          this.$emit('selectComponent', componentName);
+          console.log('calling'+ componentName)
+        },
   },
 };
 </script>
