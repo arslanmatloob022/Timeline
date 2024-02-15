@@ -1,10 +1,11 @@
 <template>
   <div class="py-4 container-fluid">
+    <!-- states -->
     <div class="row">
       <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
         <mini-statistics-card
-          title="Today's Earning"
-          value="$53,000"
+          title="All Projects"
+          value="530"
           :percentage="{
             value: '+505%',
             color: 'text-success',
@@ -18,8 +19,8 @@
       </div>
       <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
         <mini-statistics-card
-          title="Today's Users"
-          value="2,300"
+          title="Completed Projects"
+          value="2,30"
           :percentage="{
             value: '+3%',
             color: 'text-success',
@@ -31,25 +32,10 @@
           direction-reverse
         />
       </div>
-      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-        <mini-statistics-card
-          title="New Clients"
-          value="+3,462"
-          :percentage="{
-            value: '-2%',
-            color: 'text-danger',
-          }"
-          :icon="{
-            component: 'ni ni-paper-diploma',
-            background: iconBackground,
-          }"
-          direction-reverse
-        />
-      </div>
       <div class="col-xl-3 col-sm-6 mb-xl-0">
         <mini-statistics-card
-          title="Sales"
-          value="$103,430"
+          title="Projects in progress"
+          value="430"
           :percentage="{
             value: '+5%',
             color: 'text-success',
@@ -61,8 +47,24 @@
           direction-reverse
         />
       </div>
+      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <mini-statistics-card
+          title="Total Managers"
+          value="46"
+          :percentage="{
+            value: '-2%',
+            color: 'text-danger',
+          }"
+          :icon="{
+            component: 'ni ni-paper-diploma',
+            background: iconBackground,
+          }"
+          direction-reverse
+        />
+      </div>
     </div>
-    <div class="row">
+
+    <!-- <div class="row">
       <div class="col-lg-7 mb-lg-0 mb-4">
         <div class="card">
           <div class="card-body p-3">
@@ -142,8 +144,9 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="mt-4 row">
+    </div> -->
+
+    <!-- <div class="mt-4 row">
       <div class="mb-4 col-lg-5 mb-lg-0">
         <div class="card z-index-2">
           <div class="p-3 card-body">
@@ -198,7 +201,6 @@
         </div>
       </div>
       <div class="col-lg-7">
-        <!-- line chart -->
         <div class="card z-index-2">
           <gradient-line-chart
             id="chart-line"
@@ -231,7 +233,8 @@
           />
         </div>
       </div>
-    </div>
+    </div> -->
+
     <div class="row my-4">
       <div class="col-lg-8 col-md-6 mb-md-0 mb-4">
         <projects-card />
@@ -286,11 +289,12 @@
 </template>
 <script>
 import MiniStatisticsCard from "@/examples/Cards/MiniStatisticsCard.vue";
-import ReportsBarChart from "@/examples/Charts/ReportsBarChart.vue";
-import GradientLineChart from "@/examples/Charts/GradientLineChart.vue";
+// import ReportsBarChart from "@/examples/Charts/ReportsBarChart.vue";
+// import GradientLineChart from "@/examples/Charts/GradientLineChart.vue";
 import TimelineList from "./components/TimelineList.vue";
 import TimelineItem from "./components/TimelineItem.vue";
-import ProjectsCard from "./components/ProjectsCard.vue";
+import ProjectsCard from "@/views/Admin/AdminProjects.vue";
+
 import US from "../assets/img/icons/flags/US.png";
 import DE from "../assets/img/icons/flags/DE.png";
 import GB from "../assets/img/icons/flags/GB.png";
@@ -344,8 +348,8 @@ export default {
   },
   components: {
     MiniStatisticsCard,
-    ReportsBarChart,
-    GradientLineChart,
+    // ReportsBarChart,
+    // GradientLineChart,
     ProjectsCard,
     TimelineList,
     TimelineItem,

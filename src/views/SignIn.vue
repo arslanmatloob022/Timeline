@@ -24,9 +24,14 @@
                   <p class="mb-0">Enter your email and password to sign in</p>
                 </div>
                 <div class="card-body">
-                  <form role="form" class="text-start">
+                  <form
+                    role="form"
+                    @submit.prevent="handleLogin"
+                    class="text-start"
+                  >
                     <label>Email</label>
                     <soft-input
+                      v-model="username"
                       id="email"
                       type="email"
                       placeholder="Email"
@@ -34,6 +39,7 @@
                     />
                     <label>Password</label>
                     <soft-input
+                      v-model="password"
                       id="password"
                       type="password"
                       placeholder="Password"
@@ -44,9 +50,11 @@
                     </soft-switch>
                     <div class="text-center">
                       <soft-button
+                        @click="handleLogin"
                         class="my-4 mb-2"
                         variant="gradient"
                         color="success"
+                        type="submit"
                         full-width
                         >Sign in
                       </soft-button>
@@ -85,6 +93,7 @@
       </div>
     </section>
   </main>
+  <!-- eslint-disable-next-line vue/no-multiple-template-root -->
   <app-footer />
 </template>
 
@@ -96,9 +105,16 @@ import SoftSwitch from "@/components/SoftSwitch.vue";
 import SoftButton from "@/components/SoftButton.vue";
 const body = document.getElementsByTagName("body")[0];
 import { mapMutations } from "vuex";
+import axios from "axios";
 
 export default {
   name: "SignIn",
+  data() {
+    return {
+      username: "adnan@timeline.com",
+      password: "fa19bse123",
+    };
+  },
   components: {
     Navbar,
     AppFooter,
@@ -118,6 +134,34 @@ export default {
   },
   methods: {
     ...mapMutations(["toggleEveryDisplay", "toggleHideConfig"]),
+
+    async handleLogin() {
+      try {
+        // eslint-disable-next-line no-undef
+        const response = await axios.post(
+          "https://vecel-practice.vercel.app/api/auth/login/",
+          {
+            email: this.username,
+            password: this.password,
+          }
+        );
+
+        // Assuming your API returns a token upon successful login
+        const token = response.data.token;
+
+        // Do something with the token, such as storing it in Vuex or local storage
+        // For example, you can commit it to the Vuex store if you have set up Vuex
+        this.$store.commit("setToken", token);
+
+        // Redirect the user to the dashboard or another page
+        this.$router.push("/dashboard");
+        console.error("Login success");
+      } catch (error) {
+        window.alert(error);
+        console.error("Login failed:", error);
+        // Handle login failure, show an error message, etc.
+      }
+    },
   },
 };
 </script>

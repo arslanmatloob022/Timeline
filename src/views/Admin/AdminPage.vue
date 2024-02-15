@@ -4,6 +4,7 @@ import AdminProjects from "@/views/Admin/AdminProjects.vue";
 import AdminSideNav from "@/views/Admin/AdminSideNav";
 import MiniStatisticsCard from "@/examples/Cards/MiniStatisticsCard.vue";
 import ManagersView from "./Mangers/ManagersView.vue";
+import AdminOwnProjects from "@/views/Admin/Projects/AdminProjects.vue";
 import img1 from "../../assets/img/team-2.jpg";
 import img2 from "../../assets/img/team-3.jpg";
 import img3 from "../../assets/img/team-4.jpg";
@@ -45,6 +46,7 @@ export default {
   components: {
     AdminSideNav,
     AdminProjects,
+    AdminOwnProjects,
     MiniStatisticsCard,
     ManagersView,
     // Navbar,
@@ -69,6 +71,7 @@ export default {
       ]"
       v-if="this.$store.state.showSidenav"
     />
+
     <main
       class="main-content position-relative max-height-vh-100 h-100 border-radius-lg"
       :style="this.$store.state.isRTL ? 'overflow-x: hidden' : ''"
@@ -145,6 +148,8 @@ export default {
           />
         </div>
       </div>
+
+      <AdminOwnProjects />
 
       <AdminProjects
         v-if="selectedComponent == 'AdminProjects'"

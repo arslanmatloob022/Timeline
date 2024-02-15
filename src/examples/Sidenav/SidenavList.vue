@@ -13,14 +13,25 @@
           </sidenav-collapse>
         </li>
         <li class="nav-item">
-          <sidenav-collapse navText="Tables" :to="{ name: 'Tables' }">
+          <!-- <sidenav-collapse navText="Tables" :to="{ name: 'Tables' }">
+            <template #icon>
+              <office />
+            </template>
+          </sidenav-collapse> -->
+          <sidenav-collapse navText="Projects" :to="{ name: 'Projects' }">
             <template #icon>
               <office />
             </template>
           </sidenav-collapse>
         </li>
         <li class="nav-item">
-          <sidenav-collapse navText="Billing" :to="{ name: 'Billing' }">
+          <!-- <sidenav-collapse navText="Billing" :to="{ name: 'Billing' }">
+            <template #icon>
+              <credit-card />
+            </template>
+          </sidenav-collapse> -->
+
+          <sidenav-collapse navText="Managers" :to="{ name: 'Mangers' }">
             <template #icon>
               <credit-card />
             </template>
@@ -28,30 +39,30 @@
         </li>
 
         <li class="nav-item">
-          <sidenav-collapse
+          <!-- <sidenav-collapse
             navText="Virtual Reality"
             :to="{ name: 'Virtual Reality' }"
           >
             <template #icon>
               <box3d />
             </template>
-          </sidenav-collapse>
+          </sidenav-collapse> -->
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <sidenav-collapse navText="RTL" :to="{ name: 'Rtl' }">
             <template #icon>
               <settings />
             </template>
           </sidenav-collapse>
-        </li>
-        <li class="mt-3 nav-item">
+        </li> -->
+        <!-- <li class="mt-3 nav-item">
           <h6
             class="text-xs ps-4 text-uppercase font-weight-bolder opacity-6"
             :class="this.$store.state.isRTL ? 'me-4' : 'ms-2'"
           >
             PAGES
           </h6>
-        </li>
+        </li> -->
         <li class="nav-item">
           <sidenav-collapse navText="Profile" :to="{ name: 'Profile' }">
             <template #icon>
@@ -99,11 +110,11 @@ import SidenavCard from "./SidenavCard.vue";
 import Shop from "../../components/Icon/Shop.vue";
 import Office from "../../components/Icon/Office.vue";
 import CreditCard from "../../components/Icon/CreditCard.vue";
-import Box3d from "../../components/Icon/Box3d.vue";
+// import Box3d from "../../components/Icon/Box3d.vue";
 import CustomerSupport from "../../components/Icon/CustomerSupport.vue";
 import Document from "../../components/Icon/Document.vue";
 import Spaceship from "../../components/Icon/Spaceship.vue";
-import Settings from "../../components/Icon/Settings.vue";
+// import Settings from "../../components/Icon/Settings.vue";
 
 export default {
   name: "SidenavList",
@@ -123,11 +134,11 @@ export default {
     Shop,
     Office,
     CreditCard,
-    Box3d,
+    // Box3d,
     CustomerSupport,
     Document,
     Spaceship,
-    Settings,
+    // Settings,
   },
   methods: {
     getRoute() {

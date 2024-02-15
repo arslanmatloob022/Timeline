@@ -1,468 +1,495 @@
 <template>
-  <div class="container-fluid">
-    <div class="card mb-4">
-      <div class="card-header pb-0">
-        <h6>Projects</h6>
-      </div>
-      <div class="card-body px-0 pt-0 pb-2">
-        <div class="table-responsive p-0">
-          <table class="table align-items-center justify-content-center mb-0">
-            <thead>
-              <tr>
-                <th
-                  class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+  <div class="card">
+    <div class="card-header pb-0">
+      <div class="row">
+        <div class="col-lg-6 col-7">
+          <h6>Projects</h6>
+          <p class="text-sm mb-0">
+            <i class="fa fa-check text-info" aria-hidden="true"></i>
+            <span class="font-weight-bold ms-1">30 done</span> this month
+          </p>
+        </div>
+        <div class="col-lg-6 col-5 my-auto text-end">
+          <div class="dropdown float-lg-end pe-4">
+            <a
+              class="cursor-pointer"
+              id="dropdownTable"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="fa fa-ellipsis-v text-secondary" aria-hidden="true"></i>
+            </a>
+            <ul
+              class="dropdown-menu px-2 py-3 ms-sm-n4 ms-n5"
+              aria-labelledby="dropdownTable"
+            >
+              <li>
+                <a class="dropdown-item border-radius-md" href="javascript:;"
+                  >Action</a
                 >
-                  Project
-                </th>
-                <th
-                  class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+              </li>
+              <li>
+                <a class="dropdown-item border-radius-md" href="javascript:;"
+                  >Another action</a
                 >
-                  Budget
-                </th>
-                <th
-                  class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+              </li>
+              <li>
+                <a class="dropdown-item border-radius-md" href="javascript:;"
+                  >Something else here</a
                 >
-                  Status
-                </th>
-                <th
-                  class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2"
-                >
-                  Completion
-                </th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <div class="d-flex px-2">
-                    <div>
-                      <img
-                        src="../../assets/img/small-logos/logo-invision.svg"
-                        class="avatar avatar-sm rounded-circle me-2"
-                        alt="spotify"
-                      />
-                    </div>
-                    <div class="my-auto">
-                      <h6 class="mb-0 text-sm">Spotify</h6>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <p class="text-sm font-weight-bold mb-0">$2,500</p>
-                </td>
-                <td>
-                  <span class="text-xs font-weight-bold">working</span>
-                </td>
-                <td class="align-middle text-center">
-                  <div class="d-flex align-items-center justify-content-center">
-                    <span class="me-2 text-xs font-weight-bold">60%</span>
-                    <div>
-                      <soft-progress
-                        color="info"
-                        variant="gradient"
-                        :percentage="60"
-                      />
-                    </div>
-                  </div>
-                </td>
-                <td class="align-middle">
-                  <button class="btn btn-link text-secondary mb-0">
-                    <i class="fa fa-ellipsis-v text-xs" aria-hidden="true"></i>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="d-flex px-2">
-                    <div>
-                      <img
-                        src="../../assets/img/small-logos/logo-invision.svg"
-                        class="avatar avatar-sm rounded-circle me-2"
-                        alt="invision"
-                      />
-                    </div>
-                    <div class="my-auto">
-                      <h6 class="mb-0 text-sm">Invision</h6>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <p class="text-sm font-weight-bold mb-0">$5,000</p>
-                </td>
-                <td>
-                  <span class="text-xs font-weight-bold">done</span>
-                </td>
-                <td class="align-middle text-center">
-                  <div class="d-flex align-items-center justify-content-center">
-                    <span class="me-2 text-xs font-weight-bold">100%</span>
-                    <div>
-                      <soft-progress
-                        color="success"
-                        variant="gradient"
-                        :percentage="100"
-                      />
-                    </div>
-                  </div>
-                </td>
-                <td class="align-middle">
-                  <button
-                    class="btn btn-link text-secondary mb-0"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    <i class="fa fa-ellipsis-v text-xs" aria-hidden="true"></i>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="d-flex px-2">
-                    <div>
-                      <img
-                        src="../../assets/img/small-logos/logo-jira.svg"
-                        class="avatar avatar-sm rounded-circle me-2"
-                        alt="jira"
-                      />
-                    </div>
-                    <div class="my-auto">
-                      <h6 class="mb-0 text-sm">Jira</h6>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <p class="text-sm font-weight-bold mb-0">$3,400</p>
-                </td>
-                <td>
-                  <span class="text-xs font-weight-bold">canceled</span>
-                </td>
-                <td class="align-middle text-center">
-                  <div class="d-flex align-items-center justify-content-center">
-                    <span class="me-2 text-xs font-weight-bold">30%</span>
-                    <div>
-                      <soft-progress
-                        color="danger"
-                        variant="gradient"
-                        :percentage="30"
-                      />
-                    </div>
-                  </div>
-                </td>
-                <td class="align-middle">
-                  <button
-                    class="btn btn-link text-secondary mb-0"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    <i class="fa fa-ellipsis-v text-xs" aria-hidden="true"></i>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="d-flex px-2">
-                    <div>
-                      <img
-                        src="../../assets/img/small-logos/logo-slack.svg"
-                        class="avatar avatar-sm rounded-circle me-2"
-                        alt="slack"
-                      />
-                    </div>
-                    <div class="my-auto">
-                      <h6 class="mb-0 text-sm">Slack</h6>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <p class="text-sm font-weight-bold mb-0">$1,000</p>
-                </td>
-                <td>
-                  <span class="text-xs font-weight-bold">canceled</span>
-                </td>
-                <td class="align-middle text-center">
-                  <div class="d-flex align-items-center justify-content-center">
-                    <span class="me-2 text-xs font-weight-bold">0%</span>
-                    <div>
-                      <soft-progress
-                        color="success"
-                        variant="gradient"
-                        :percentage="0"
-                      />
-                    </div>
-                  </div>
-                </td>
-                <td class="align-middle">
-                  <button
-                    class="btn btn-link text-secondary mb-0"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    <i class="fa fa-ellipsis-v text-xs" aria-hidden="true"></i>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="d-flex px-2">
-                    <div>
-                      <img
-                        src="../../assets/img/small-logos/logo-invision.svg"
-                        class="avatar avatar-sm rounded-circle me-2"
-                        alt="webdev"
-                      />
-                    </div>
-                    <div class="my-auto">
-                      <h6 class="mb-0 text-sm">Webdev</h6>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <p class="text-sm font-weight-bold mb-0">$14,000</p>
-                </td>
-                <td>
-                  <span class="text-xs font-weight-bold">working</span>
-                </td>
-                <td class="align-middle text-center">
-                  <div class="d-flex align-items-center justify-content-center">
-                    <span class="me-2 text-xs font-weight-bold">80%</span>
-                    <div>
-                      <soft-progress
-                        color="info"
-                        variant="gradient"
-                        :percentage="80"
-                      />
-                    </div>
-                  </div>
-                </td>
-                <td class="align-middle">
-                  <button
-                    class="btn btn-link text-secondary mb-0"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    <i class="fa fa-ellipsis-v text-xs" aria-hidden="true"></i>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="d-flex px-2">
-                    <div>
-                      <img
-                        src="../../assets/img/small-logos/logo-xd.svg"
-                        class="avatar avatar-sm rounded-circle me-2"
-                        alt="xd"
-                      />
-                    </div>
-                    <div class="my-auto">
-                      <h6 class="mb-0 text-sm">Adobe XD</h6>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <p class="text-sm font-weight-bold mb-0">$2,300</p>
-                </td>
-                <td>
-                  <span class="text-xs font-weight-bold">done</span>
-                </td>
-                <td class="align-middle text-center">
-                  <div class="d-flex align-items-center justify-content-center">
-                    <span class="me-2 text-xs font-weight-bold">100%</span>
-                    <div>
-                      <soft-progress
-                        color="success"
-                        variant="gradient"
-                        :percentage="100"
-                      />
-                    </div>
-                  </div>
-                </td>
-                <td class="align-middle">
-                  <button
-                    class="btn btn-link text-secondary mb-0"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    <i class="fa fa-ellipsis-v text-xs" aria-hidden="true"></i>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
-    <div class="mt-4 row">
-      <div class="col-12">
-        <div class="mb-4 card">
-          <div class="p-3 pb-0 card-header">
-            <h6 class="mb-1">Projects</h6>
-            <p class="text-sm">Architects design houses</p>
-          </div>
-          <div class="p-3 card-body">
-            <div class="row">
-              <default-project-card
-                title="Modern"
-                :image="img1"
-                label="Project #2"
-                description="As Uber works through a huge amount of internal
-                management turmoil."
-                :authors="[
-                  {
-                    image: team1,
-                    name: 'Elena Morison',
-                  },
-                  {
-                    image: team2,
-                    name: 'Ryan Milly',
-                  },
-                  {
-                    image: team3,
-                    name: 'Nick Daniel',
-                  },
-                  {
-                    image: team4,
-                    name: 'Peterson',
-                  },
-                ]"
-                :action="{
-                  color: 'success',
-                  label: 'View Project',
-                }"
-              />
-
-              <default-project-card
-                title="Scandinavian"
-                :image="img2"
-                label="Project #1"
-                description="Music is something that every person has his or her own
-                      specific opinion about."
-                :authors="[
-                  {
-                    image: team3,
-                    name: 'Nick Daniel',
-                  },
-                  {
-                    image: team4,
-                    name: 'Peterson',
-                  },
-                  {
-                    image: team1,
-                    name: 'Elena Morison',
-                  },
-                  {
-                    image: team2,
-                    name: 'Ryan Milly',
-                  },
-                ]"
-                :action="{
-                  color: 'success',
-                  label: 'View Project',
-                }"
-              />
-
-              <default-project-card
-                title="Minimalist"
-                :image="img3"
-                label="Project #3"
-                description="Different people have different taste, and various types
-                      of music."
-                :authors="[
-                  {
-                    image: team4,
-                    name: 'Peterson',
-                  },
-                  {
-                    image: team3,
-                    name: 'Nick Daniel',
-                  },
-                  {
-                    image: team1,
-                    name: 'Elena Morison',
-                  },
-                  {
-                    image: team2,
-                    name: 'Ryan Milly',
-                  },
-                ]"
-                :action="{
-                  color: 'success',
-                  label: 'View Project',
-                }"
-              />
-
-              <div class="mb-4 col-xl-3 col-md-6 mb-xl-0">
-                <place-holder-card
-                  :title="{ text: 'New project', variant: 'h5' }"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+    <div class="card-body px-0 pb-2">
+      <div class="table-responsive">
+        <table class="table align-items-center mb-0">
+          <thead>
+            <tr>
+              <th
+                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+              >
+                Names
+              </th>
+              <th
+                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+              >
+                Managers
+              </th>
+              <th
+                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+              >
+                Budget
+              </th>
+              <th
+                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+              >
+                Completion
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="d-flex px-2 py-1">
+                  <div>
+                    <soft-avatar :img="img1" size="sm" class="me-3" alt="xd" />
+                  </div>
+                  <div class="d-flex flex-column justify-content-center">
+                    <h6 class="mb-0 text-sm">Soft UI XD Version</h6>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="avatar-group mt-2">
+                  <a
+                    href="javascript:;"
+                    class="avatar avatar-xs rounded-circle"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    data-bs-original-title="Ryan Tompson"
+                  >
+                    <img :src="img2" rounded-circle alt="team1" />
+                  </a>
+                  <a
+                    href="javascript:;"
+                    class="avatar avatar-xs rounded-circle"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    data-bs-original-title="Romina Hadid"
+                  >
+                    <img :src="img3" alt="team2" />
+                  </a>
+                  <a
+                    href="javascript:;"
+                    class="avatar avatar-xs rounded-circle"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    data-bs-original-title="Alexander Smith"
+                  >
+                    <img :src="img4" alt="team3" />
+                  </a>
+                  <a
+                    href="javascript:;"
+                    class="avatar avatar-xs rounded-circle"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    data-bs-original-title="Jessica Doe"
+                  >
+                    <img :src="img5" rounded-circle alt="team4" />
+                  </a>
+                </div>
+              </td>
+              <td class="align-middle text-center text-sm">
+                <span class="text-xs font-weight-bold">$14,000</span>
+              </td>
+              <td class="align-middle">
+                <div class="d-flex align-items-center justify-content-center">
+                  <span class="text-xs font-weight-bold mx-2">60%</span>
+                  <div>
+                    <soft-progress
+                      color="info"
+                      class="mx-auto"
+                      variant="gradient"
+                      :percentage="60"
+                    />
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="d-flex px-2 py-1">
+                  <div>
+                    <soft-avatar
+                      :img="img6"
+                      size="sm"
+                      class="me-3"
+                      alt="atlassian"
+                    />
+                  </div>
+                  <div class="d-flex flex-column justify-content-center">
+                    <h6 class="mb-0 text-sm">Add Progress Track</h6>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="avatar-group mt-2">
+                  <a
+                    href="javascript:;"
+                    class="avatar avatar-xs rounded-circle"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    data-bs-original-title="Romina Hadid"
+                  >
+                    <img :src="img7" alt="team5" />
+                  </a>
+                  <a
+                    href="javascript:;"
+                    class="avatar avatar-xs rounded-circle"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    data-bs-original-title="Jessica Doe"
+                  >
+                    <img :src="img8" alt="team6" />
+                  </a>
+                </div>
+              </td>
+              <td class="align-middle text-center text-sm">
+                <span class="text-xs font-weight-bold">$3,000</span>
+              </td>
+              <td class="align-middle">
+                <div class="d-flex align-items-center justify-content-center">
+                  <span class="text-xs font-weight-bold mx-2">10%</span>
+                  <div>
+                    <soft-progress
+                      color="info"
+                      class="mx-auto"
+                      variant="gradient"
+                      :percentage="10"
+                    />
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="d-flex px-2 py-1">
+                  <div>
+                    <soft-avatar
+                      :img="img9"
+                      size="sm"
+                      class="me-3"
+                      alt="team7"
+                    />
+                  </div>
+                  <div class="d-flex flex-column justify-content-center">
+                    <h6 class="mb-0 text-sm">Fix Platform Errors</h6>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="avatar-group mt-2">
+                  <a
+                    href="javascript:;"
+                    class="avatar avatar-xs rounded-circle"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    data-bs-original-title="Romina Hadid"
+                  >
+                    <img :src="img10" alt="team8" />
+                  </a>
+                  <a
+                    href="javascript:;"
+                    class="avatar avatar-xs rounded-circle"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    data-bs-original-title="Jessica Doe"
+                  >
+                    <img :src="img11" alt="team9" />
+                  </a>
+                </div>
+              </td>
+              <td class="align-middle text-center text-sm">
+                <span class="text-xs font-weight-bold">Not set</span>
+              </td>
+              <td class="align-middle">
+                <div class="d-flex align-items-center justify-content-center">
+                  <span class="text-xs font-weight-bold mx-2">100%</span>
+                  <div>
+                    <soft-progress
+                      color="success"
+                      class="mx-auto"
+                      variant="gradient"
+                      :percentage="100"
+                    />
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="d-flex px-2 py-1">
+                  <div>
+                    <soft-avatar
+                      :img="img12"
+                      class="me-3"
+                      size="sm"
+                      alt="spotify"
+                    />
+                  </div>
+                  <div class="d-flex flex-column justify-content-center">
+                    <h6 class="mb-0 text-sm">Launch our Mobile App</h6>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="avatar-group mt-2">
+                  <a
+                    href="javascript:;"
+                    class="avatar avatar-xs rounded-circle"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    data-bs-original-title="Ryan Tompson"
+                  >
+                    <img :src="img13" alt="user1" />
+                  </a>
+                  <a
+                    href="javascript:;"
+                    class="avatar avatar-xs rounded-circle"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    data-bs-original-title="Romina Hadid"
+                  >
+                    <img :src="img14" alt="user2" />
+                  </a>
+                  <a
+                    href="javascript:;"
+                    class="avatar avatar-xs rounded-circle"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    data-bs-original-title="Alexander Smith"
+                  >
+                    <img :src="img15" alt="user3" />
+                  </a>
+                  <a
+                    href="javascript:;"
+                    class="avatar avatar-xs rounded-circle"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    data-bs-original-title="Jessica Doe"
+                  >
+                    <img :src="img16" alt="user4" />
+                  </a>
+                </div>
+              </td>
+              <td class="align-middle text-center text-sm">
+                <span class="text-xs font-weight-bold">$20,500</span>
+              </td>
+              <td class="align-middle">
+                <div class="d-flex align-items-center justify-content-center">
+                  <span class="text-xs font-weight-bold mx-2">100%</span>
+                  <div>
+                    <soft-progress
+                      color="success"
+                      class="mx-auto"
+                      variant="gradient"
+                      :percentage="100"
+                    />
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="d-flex px-2 py-1">
+                  <div>
+                    <soft-avatar
+                      :img="img17"
+                      rounded-circle
+                      class="me-3"
+                      size="sm"
+                      alt="jira"
+                    />
+                  </div>
+                  <div class="d-flex flex-column justify-content-center">
+                    <h6 class="mb-0 text-sm">Add the New Pricing Page</h6>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="avatar-group mt-2">
+                  <a
+                    href="javascript:;"
+                    class="avatar avatar-xs rounded-circle"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    data-bs-original-title="Ryan Tompson"
+                  >
+                    <img :src="img18" alt="user5" />
+                  </a>
+                </div>
+              </td>
+              <td class="align-middle text-center text-sm">
+                <span class="text-xs font-weight-bold">$500</span>
+              </td>
+              <td class="align-middle">
+                <div class="d-flex align-items-center justify-content-center">
+                  <span class="text-xs font-weight-bold mx-2">25%</span>
+                  <div>
+                    <soft-progress
+                      color="info"
+                      class="mx-auto"
+                      variant="gradient"
+                      :percentage="25"
+                    />
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="d-flex px-2 py-1">
+                  <div>
+                    <soft-avatar
+                      :img="img19"
+                      class="me-3"
+                      size="sm"
+                      alt="invision"
+                    />
+                  </div>
+                  <div class="d-flex flex-column justify-content-center">
+                    <h6 class="mb-0 text-sm">Redesign New Online Shop</h6>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="avatar-group mt-2">
+                  <a
+                    href="javascript:;"
+                    class="avatar avatar-xs rounded-circle"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    data-bs-original-title="Ryan Tompson"
+                  >
+                    <img :src="img20" alt="user6" />
+                  </a>
+                  <a
+                    href="javascript:;"
+                    class="avatar avatar-xs rounded-circle"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    data-bs-original-title="Jessica Doe"
+                  >
+                    <img :src="img21" alt="user7" />
+                  </a>
+                </div>
+              </td>
+              <td class="align-middle text-center text-sm">
+                <span class="text-xs font-weight-bold">$2,000</span>
+              </td>
+              <td class="align-middle">
+                <div class="d-flex align-items-center justify-content-center">
+                  <span class="text-xs font-weight-bold mx-2">40%</span>
+                  <div>
+                    <soft-progress
+                      color="info"
+                      class="mx-auto"
+                      variant="gradient"
+                      :percentage="40"
+                    />
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import SoftProgress from "@/components/SoftProgress";
-import sophie from "@/assets/img/kal-visuals-square.jpg";
-import marie from "@/assets/img/marie.jpg";
-import ivana from "@/assets/img/ivana-square.jpg";
-import peterson from "@/assets/img/team-4.jpg";
-import nick from "@/assets/img/team-3.jpg";
-import img1 from "@/assets/img/home-decor-1.jpg";
-import img2 from "@/assets/img/home-decor-2.jpg";
-import img3 from "@/assets/img/home-decor-3.jpg";
-import team1 from "@/assets/img/team-1.jpg";
-import team2 from "@/assets/img/team-2.jpg";
-import team3 from "@/assets/img/team-3.jpg";
-import team4 from "@/assets/img/team-4.jpg";
-import {
-  faFacebook,
-  faTwitter,
-  faInstagram,
-} from "@fortawesome/free-brands-svg-icons";
-import DefaultProjectCard from "@/views/components/DefaultProjectCard.vue";
-import PlaceHolderCard from "@/examples/Cards/PlaceHolderCard.vue";
-import setNavPills from "@/assets/js/nav-pills.js";
 import setTooltip from "@/assets/js/tooltip.js";
+import SoftAvatar from "@/components/SoftAvatar.vue";
+import SoftProgress from "@/components/SoftProgress.vue";
+import img1 from "../../assets/img/small-logos/logo-xd.svg";
+import img2 from "../../assets/img/team-1.jpg";
+import img3 from "@/assets/img/team-2.jpg";
+import img4 from "../../assets/img/team-3.jpg";
+import img5 from "../../assets/img/team-4.jpg";
+import img6 from "../../assets/img/small-logos/logo-atlassian.svg";
+import img7 from "../../assets/img/team-2.jpg";
+import img8 from "../../assets/img/team-4.jpg";
+import img9 from "../../assets/img/small-logos/logo-slack.svg";
+import img10 from "../../assets/img/team-3.jpg";
+import img11 from "../../assets/img/team-1.jpg";
+import img12 from "../../assets/img/small-logos/logo-spotify.svg";
+import img13 from "../../assets/img/team-4.jpg";
+import img14 from "../../assets/img/team-3.jpg";
+import img15 from "../../assets/img/team-4.jpg";
+import img16 from "../../assets/img/team-1.jpg";
+import img17 from "../../assets/img/small-logos/logo-jira.svg";
+import img18 from "../../assets/img/team-4.jpg";
+import img19 from "../../assets/img/small-logos/logo-invision.svg";
+import img20 from "../../assets/img/team-1.jpg";
+import img21 from "../../assets/img/team-4.jpg";
 
 export default {
-  name: "projects-table",
-  components: {
-    DefaultProjectCard,
-    PlaceHolderCard,
-    SoftProgress,
-  },
+  name: "projects-card",
   data() {
     return {
-      showMenu: false,
-      sophie,
-      marie,
-      ivana,
-      peterson,
-      nick,
       img1,
-      team1,
-      team2,
-      team3,
-      team4,
       img2,
       img3,
-      faFacebook,
-      faTwitter,
-      faInstagram,
+      img4,
+      img5,
+      img6,
+      img7,
+      img8,
+      img9,
+      img10,
+      img11,
+      img12,
+      img13,
+      img14,
+      img15,
+      img16,
+      img17,
+      img18,
+      img19,
+      img20,
+      img21,
     };
   },
-
-  mounted() {
-    this.$store.state.isAbsolute = true;
-    setNavPills();
-    setTooltip(this.$store.state.bootstrap);
+  components: {
+    SoftAvatar,
+    SoftProgress,
   },
-  beforeUnmount() {
-    this.$store.state.isAbsolute = false;
+  mounted() {
+    setTooltip();
   },
 };
 </script>
