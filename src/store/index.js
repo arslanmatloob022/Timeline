@@ -1,6 +1,5 @@
 import { createStore } from "vuex";
 import bootstrap from "bootstrap/dist/js/bootstrap.min.js";
-import { String } from "core-js/js";
 
 export default createStore({
   state: {
@@ -43,7 +42,9 @@ export default createStore({
 
     setUser(state, user) {
       state.user = user;
+
       localStorage.setItem("user", JSON.stringify(user));
+      console.log(user);
     },
 
     logout(state) {
@@ -66,7 +67,6 @@ export default createStore({
     toggleConfigurator(state) {
       state.showConfig = !state.showConfig;
     },
-
     navbarMinimize(state) {
       const sidenav_show = document.querySelector(".g-sidenav-show");
       if (sidenav_show.classList.contains("g-sidenav-hidden")) {
@@ -79,15 +79,12 @@ export default createStore({
         state.isPinned = false;
       }
     },
-
     sidebarType(state, payload) {
       state.isTransparent = payload;
     },
-
     cardBackground(state, payload) {
       state.color = payload;
     },
-
     navbarFixed(state) {
       if (state.isNavFixed === false) {
         state.isNavFixed = true;
@@ -95,17 +92,14 @@ export default createStore({
         state.isNavFixed = false;
       }
     },
-
     toggleEveryDisplay(state) {
       state.showNavbar = !state.showNavbar;
       state.showSidenav = !state.showSidenav;
       state.showFooter = !state.showFooter;
     },
-
     toggleHideConfig(state) {
       state.hideConfigButton = !state.hideConfigButton;
     },
-
     setNotification(state, payload) {
       state.notification = payload;
     },

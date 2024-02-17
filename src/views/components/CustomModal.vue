@@ -14,12 +14,11 @@
         <!-- Slot for custom content -->
         <slot></slot>
       </div>
-      <div class="modal-footer">
-        <!-- Slot for custom actions -->
+      <!-- <div class="modal-footer">
         <slot class="action-btn" name="actions">
           <button class="close-btn" @click="closeModal">Close</button>
         </slot>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -59,13 +58,13 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
+  z-index: 99999;
 }
 
 .modal-content {
   width: 50%;
   background-color: #fff;
-  padding: 20px;
+  padding: 8px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -74,7 +73,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 2px;
 }
 
 .close-btn {

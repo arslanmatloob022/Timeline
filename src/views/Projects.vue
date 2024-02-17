@@ -533,7 +533,7 @@
       <!-- Custom content for the modal -->
       <form @submit.prevent="addNewProject">
         <div>
-          <label for="inputField">Title</label>
+          <label for="inputField">Title : *</label>
           <input
             class="inputField"
             type="text"
@@ -599,9 +599,8 @@
           />
         </div>
         <div>
-          <label for="inputField">Manager</label>
+          <label for="inputField">Managers : *</label>
           <select class="inputField" v-model="project.managers" multiple="true">
-            <option value="" selected>Select Manger</option>
             <option
               class="dropdownOptions"
               v-for="manager in managers"
@@ -614,7 +613,7 @@
         </div>
         <button class="action-btn" type="submit">Save</button>
       </form>
-      <template v-slot:actions> </template>
+      <!-- <template v-slot:actions> </template> -->
     </custom-modal>
   </div>
 </template>
@@ -744,10 +743,18 @@ export default {
             },
           }
         );
-        // window.alert(response);
+        this.$notify({
+          type: "success",
+          title: "Project added",
+          text: "Project added succesfuly",
+        });
         console.log(response);
       } catch (err) {
-        window.alert(err);
+        this.$notify({
+          type: "error",
+          title: "Something went wrong",
+          text: err,
+        });
       }
     },
   },
