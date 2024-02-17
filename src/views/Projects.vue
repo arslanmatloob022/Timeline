@@ -531,89 +531,90 @@
     </div>
     <custom-modal ref="customModal" :title="modalTitle">
       <!-- Custom content for the modal -->
-      <div>
-        <label for="inputField">Title</label>
-        <input
-          class="inputField"
-          type="text"
-          placeholder="Project title"
-          v-model="project.title"
-          size="md"
-        />
-      </div>
+      <form @submit.prevent="addNewProject">
+        <div>
+          <label for="inputField">Title</label>
+          <input
+            class="inputField"
+            type="text"
+            placeholder="Project title"
+            v-model="project.title"
+            size="md"
+          />
+        </div>
 
-      <div>
-        <label for="inputField">Description</label>
-        <input
-          class="inputField"
-          type="text"
-          placeholder="Project description"
-          v-model="project.description"
-          size="md"
-        />
-      </div>
+        <div>
+          <label for="inputField">Description</label>
+          <input
+            class="inputField"
+            type="text"
+            placeholder="Project description"
+            v-model="project.description"
+            size="md"
+          />
+        </div>
 
-      <div>
-        <label for="inputField">Image</label>
-        <input
-          class="inputField"
-          type="file"
-          placeholder="Start date"
-          @change="handleFileChange"
-          size="md"
-        />
-      </div>
+        <div>
+          <label for="inputField">Image</label>
+          <input
+            class="inputField"
+            type="file"
+            placeholder="Start date"
+            @change="handleFileChange"
+            size="md"
+          />
+        </div>
 
-      <div>
-        <label for="inputField">Start Date</label>
-        <input
-          class="inputField"
-          type="date"
-          placeholder="End date"
-          v-model="project.startDate"
-          size="md"
-        />
-      </div>
+        <div style="display: flex; justify-content: space-between">
+          <div>
+            <label for="inputField">Start Date</label>
+            <input
+              class="inputField"
+              type="date"
+              placeholder="End date"
+              v-model="project.startDate"
+              size="md"
+            />
+          </div>
 
-      <div>
-        <label for="inputField">End Date</label>
-        <input
-          class="inputField"
-          type="date"
-          placeholder="Status"
-          v-model="project.endDate"
-          size="md"
-        />
-      </div>
-
-      <div>
-        <label for="inputField">Active</label>
-        <input
-          class="inputField"
-          type="text"
-          placeholder="Active"
-          v-model="project.is_active"
-          size="md"
-        />
-      </div>
-      <div>
-        <label for="inputField">Manager</label>
-        <select class="inputField" v-model="project.managers">
-          <option value="" selected>Select Manger</option>
-          <option
-            class="dropdownOptions"
-            v-for="manager in managers"
-            :key="manager.id"
-            :value="manager.id"
-          >
-            {{ manager.name }}
-          </option>
-        </select>
-      </div>
-
-      <template v-slot:actions>
-        <button class="action-btn" @click="addNewProject">Save</button>
-      </template>
+          <div>
+            <label for="inputField">End Date</label>
+            <input
+              class="inputField"
+              type="date"
+              placeholder="Status"
+              v-model="project.endDate"
+              size="md"
+            />
+          </div>
+        </div>
+        <div>
+          <label for="inputField">Active</label>
+          <input
+            class="inputField"
+            type="text"
+            placeholder="Active"
+            v-model="project.is_active"
+            size="md"
+          />
+        </div>
+        <div>
+          <label for="inputField">Manager</label>
+          <select class="inputField" v-model="project.managers" multiple="true">
+            <option value="" selected>Select Manger</option>
+            <option
+              class="dropdownOptions"
+              v-for="manager in managers"
+              :key="manager.id"
+              :value="manager.id"
+            >
+              {{ manager.name }}
+            </option>
+          </select>
+        </div>
+        <button class="action-btn" type="submit">Save</button>
+      </form>
+      <template v-slot:actions> </template>
     </custom-modal>
   </div>
 </template>
@@ -679,7 +680,7 @@ export default {
       project: {
         title: "",
         description: "",
-        image: File,
+        image: null | String,
         startDate: "",
         endDate: "",
         status: "",
@@ -706,7 +707,7 @@ export default {
     closeProjectModalHandler() {
       this.project.title = "";
       this.project.description = "";
-      this.project.image = File;
+      this.project.image = null;
       this.project.startDate = "";
       this.project.endDate = "";
       this.project.status = "";
@@ -768,7 +769,7 @@ export default {
 
 .inputField {
   width: 100%;
-  padding: 4px 14px;
+  padding: 4px 24px;
   border-radius: 8px;
   border: 1px solid #cccccc;
 }

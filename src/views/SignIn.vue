@@ -156,17 +156,18 @@ export default {
         this.$store.commit("setToken", token);
 
         this.$notify({
-          message: "Welcome to the website!",
-          color: "green",
-          icon: "✅",
+          type: "success",
+          title: "Important message",
+          text: "Hello user!",
         });
-        // Redirect the user to the dashboard or another page
         this.$router.push("/dashboard");
         console.error("Login success");
       } catch (error) {
-        window.alert(error);
+        this.$notify({
+          group: "auth",
+          text: "Wrong credentials, please try again",
+        });
         console.error("Login failed:", error);
-        // Handle login failure, show an error message, etc.
       }
     },
   },

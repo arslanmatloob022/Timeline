@@ -310,73 +310,54 @@
     <!-- add manager modal -->
     <custom-modal ref="customModal" :title="modalTitle">
       <!-- Custom content for the modal -->
-      <div>
-        <label for="inputField">First name</label>
-        <input
-          class="inputField"
-          type="text"
-          placeholder="First name"
-          v-model="userData.fname"
-        />
-      </div>
+      <form @submit.prevent="addNewManger">
+        <div>
+          <label for="inputField">Full name</label>
+          <input
+            class="inputField"
+            type="text"
+            placeholder="First name"
+            v-model="userData.username"
+          />
+        </div>
 
-      <div>
-        <label for="inputField">Last name</label>
-        <input
-          class="inputField"
-          type="text"
-          placeholder="last name"
-          v-model="userData.lname"
-        />
-      </div>
+        <div>
+          <label for="inputField">Email</label>
+          <input
+            class="inputField"
+            v-model="userData.email"
+            type="email"
+            placeholder="Email"
+          />
+        </div>
 
-      <div>
-        <label for="inputField">User name</label>
-        <input
-          class="inputField"
-          v-model="userData.username"
-          type="text"
-          placeholder="User name"
-        />
-      </div>
+        <div>
+          <label for="inputField">Role</label>
+          <select class="inputField" v-model="userData.role">
+            <option value="manager" selected>Select Manger</option>
+            <option
+              class="dropdownOptions"
+              v-for="manager in roles"
+              :key="manager.id"
+              :value="manager.value"
+            >
+              {{ manager.name }}
+            </option>
+          </select>
+        </div>
 
-      <div>
-        <label for="inputField">Email</label>
-        <input
-          class="inputField"
-          v-model="userData.email"
-          type="email"
-          placeholder="Email"
-        />
-      </div>
-
-      <div>
-        <label for="inputField">Role</label>
-        <select class="inputField" v-model="userData.role">
-          <option value="manager" selected>Select Manger</option>
-          <option
-            class="dropdownOptions"
-            v-for="manager in roles"
-            :key="manager.id"
-            :value="manager.value"
-          >
-            {{ manager.name }}
-          </option>
-        </select>
-      </div>
-      <div>
-        <label for="inputField">Password</label>
-        <input
-          class="inputField"
-          type="password"
-          placeholder="Password"
-          v-model="userData.password"
-        />
-      </div>
-
-      <template v-slot:actions>
-        <button class="action-btn" @click="addNewManger">Add</button>
-      </template>
+        <div>
+          <label for="inputField">Password</label>
+          <input
+            class="inputField"
+            type="password"
+            placeholder="Password"
+            v-model="userData.password"
+          />
+        </div>
+        <button class="action-btn" type="submit">Add</button>
+      </form>
+      <template v-slot:actions> </template>
     </custom-modal>
   </div>
 </template>
@@ -410,7 +391,7 @@ export default {
       project: {
         title: "",
         description: "",
-        image: File,
+        image: File | null | String,
         startDate: "",
         endDate: "",
         status: "",
@@ -419,6 +400,7 @@ export default {
       userData: {
         fname: "",
         lname: "",
+        email: "",
         username: "",
         password: "",
         status: "",
@@ -426,7 +408,7 @@ export default {
       },
       roles: [
         { id: 1, value: "admin", name: "Admin" },
-        { id: 2, value: "manger", name: "Manager" },
+        { id: 2, value: "manager", name: "Manager" },
         { id: 3, value: "worker", name: "Worker" },
       ],
     };
@@ -439,9 +421,8 @@ export default {
   },
   methods: {
     closeUserModalHandler() {
-      (this.userData.fname = ""),
-        (this.userData.lname = ""),
-        (this.userData.username = ""),
+      (this.userData.username = ""),
+        (this.userData.email = ""),
         (this.userData.password = ""),
         (this.userData.status = ""),
         (this.userData.role = "");
@@ -472,11 +453,20 @@ export default {
             },
           }
         );
-        // window.alert(response);
+        this.$notify({
+          type: "success",
+          title: "Manager Added",
+          text: "Manager added succesfuly",
+        });
         this.saveAndClose();
         console.log(response);
       } catch (err) {
-        window.alert(err);
+        console.log(err);
+        this.$notify({
+          type: "error",
+          title: "Manager Added",
+          text: "Manager added succesfuly",
+        });
       }
     },
   },

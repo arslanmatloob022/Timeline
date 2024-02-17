@@ -17,10 +17,7 @@
       <div class="modal-footer">
         <!-- Slot for custom actions -->
         <slot class="action-btn" name="actions">
-          <button class="close-btn" @click="closeModal">
-            Close <i style="color: black" class="fa fa-close"></i>
-          </button>
-          <i style="color: black" class="fa fa-close"></i>
+          <button class="close-btn" @click="closeModal">Close</button>
         </slot>
       </div>
     </div>

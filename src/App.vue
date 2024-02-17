@@ -20,6 +20,7 @@
         v-if="this.$store.state.showNavbar"
       />
       <router-view />
+      <notifications position="bottom left" />
       <app-footer v-show="this.$store.state.showFooter" />
       <configurator
         :toggle="toggleConfigurator"
