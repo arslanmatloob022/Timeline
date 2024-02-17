@@ -91,6 +91,9 @@
           </div>
         </div>
       </div>
+      <SoftAlert v-if="showAlert" color="success" icon="bi-check" dismissible>
+        Welcome back to Ibex Builders!
+      </SoftAlert>
     </section>
   </main>
   <!-- eslint-disable-next-line vue/no-multiple-template-root -->
@@ -106,11 +109,13 @@ import SoftButton from "@/components/SoftButton.vue";
 const body = document.getElementsByTagName("body")[0];
 import { mapMutations } from "vuex";
 import axios from "axios";
+import SoftAlert from "../components/SoftAlert.vue";
 
 export default {
   name: "SignIn",
   data() {
     return {
+      showAlert: false,
       username: "adnan@timeline.com",
       password: "fa19bse123",
     };
@@ -121,6 +126,7 @@ export default {
     SoftInput,
     SoftSwitch,
     SoftButton,
+    SoftAlert,
   },
   created() {
     this.toggleEveryDisplay();
@@ -145,14 +151,15 @@ export default {
             password: this.password,
           }
         );
-
-        // Assuming your API returns a token upon successful login
         const token = response.data.token;
-
-        // Do something with the token, such as storing it in Vuex or local storage
-        // For example, you can commit it to the Vuex store if you have set up Vuex
+        console.log("new", response.data.token);
         this.$store.commit("setToken", token);
 
+        this.$notify({
+          message: "Welcome to the website!",
+          color: "green",
+          icon: "✅",
+        });
         // Redirect the user to the dashboard or another page
         this.$router.push("/dashboard");
         console.error("Login success");

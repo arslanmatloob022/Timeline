@@ -96,7 +96,7 @@ import downArrWhite from "@/assets/img/down-arrow-white.svg";
 import downArrBlack from "@/assets/img/down-arrow-dark.svg";
 
 export default {
-  name: "navbar",
+  name: "navbarTop",
   data() {
     return {
       downArrWhite,

@@ -33,6 +33,7 @@
 </template>
 <script>
 export default {
+  name: "shopIcon",
   props: {
     color: {
       type: String,

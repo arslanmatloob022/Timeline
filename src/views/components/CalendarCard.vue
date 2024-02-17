@@ -1,6 +1,7 @@
 <template>
   <div class="overflow-hidden card move-on-hover">
     <div class="card-body">
+      <!-- eslint-disable-next-line vue/no-v-for-template-key -->
       <template v-for="({ time, description }, index) of items" :key="index">
         <div class="d-flex">
           <h6 class="mb-0 me-3">{{ time }}</h6>

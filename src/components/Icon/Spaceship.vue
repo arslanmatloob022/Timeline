@@ -44,6 +44,7 @@
 </template>
 <script>
 export default {
+  name: "spaceShipIcon",
   props: {
     height: {
       type: String,

@@ -3,8 +3,14 @@
     <div class="row">
       <div class="col-lg-12 col-md-6 mb-md-0 mb-4">
         <div class="card mb-4">
-          <div class="card-header pb-0">
+          <div
+            class="card-header pb-0"
+            style="display: flex; justify-content: space-between"
+          >
             <h6>Projects</h6>
+            <add-button-vue @click="openCustomModal"
+              ><slot>Add Project</slot></add-button-vue
+            >
           </div>
           <div class="card-body px-0 pb-2">
             <div class="table-responsive">
@@ -423,8 +429,10 @@
             <div class="row">
               <div class="mb-4 col-xl-3 col-md-6 mb-xl-0">
                 <place-holder-card
+                  @click="openCustomModal"
                   :title="{ text: 'New project', variant: 'h5' }"
                 />
+                <!-- <button >open</button> -->
               </div>
 
               <default-project-card
@@ -521,6 +529,92 @@
         </div>
       </div>
     </div>
+    <custom-modal ref="customModal" :title="modalTitle">
+      <!-- Custom content for the modal -->
+      <div>
+        <label for="inputField">Title</label>
+        <input
+          class="inputField"
+          type="text"
+          placeholder="Project title"
+          v-model="project.title"
+          size="md"
+        />
+      </div>
+
+      <div>
+        <label for="inputField">Description</label>
+        <input
+          class="inputField"
+          type="text"
+          placeholder="Project description"
+          v-model="project.description"
+          size="md"
+        />
+      </div>
+
+      <div>
+        <label for="inputField">Image</label>
+        <input
+          class="inputField"
+          type="file"
+          placeholder="Start date"
+          @change="handleFileChange"
+          size="md"
+        />
+      </div>
+
+      <div>
+        <label for="inputField">Start Date</label>
+        <input
+          class="inputField"
+          type="date"
+          placeholder="End date"
+          v-model="project.startDate"
+          size="md"
+        />
+      </div>
+
+      <div>
+        <label for="inputField">End Date</label>
+        <input
+          class="inputField"
+          type="date"
+          placeholder="Status"
+          v-model="project.endDate"
+          size="md"
+        />
+      </div>
+
+      <div>
+        <label for="inputField">Active</label>
+        <input
+          class="inputField"
+          type="text"
+          placeholder="Active"
+          v-model="project.is_active"
+          size="md"
+        />
+      </div>
+      <div>
+        <label for="inputField">Manager</label>
+        <select class="inputField" v-model="project.managers">
+          <option value="" selected>Select Manger</option>
+          <option
+            class="dropdownOptions"
+            v-for="manager in managers"
+            :key="manager.id"
+            :value="manager.id"
+          >
+            {{ manager.name }}
+          </option>
+        </select>
+      </div>
+
+      <template v-slot:actions>
+        <button class="action-btn" @click="addNewProject">Save</button>
+      </template>
+    </custom-modal>
   </div>
 </template>
 
@@ -551,7 +645,10 @@ import img18 from "@/assets/img/team-4.jpg";
 import img19 from "@/assets/img/small-logos/logo-invision.svg";
 import img20 from "@/assets/img/team-1.jpg";
 import img21 from "@/assets/img/team-4.jpg";
-
+import CustomModal from "@/views/components/CustomModal.vue";
+import axios from "axios";
+import { mapState } from "vuex";
+import AddButtonVue from "./components/AddButton.vue";
 export default {
   name: "projects-card",
   data() {
@@ -577,6 +674,21 @@ export default {
       img19,
       img20,
       img21,
+      modalTitle: "Add New Project",
+      inputFieldValue: "",
+      project: {
+        title: "",
+        description: "",
+        image: File,
+        startDate: "",
+        endDate: "",
+        status: "",
+        managers: [],
+      },
+      managers: [
+        { id: 1, name: "Manager 1" },
+        { id: 9, name: "Manager 9" },
+      ],
     };
   },
   components: {
@@ -584,9 +696,91 @@ export default {
     SoftProgress,
     DefaultProjectCard,
     PlaceHolderCard,
+    CustomModal,
+    AddButtonVue,
+  },
+  computed: {
+    ...mapState(["token"]),
+  },
+  methods: {
+    closeProjectModalHandler() {
+      this.project.title = "";
+      this.project.description = "";
+      this.project.image = File;
+      this.project.startDate = "";
+      this.project.endDate = "";
+      this.project.status = "";
+      this.project.managers = [];
+    },
+
+    openCustomModal() {
+      this.closeProjectModalHandler();
+      this.$refs.customModal.openModal();
+    },
+
+    saveAndClose() {
+      console.log("Input Field Value:", this.inputFieldValue);
+      this.$refs.customModal.closeModal();
+    },
+
+    handleFileChange(event) {
+      this.project.image = event.target.files[0];
+    },
+
+    async addNewProject() {
+      try {
+        const formData = new FormData();
+        Object.keys(this.project).forEach((key) => {
+          formData.append(key, this.project[key]);
+        });
+        const response = await axios.post(
+          "https://vecel-practice.vercel.app/api/project/",
+          formData,
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Token ${this.$store.state.token}`,
+            },
+          }
+        );
+        // window.alert(response);
+        console.log(response);
+      } catch (err) {
+        window.alert(err);
+      }
+    },
   },
   mounted() {
+    this.userToken = this.token;
     setTooltip();
   },
 };
 </script>
+<style scoped>
+.action-btn {
+  background-color: #82d616;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.inputField {
+  width: 100%;
+  padding: 4px 14px;
+  border-radius: 8px;
+  border: 1px solid #cccccc;
+}
+.inputField:focus {
+  border: 2px solid #82d616; /* Change the border color when in focus */
+  outline: none; /* Remove the default focus outline */
+  box-shadow: 0 0 5px #82d61670;
+}
+.inputField:active {
+  background-color: #f8f9fa;
+}
+.dropdownOptions {
+  border-radius: 8px;
+}
+</style>

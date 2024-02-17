@@ -34,6 +34,7 @@
 </template>
 <script>
 export default {
+  name: "documentIcon",
   props: {
     height: {
       type: String,

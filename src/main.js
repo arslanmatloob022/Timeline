@@ -20,8 +20,10 @@ import router from "./router";
 import "./assets/css/nucleo-icons.css";
 import "./assets/css/nucleo-svg.css";
 import SoftUIDashboard from "./soft-ui-dashboard";
+import notification from "./Plugins/notification";
 
 const appInstance = createApp(App);
+appInstance.use(notification);
 appInstance.use(store);
 appInstance.use(router);
 appInstance.use(SoftUIDashboard);

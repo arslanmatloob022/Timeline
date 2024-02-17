@@ -1,5 +1,4 @@
 import { createStore } from "vuex";
-import axios from "axios";
 import bootstrap from "bootstrap/dist/js/bootstrap.min.js";
 
 export default createStore({
@@ -22,6 +21,7 @@ export default createStore({
     absolute: "position-absolute px-4 mx-0 w-100 z-index-2",
     bootstrap,
     token: null,
+    notification: null,
   },
   mutations: {
     setToken(state, token) {
@@ -63,6 +63,9 @@ export default createStore({
     toggleHideConfig(state) {
       state.hideConfigButton = !state.hideConfigButton;
     },
+    setNotification(state, payload) {
+      state.notification = payload;
+    },
   },
   actions: {
     toggleSidebarColor({ commit }, payload) {
@@ -71,27 +74,11 @@ export default createStore({
     setCardBackground({ commit }, payload) {
       commit("cardBackground", payload);
     },
-    async login({ commit }, credentials) {
-      // eslint-disable-next-line no-useless-catch
-      try {
-        // Replace 'your-login-api-url' with the actual URL of your login API
-        const response = await axios.post(
-          "https://vecel-practice.vercel.app/api/auth/login/",
-          credentials
-        );
-
-        // Assuming your API returns a token upon successful login
-        const token = response.data.token;
-
-        // Commit the token to the Vuex store
-        commit("setToken", token);
-
-        // You can also return the response if needed
-        return response;
-      } catch (error) {
-        // Handle login failure, you may want to throw the error or return an error object
-        throw error;
-      }
+    showNotification({ commit }, notification) {
+      commit("setNotification", notification);
+      setTimeout(() => {
+        commit("setNotification", null);
+      }, notification.duration || 3000);
     },
   },
   getters: {},

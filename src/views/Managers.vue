@@ -1,7 +1,13 @@
 <template>
   <div class="card mb-4">
-    <div class="card-header pb-0">
+    <div
+      class="card-header pb-0"
+      style="display: flex; justify-content: space-between; align-items: center"
+    >
       <h6>Mangers</h6>
+      <add-button-vue @click="openCustomModal"
+        ><slot>Add Manager</slot></add-button-vue
+      >
     </div>
     <div class="card-body px-0 pt-0 pb-2">
       <div class="table-responsive p-0">
@@ -300,10 +306,85 @@
         </table>
       </div>
     </div>
+
+    <!-- add manager modal -->
+    <custom-modal ref="customModal" :title="modalTitle">
+      <!-- Custom content for the modal -->
+      <div>
+        <label for="inputField">First name</label>
+        <input
+          class="inputField"
+          type="text"
+          placeholder="First name"
+          v-model="userData.fname"
+        />
+      </div>
+
+      <div>
+        <label for="inputField">Last name</label>
+        <input
+          class="inputField"
+          type="text"
+          placeholder="last name"
+          v-model="userData.lname"
+        />
+      </div>
+
+      <div>
+        <label for="inputField">User name</label>
+        <input
+          class="inputField"
+          v-model="userData.username"
+          type="text"
+          placeholder="User name"
+        />
+      </div>
+
+      <div>
+        <label for="inputField">Email</label>
+        <input
+          class="inputField"
+          v-model="userData.email"
+          type="email"
+          placeholder="Email"
+        />
+      </div>
+
+      <div>
+        <label for="inputField">Role</label>
+        <select class="inputField" v-model="userData.role">
+          <option value="manager" selected>Select Manger</option>
+          <option
+            class="dropdownOptions"
+            v-for="manager in roles"
+            :key="manager.id"
+            :value="manager.value"
+          >
+            {{ manager.name }}
+          </option>
+        </select>
+      </div>
+      <div>
+        <label for="inputField">Password</label>
+        <input
+          class="inputField"
+          type="password"
+          placeholder="Password"
+          v-model="userData.password"
+        />
+      </div>
+
+      <template v-slot:actions>
+        <button class="action-btn" @click="addNewManger">Add</button>
+      </template>
+    </custom-modal>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+import AddButtonVue from "./components/AddButton.vue";
+import CustomModal from "@/views/components/CustomModal.vue";
 import SoftAvatar from "@/components/SoftAvatar.vue";
 import SoftBadge from "@/components/SoftBadge.vue";
 // import img1 from "@/assets/img/team-2.jpg";
@@ -318,17 +399,114 @@ export default {
   name: "authors-table",
   data() {
     return {
+      modalTitle: "Add New Manager",
       img1,
       img2,
       img3,
       img4,
       img5,
       img6,
+      inputFieldValue: "",
+      project: {
+        title: "",
+        description: "",
+        image: File,
+        startDate: "",
+        endDate: "",
+        status: "",
+        managers: [],
+      },
+      userData: {
+        fname: "",
+        lname: "",
+        username: "",
+        password: "",
+        status: "",
+        role: "",
+      },
+      roles: [
+        { id: 1, value: "admin", name: "Admin" },
+        { id: 2, value: "manger", name: "Manager" },
+        { id: 3, value: "worker", name: "Worker" },
+      ],
     };
   },
   components: {
     SoftAvatar,
     SoftBadge,
+    CustomModal,
+    AddButtonVue,
+  },
+  methods: {
+    closeUserModalHandler() {
+      (this.userData.fname = ""),
+        (this.userData.lname = ""),
+        (this.userData.username = ""),
+        (this.userData.password = ""),
+        (this.userData.status = ""),
+        (this.userData.role = "");
+    },
+
+    openCustomModal() {
+      this.closeUserModalHandler();
+      this.$refs.customModal.openModal();
+    },
+    saveAndClose() {
+      this.$refs.customModal.closeModal();
+    },
+
+    async addNewManger() {
+      try {
+        const formData = new FormData();
+        Object.keys(this.userData).forEach((key) => {
+          formData.append(key, this.userData[key]);
+        });
+        const response = await axios.post(
+          "https://vecel-practice.vercel.app/api/users/",
+          formData,
+          {
+            headers: {
+              accept: "application/json",
+              "Content-Type": "application/json",
+              Authorization: `Token ${this.$store.state.token}`,
+            },
+          }
+        );
+        // window.alert(response);
+        this.saveAndClose();
+        console.log(response);
+      } catch (err) {
+        window.alert(err);
+      }
+    },
   },
 };
 </script>
+<style scoped>
+.action-btn {
+  background-color: #82d616;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.inputField {
+  width: 100%;
+  padding: 4px 14px;
+  border-radius: 8px;
+  border: 1px solid #cccccc;
+}
+.inputField:focus {
+  border: 2px solid #82d616; /* Change the border color when in focus */
+  outline: none; /* Remove the default focus outline */
+  box-shadow: 0 0 5px #82d61670;
+}
+.inputField:active {
+  background-color: #f8f9fa;
+}
+.dropdownOptions {
+  border-radius: 8px;
+}
+</style>
