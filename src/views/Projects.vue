@@ -30,7 +30,7 @@
                     <th
                       class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
                     >
-                      Budget
+                      Added at
                     </th>
                     <th
                       class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
@@ -40,51 +40,28 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  <tr v-for="item in projects" :key="item.id">
                     <td>
                       <div class="d-flex px-2 py-1">
                         <div>
                           <soft-avatar
-                            :img="img1"
+                            :img="item.image ? item.image : img9"
                             size="sm"
                             class="me-3"
                             alt="xd"
                           />
                         </div>
                         <div class="d-flex flex-column justify-content-center">
-                          <h6 class="mb-0 text-sm">Soft UI XD Version</h6>
+                          <h6 class="mb-0 text-sm">{{ item.title }}</h6>
                         </div>
                       </div>
                     </td>
                     <td>
-                      <div class="avatar-group mt-2">
-                        <a
-                          href="javascript:;"
-                          class="avatar avatar-xs rounded-circle"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="bottom"
-                          data-bs-original-title="Ryan Tompson"
-                        >
-                          <img :src="img2" rounded-circle alt="team1" />
-                        </a>
-                        <a
-                          href="javascript:;"
-                          class="avatar avatar-xs rounded-circle"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="bottom"
-                          data-bs-original-title="Romina Hadid"
-                        >
-                          <img :src="img3" alt="team2" />
-                        </a>
-                        <a
-                          href="javascript:;"
-                          class="avatar avatar-xs rounded-circle"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="bottom"
-                          data-bs-original-title="Alexander Smith"
-                        >
-                          <img :src="img4" alt="team3" />
-                        </a>
+                      <div
+                        class="avatar-group mt-2"
+                        v-for="manager in item.managers"
+                        :key="manager.id"
+                      >
                         <a
                           href="javascript:;"
                           class="avatar avatar-xs rounded-circle"
@@ -92,12 +69,18 @@
                           data-bs-placement="bottom"
                           data-bs-original-title="Jessica Doe"
                         >
-                          <img :src="img5" rounded-circle alt="team4" />
+                          <img
+                            :src="manager.avatar ? manager.avatar : img5"
+                            rounded-circle
+                            alt="team4"
+                          />
                         </a>
                       </div>
                     </td>
                     <td class="align-middle text-center text-sm">
-                      <span class="text-xs font-weight-bold">$14,000</span>
+                      <span class="text-xs font-weight-bold">{{
+                        item.created.slice(0, 10)
+                      }}</span>
                     </td>
                     <td class="align-middle">
                       <div
@@ -110,301 +93,6 @@
                             class="mx-auto"
                             variant="gradient"
                             :percentage="60"
-                          />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="d-flex px-2 py-1">
-                        <div>
-                          <soft-avatar
-                            :img="img6"
-                            size="sm"
-                            class="me-3"
-                            alt="atlassian"
-                          />
-                        </div>
-                        <div class="d-flex flex-column justify-content-center">
-                          <h6 class="mb-0 text-sm">Add Progress Track</h6>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="avatar-group mt-2">
-                        <a
-                          href="javascript:;"
-                          class="avatar avatar-xs rounded-circle"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="bottom"
-                          data-bs-original-title="Romina Hadid"
-                        >
-                          <img :src="img7" alt="team5" />
-                        </a>
-                        <a
-                          href="javascript:;"
-                          class="avatar avatar-xs rounded-circle"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="bottom"
-                          data-bs-original-title="Jessica Doe"
-                        >
-                          <img :src="img8" alt="team6" />
-                        </a>
-                      </div>
-                    </td>
-                    <td class="align-middle text-center text-sm">
-                      <span class="text-xs font-weight-bold">$3,000</span>
-                    </td>
-                    <td class="align-middle">
-                      <div
-                        class="d-flex align-items-center justify-content-center"
-                      >
-                        <span class="text-xs font-weight-bold mx-2">10%</span>
-                        <div>
-                          <soft-progress
-                            color="info"
-                            class="mx-auto"
-                            variant="gradient"
-                            :percentage="10"
-                          />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="d-flex px-2 py-1">
-                        <div>
-                          <soft-avatar
-                            :img="img9"
-                            size="sm"
-                            class="me-3"
-                            alt="team7"
-                          />
-                        </div>
-                        <div class="d-flex flex-column justify-content-center">
-                          <h6 class="mb-0 text-sm">Fix Platform Errors</h6>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="avatar-group mt-2">
-                        <a
-                          href="javascript:;"
-                          class="avatar avatar-xs rounded-circle"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="bottom"
-                          data-bs-original-title="Romina Hadid"
-                        >
-                          <img :src="img10" alt="team8" />
-                        </a>
-                        <a
-                          href="javascript:;"
-                          class="avatar avatar-xs rounded-circle"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="bottom"
-                          data-bs-original-title="Jessica Doe"
-                        >
-                          <img :src="img11" alt="team9" />
-                        </a>
-                      </div>
-                    </td>
-                    <td class="align-middle text-center text-sm">
-                      <span class="text-xs font-weight-bold">Not set</span>
-                    </td>
-                    <td class="align-middle">
-                      <div
-                        class="d-flex align-items-center justify-content-center"
-                      >
-                        <span class="text-xs font-weight-bold mx-2">100%</span>
-                        <div>
-                          <soft-progress
-                            color="success"
-                            class="mx-auto"
-                            variant="gradient"
-                            :percentage="100"
-                          />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="d-flex px-2 py-1">
-                        <div>
-                          <soft-avatar
-                            :img="img12"
-                            class="me-3"
-                            size="sm"
-                            alt="spotify"
-                          />
-                        </div>
-                        <div class="d-flex flex-column justify-content-center">
-                          <h6 class="mb-0 text-sm">Launch our Mobile App</h6>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="avatar-group mt-2">
-                        <a
-                          href="javascript:;"
-                          class="avatar avatar-xs rounded-circle"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="bottom"
-                          data-bs-original-title="Ryan Tompson"
-                        >
-                          <img :src="img13" alt="user1" />
-                        </a>
-                        <a
-                          href="javascript:;"
-                          class="avatar avatar-xs rounded-circle"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="bottom"
-                          data-bs-original-title="Romina Hadid"
-                        >
-                          <img :src="img14" alt="user2" />
-                        </a>
-                        <a
-                          href="javascript:;"
-                          class="avatar avatar-xs rounded-circle"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="bottom"
-                          data-bs-original-title="Alexander Smith"
-                        >
-                          <img :src="img15" alt="user3" />
-                        </a>
-                        <a
-                          href="javascript:;"
-                          class="avatar avatar-xs rounded-circle"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="bottom"
-                          data-bs-original-title="Jessica Doe"
-                        >
-                          <img :src="img16" alt="user4" />
-                        </a>
-                      </div>
-                    </td>
-                    <td class="align-middle text-center text-sm">
-                      <span class="text-xs font-weight-bold">$20,500</span>
-                    </td>
-                    <td class="align-middle">
-                      <div
-                        class="d-flex align-items-center justify-content-center"
-                      >
-                        <span class="text-xs font-weight-bold mx-2">100%</span>
-                        <div>
-                          <soft-progress
-                            color="success"
-                            class="mx-auto"
-                            variant="gradient"
-                            :percentage="100"
-                          />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="d-flex px-2 py-1">
-                        <div>
-                          <soft-avatar
-                            :img="img17"
-                            rounded-circle
-                            class="me-3"
-                            size="sm"
-                            alt="jira"
-                          />
-                        </div>
-                        <div class="d-flex flex-column justify-content-center">
-                          <h6 class="mb-0 text-sm">Add the New Pricing Page</h6>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="avatar-group mt-2">
-                        <a
-                          href="javascript:;"
-                          class="avatar avatar-xs rounded-circle"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="bottom"
-                          data-bs-original-title="Ryan Tompson"
-                        >
-                          <img :src="img18" alt="user5" />
-                        </a>
-                      </div>
-                    </td>
-                    <td class="align-middle text-center text-sm">
-                      <span class="text-xs font-weight-bold">$500</span>
-                    </td>
-                    <td class="align-middle">
-                      <div
-                        class="d-flex align-items-center justify-content-center"
-                      >
-                        <span class="text-xs font-weight-bold mx-2">25%</span>
-                        <div>
-                          <soft-progress
-                            color="info"
-                            class="mx-auto"
-                            variant="gradient"
-                            :percentage="25"
-                          />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="d-flex px-2 py-1">
-                        <div>
-                          <soft-avatar
-                            :img="img19"
-                            class="me-3"
-                            size="sm"
-                            alt="invision"
-                          />
-                        </div>
-                        <div class="d-flex flex-column justify-content-center">
-                          <h6 class="mb-0 text-sm">Redesign New Online Shop</h6>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="avatar-group mt-2">
-                        <a
-                          href="javascript:;"
-                          class="avatar avatar-xs rounded-circle"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="bottom"
-                          data-bs-original-title="Ryan Tompson"
-                        >
-                          <img :src="img20" alt="user6" />
-                        </a>
-                        <a
-                          href="javascript:;"
-                          class="avatar avatar-xs rounded-circle"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="bottom"
-                          data-bs-original-title="Jessica Doe"
-                        >
-                          <img :src="img21" alt="user7" />
-                        </a>
-                      </div>
-                    </td>
-                    <td class="align-middle text-center text-sm">
-                      <span class="text-xs font-weight-bold">$2,000</span>
-                    </td>
-                    <td class="align-middle">
-                      <div
-                        class="d-flex align-items-center justify-content-center"
-                      >
-                        <span class="text-xs font-weight-bold mx-2">40%</span>
-                        <div>
-                          <soft-progress
-                            color="info"
-                            class="mx-auto"
-                            variant="gradient"
-                            :percentage="40"
                           />
                         </div>
                       </div>
@@ -554,7 +242,7 @@
           />
         </div>
 
-        <!-- <div>
+        <div>
           <label for="inputField">Image</label>
           <input
             class="inputField"
@@ -564,7 +252,7 @@
             @change="handleFileChange"
             size="md"
           />
-        </div> -->
+        </div>
 
         <div style="display: flex; justify-content: space-between">
           <div>
@@ -659,11 +347,14 @@ import img19 from "@/assets/img/small-logos/logo-invision.svg";
 import img20 from "@/assets/img/team-1.jpg";
 import img21 from "@/assets/img/team-4.jpg";
 import CustomModal from "@/views/components/CustomModal.vue";
-import axios from "axios";
+// import axios from "axios";
 import { mapState } from "vuex";
 import AddButtonVue from "./components/AddButton.vue";
 import SoftButtonVue from "../components/SoftButton.vue";
+import { convertToFormData } from "../supportElements/common";
 // import SoftCheckbox from "../components/SoftCheckbox.vue";
+import useApi from "../supportElements/useAPI";
+const api = useApi();
 export default {
   name: "projects-card",
   data() {
@@ -693,10 +384,11 @@ export default {
       modalTitle: "Add New Project",
       inputFieldValue: "",
       loading: false,
+      projects: [],
       project: {
         title: "",
         description: "",
-        // image: null | String,
+        image: File | String,
         startDate: "",
         endDate: "",
         is_active: false,
@@ -725,7 +417,7 @@ export default {
     closeProjectModalHandler() {
       this.project.title = "";
       this.project.description = "";
-      // this.project.image = null;
+      this.project.image = null;
       this.project.startDate = "";
       this.project.endDate = "";
       this.project.managers = [];
@@ -741,27 +433,19 @@ export default {
       this.$refs.customModal.closeModal();
     },
 
-    // handleFileChange(event) {
-    //   this.project.image = event.target.files[0];
-    // },
+    handleFileChange(event) {
+      this.project.image = event.target.files[0];
+    },
 
     async addNewProject() {
       try {
         this.loading = true;
-        const formData = new FormData();
+        // const formData = new FormData();
         Object.keys(this.project).forEach((key) => {
           formData.append(key, this.project[key]);
         });
-        const response = await axios.post(
-          "https://vecel-practice.vercel.app/api/project/",
-          formData,
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Token ${this.$store.state.token}`,
-            },
-          }
-        );
+        let formData = convertToFormData(this.project, ["image"]);
+        const response = await api.post("/api/project/", formData);
         this.$notify({
           type: "success",
           title: "Project added",
@@ -779,10 +463,22 @@ export default {
         this.loading = false;
       }
     },
+    async getProjectHandler() {
+      try {
+        const response = await api.get("/api/project/", {});
+        this.projects = response.data;
+        console.log(this.projects);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        console.log("");
+      }
+    },
   },
   mounted() {
     this.userToken = this.token;
     setTooltip();
+    this.getProjectHandler();
   },
 };
 </script>

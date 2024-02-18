@@ -305,6 +305,8 @@ import US from "../assets/img/icons/flags/US.png";
 import DE from "../assets/img/icons/flags/DE.png";
 import GB from "../assets/img/icons/flags/GB.png";
 import BR from "../assets/img/icons/flags/BR.png";
+import useApi from "../supportElements/useAPI";
+const api = useApi();
 import {
   faHandPointer,
   faUsers,
@@ -315,6 +317,8 @@ export default {
   name: "dashboard-default",
   data() {
     return {
+      loading: false,
+      usersData: [],
       iconBackground: "bg-gradient-success",
       faCreditCard,
       faScrewdriverWrench,
@@ -360,6 +364,22 @@ export default {
     TimelineList,
     TimelineItem,
     AuthorsTable,
+  },
+  methods: {
+    async getManagershandler() {
+      try {
+        const response = await api.get("/api/users/", {});
+        this.usersData = response.data;
+        console.log("data", this.usersData);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        this.loading = false;
+      }
+    },
+  },
+  mounted() {
+    this.getManagershandler();
   },
 };
 </script>

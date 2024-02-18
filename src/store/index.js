@@ -29,7 +29,7 @@ export default createStore({
       email: "",
       first_name: "",
       last_name: "",
-      avatar: File | String,
+      avatar: "",
       is_superuser: Boolean,
       role: "",
       last_login: "",
