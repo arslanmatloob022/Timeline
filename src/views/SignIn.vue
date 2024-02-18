@@ -125,9 +125,9 @@ import SoftSwitch from "@/components/SoftSwitch.vue";
 import SoftButton from "@/components/SoftButton.vue";
 const body = document.getElementsByTagName("body")[0];
 import { mapMutations } from "vuex";
-// import axios from "axios";
-import useApi from "../supportElements/useAPI";
-const api = useApi();
+import axios from "axios";
+// import useApi from "../supportElements/useAPI";
+// const api = useApi();
 
 export default {
   name: "SignIn",
@@ -162,10 +162,13 @@ export default {
       try {
         this.loading = true;
         // eslint-disable-next-line no-undef
-        const response = await api.post("/api/auth/login/", {
-          email: this.username,
-          password: this.password,
-        });
+        const response = await axios.post(
+          "https://vecel-practice.vercel.app/api/auth/login/",
+          {
+            email: this.username,
+            password: this.password,
+          }
+        );
         const token = response.data.token;
         const user = response.data;
         console.log("new", response.data.token);
