@@ -531,7 +531,7 @@
     </div>
     <custom-modal ref="customModal" :title="modalTitle">
       <!-- Custom content for the modal -->
-      <form @submit.prevent="addNewProject">
+      <form id="project-form" @submit.prevent="addNewProject">
         <div>
           <label for="inputField">Title : *</label>
           <input
@@ -554,16 +554,17 @@
           />
         </div>
 
-        <div>
+        <!-- <div>
           <label for="inputField">Image</label>
           <input
             class="inputField"
+            id="avatarInput"
             type="file"
-            placeholder="Start date"
+            placeholder=""
             @change="handleFileChange"
             size="md"
           />
-        </div>
+        </div> -->
 
         <div style="display: flex; justify-content: space-between">
           <div>
@@ -571,7 +572,7 @@
             <input
               class="inputField"
               type="date"
-              placeholder="End date"
+              placeholder="Start date"
               v-model="project.startDate"
               size="md"
             />
@@ -582,25 +583,30 @@
             <input
               class="inputField"
               type="date"
-              placeholder="Status"
+              placeholder="End date"
               v-model="project.endDate"
               size="md"
             />
           </div>
         </div>
         <div>
-          <label for="inputField">Active</label>
           <input
-            class="inputField"
-            type="text"
+            style="width: 40px; width: 40px"
+            class="custom-checkbox"
+            id="inputField"
+            type="checkbox"
             placeholder="Active"
             v-model="project.is_active"
-            size="md"
           />
+          <label for="inputField">Set Project Active</label>
         </div>
         <div>
           <label for="inputField">Managers : *</label>
-          <select class="inputField" v-model="project.managers" multiple="true">
+          <select
+            class="inputField"
+            v-model="project.managers"
+            multiple="false"
+          >
             <option
               class="dropdownOptions"
               v-for="manager in managers"
@@ -611,14 +617,21 @@
             </option>
           </select>
         </div>
-        <button class="action-btn" type="submit">Save</button>
       </form>
-      <!-- <template v-slot:actions> </template> -->
+      <template v-slot:actions>
+        <SoftButtonVue form="project-form" type="submit" :loading="loading">
+          Add Project
+        </SoftButtonVue>
+        <!-- <button >
+          Add Project
+        </button> -->
+      </template>
     </custom-modal>
   </div>
 </template>
 
 <script>
+import { useAPI } from "@/supportElements/useAPI.js";
 import SoftAvatar from "@/components/SoftAvatar.vue";
 import img1 from "@/assets/img/home-decor-1.jpg";
 import img2 from "@/assets/img/home-decor-2.jpg";
@@ -649,6 +662,8 @@ import CustomModal from "@/views/components/CustomModal.vue";
 import axios from "axios";
 import { mapState } from "vuex";
 import AddButtonVue from "./components/AddButton.vue";
+import SoftButtonVue from "../components/SoftButton.vue";
+// import SoftCheckbox from "../components/SoftCheckbox.vue";
 export default {
   name: "projects-card",
   data() {
@@ -674,15 +689,17 @@ export default {
       img19,
       img20,
       img21,
+      useAPI,
       modalTitle: "Add New Project",
       inputFieldValue: "",
+      loading: false,
       project: {
         title: "",
         description: "",
-        image: null | String,
+        // image: null | String,
         startDate: "",
         endDate: "",
-        status: "",
+        is_active: false,
         managers: [],
       },
       managers: [
@@ -693,11 +710,13 @@ export default {
   },
   components: {
     SoftAvatar,
+    // SoftCheckbox,
     SoftProgress,
     DefaultProjectCard,
     PlaceHolderCard,
     CustomModal,
     AddButtonVue,
+    SoftButtonVue,
   },
   computed: {
     ...mapState(["token"]),
@@ -706,10 +725,9 @@ export default {
     closeProjectModalHandler() {
       this.project.title = "";
       this.project.description = "";
-      this.project.image = null;
+      // this.project.image = null;
       this.project.startDate = "";
       this.project.endDate = "";
-      this.project.status = "";
       this.project.managers = [];
     },
 
@@ -723,12 +741,13 @@ export default {
       this.$refs.customModal.closeModal();
     },
 
-    handleFileChange(event) {
-      this.project.image = event.target.files[0];
-    },
+    // handleFileChange(event) {
+    //   this.project.image = event.target.files[0];
+    // },
 
     async addNewProject() {
       try {
+        this.loading = true;
         const formData = new FormData();
         Object.keys(this.project).forEach((key) => {
           formData.append(key, this.project[key]);
@@ -750,11 +769,14 @@ export default {
         });
         console.log(response);
       } catch (err) {
+        this.loading = false;
         this.$notify({
           type: "error",
           title: "Something went wrong",
           text: err,
         });
+      } finally {
+        this.loading = false;
       }
     },
   },
@@ -765,6 +787,10 @@ export default {
 };
 </script>
 <style scoped>
+.custom-checkbox input:checked + .checkmark {
+  background-color: #4caf50; /* Background color when checked */
+  border-color: #4caf50; /* Border color when checked */
+}
 .action-btn {
   background-color: #82d616;
   color: #fff;

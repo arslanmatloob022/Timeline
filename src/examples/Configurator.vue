@@ -9,8 +9,8 @@
     <div class="shadow-lg card blur">
       <div class="pt-3 pb-0 bg-transparent card-header">
         <div class="float-start">
-          <h5 class="mt-3 mb-0">Soft UI Configurator</h5>
-          <p>See our dashboard options.</p>
+          <h5 class="mt-3 mb-0">Ibex Builders Studio</h5>
+          <p>Let's Build The Dreams Together</p>
         </div>
         <div class="mt-4 float-end" @click="toggle">
           <button class="p-0 btn btn-link text-dark fixed-plugin-close-button">
@@ -104,7 +104,7 @@
           />
         </div>
         <hr class="horizontal dark my-sm-4" />
-        <a
+        <!-- <a
           class="btn bg-gradient-info w-100"
           href="https://www.creative-tim.com/product/vue-soft-ui-dashboard-pro"
           >Buy now</a
@@ -118,8 +118,8 @@
           class="btn btn-outline-dark w-100"
           href="https://www.creative-tim.com/learning-lab/vue/overview/soft-ui-dashboard/"
           >View documentation</a
-        >
-        <div class="text-center w-100">
+        > -->
+        <!-- <div class="text-center w-100">
           <a
             class="github-button"
             href="https://github.com/creativetimofficial/vue-soft-ui-dashboard"
@@ -144,7 +144,7 @@
           >
             <i class="fab fa-facebook-square me-1" aria-hidden="true"></i> Share
           </a>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

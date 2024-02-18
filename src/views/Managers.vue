@@ -311,7 +311,7 @@
     <!-- add manager modal -->
     <custom-modal ref="customModal" :title="modalTitle">
       <!-- Custom content for the modal -->
-      <form @submit.prevent="addNewManger">
+      <form id="manger-form" @submit.prevent="addNewManger">
         <div>
           <label for="inputField">Full name</label>
           <input
@@ -331,7 +331,16 @@
             placeholder="Email"
           />
         </div>
-
+        <!-- <div>
+          <label for="inputField">Image</label>
+          <input
+            class="inputField"
+            type="file"
+            placeholder="Start date"
+            @change="handleFileChange"
+            size="md"
+          />
+        </div> -->
         <div>
           <label for="inputField">Role</label>
           <select class="inputField" v-model="userData.role">
@@ -356,15 +365,19 @@
             v-model="userData.password"
           />
         </div>
-        <button class="action-btn" type="submit">Add</button>
       </form>
-      <template v-slot:actions> </template>
+      <template v-slot:actions>
+        <soft-button-vue form="manger-form" type="submit">
+          Add Manager
+        </soft-button-vue>
+      </template>
     </custom-modal>
   </div>
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
+
 import AddButtonVue from "./components/AddButton.vue";
 import CustomModal from "@/views/components/CustomModal.vue";
 import SoftAvatar from "@/components/SoftAvatar.vue";
@@ -376,7 +389,9 @@ import img3 from "@/assets/img/team-4.jpg";
 import img4 from "@/assets/img/team-3.jpg";
 import img5 from "@/assets/img/team-2.jpg";
 import img6 from "@/assets/img/team-4.jpg";
-
+import useApi from "../supportElements/useAPI";
+import SoftButtonVue from "../components/SoftButton.vue";
+const api = useApi();
 export default {
   name: "authors-table",
   data() {
@@ -399,13 +414,12 @@ export default {
         managers: [],
       },
       userData: {
-        fname: "",
-        lname: "",
-        email: "",
         username: "",
+        email: "",
         password: "",
         status: "",
         role: "",
+        // avatar: null,
       },
       roles: [
         { id: 1, value: "admin", name: "Admin" },
@@ -419,6 +433,7 @@ export default {
     SoftBadge,
     CustomModal,
     AddButtonVue,
+    SoftButtonVue,
   },
   methods: {
     closeUserModalHandler() {
@@ -437,23 +452,19 @@ export default {
       this.$refs.customModal.closeModal();
     },
 
+    handleFileChange(event) {
+      this.userData.avatar = event.target.files[0];
+    },
+
     async addNewManger() {
       try {
         const formData = new FormData();
         Object.keys(this.userData).forEach((key) => {
           formData.append(key, this.userData[key]);
         });
-        const response = await axios.post(
-          "https://vecel-practice.vercel.app/api/users/",
-          formData,
-          {
-            headers: {
-              accept: "application/json",
-              "Content-Type": "application/json",
-              Authorization: `Token ${this.$store.state.token}`,
-            },
-          }
-        );
+        // formData.append("avatar", this.userData.avatar);
+
+        const response = await api.post("/api/users/", formData);
         this.$notify({
           type: "success",
           title: "Manager Added",
@@ -465,9 +476,20 @@ export default {
         console.log(err);
         this.$notify({
           type: "error",
-          title: "Manager Added",
-          text: "Manager added succesfuly",
+          title: "Something went wrong",
+          text: "Enter the information carefuly and try again",
         });
+      }
+    },
+
+    async getProjectHandler() {
+      try {
+        const response = await api.get("/api/project/", {});
+        this.projects = response.data;
+      } catch (err) {
+        console.log(err);
+      } finally {
+        console.log("");
       }
     },
   },

@@ -21,17 +21,20 @@ export default createStore({
     absolute: "position-absolute px-4 mx-0 w-100 z-index-2",
     bootstrap,
     notification: null,
+
     token: localStorage.getItem("token") || null,
     user: JSON.parse(localStorage.getItem("user")) || {
       id: "",
-      is_superuser: Boolean,
+      username: "",
+      email: "",
       first_name: "",
       last_name: "",
-      email: "",
+      avatar: File | String,
+      is_superuser: Boolean,
       role: "",
-      username: "",
+      last_login: "",
+      is_active: Boolean,
       password: "",
-      avatar: null | File | String,
     },
   },
   mutations: {
@@ -118,5 +121,7 @@ export default createStore({
       }, notification.duration || 3000);
     },
   },
-  getters: {},
+  getters: {
+    getUser: (state) => state.user,
+  },
 });

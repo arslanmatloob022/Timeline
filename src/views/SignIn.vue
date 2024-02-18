@@ -29,7 +29,26 @@
                     @submit.prevent="handleLogin"
                     class="text-start"
                   >
-                    <label>Email</label>
+                    <div>
+                      <label for="inputField">User name</label>
+                      <input
+                        class="inputField"
+                        type="text"
+                        placeholder="Email"
+                        v-model="username"
+                      />
+                    </div>
+
+                    <div>
+                      <label for="inputField">Password</label>
+                      <input
+                        class="inputField"
+                        v-model="password"
+                        type="password"
+                        placeholder="Password"
+                      />
+                    </div>
+                    <!-- <label>Email</label>
                     <soft-input
                       v-model="username"
                       id="email"
@@ -44,12 +63,13 @@
                       type="password"
                       placeholder="Password"
                       name="password"
-                    />
+                    /> -->
                     <soft-switch id="rememberMe" name="rememberMe" checked>
                       Remember me
                     </soft-switch>
                     <div class="text-center">
                       <soft-button
+                        :loading="loading"
                         @click="handleLogin"
                         class="my-4 mb-2"
                         variant="gradient"
@@ -91,9 +111,6 @@
           </div>
         </div>
       </div>
-      <SoftAlert v-if="showAlert" color="success" icon="bi-check" dismissible>
-        Welcome back to Ibex Builders!
-      </SoftAlert>
     </section>
   </main>
   <!-- eslint-disable-next-line vue/no-multiple-template-root -->
@@ -103,30 +120,30 @@
 <script>
 import Navbar from "@/examples/PageLayout/Navbar.vue";
 import AppFooter from "@/examples/PageLayout/Footer.vue";
-import SoftInput from "@/components/SoftInput.vue";
+// import SoftInput from "@/components/SoftInput.vue";
 import SoftSwitch from "@/components/SoftSwitch.vue";
 import SoftButton from "@/components/SoftButton.vue";
 const body = document.getElementsByTagName("body")[0];
 import { mapMutations } from "vuex";
-import axios from "axios";
-import SoftAlert from "../components/SoftAlert.vue";
+// import axios from "axios";
+import useApi from "../supportElements/useAPI";
+const api = useApi();
 
 export default {
   name: "SignIn",
   data() {
     return {
       showAlert: false,
-      username: "adnan@timeline.com",
-      password: "fa19bse123",
+      username: "",
+      password: "",
+      loading: false,
     };
   },
   components: {
     Navbar,
     AppFooter,
-    SoftInput,
     SoftSwitch,
     SoftButton,
-    SoftAlert,
   },
   created() {
     this.toggleEveryDisplay();
@@ -143,20 +160,18 @@ export default {
 
     async handleLogin() {
       try {
+        this.loading = true;
         // eslint-disable-next-line no-undef
-        const response = await axios.post(
-          "https://vecel-practice.vercel.app/api/auth/login/",
-          {
-            email: this.username,
-            password: this.password,
-          }
-        );
+        const response = await api.post("/api/auth/login/", {
+          email: this.username,
+          password: this.password,
+        });
         const token = response.data.token;
         const user = response.data;
         console.log("new", response.data.token);
         this.$store.commit("setToken", token);
         this.$store.commit("setUser", user);
-
+        this.loading = false;
         this.$notify({
           type: "success",
           title: "Important message",
@@ -169,9 +184,26 @@ export default {
           group: "auth",
           text: "Wrong credentials, please try again",
         });
-        console.error("Login failed:", error);
+      } finally {
+        this.loading = false;
       }
     },
   },
 };
 </script>
+<style scoped>
+.inputField {
+  width: 100%;
+  padding: 4px 14px;
+  border-radius: 8px;
+  border: 1px solid #cccccc;
+}
+.inputField:focus {
+  border: 2px solid #82d616; /* Change the border color when in focus */
+  outline: none; /* Remove the default focus outline */
+  box-shadow: 0 0 5px #82d61670;
+}
+.inputField:active {
+  background-color: #f8f9fa;
+}
+</style>

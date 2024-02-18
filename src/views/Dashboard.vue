@@ -285,6 +285,12 @@
         </timeline-list>
       </div>
     </div>
+
+    <div class="row">
+      <div class="col-12">
+        <authors-table />
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -294,7 +300,7 @@ import MiniStatisticsCard from "@/examples/Cards/MiniStatisticsCard.vue";
 import TimelineList from "./components/TimelineList.vue";
 import TimelineItem from "./components/TimelineItem.vue";
 import ProjectsCard from "@/views/Admin/AdminProjects.vue";
-
+import AuthorsTable from "./components/AuthorsTable";
 import US from "../assets/img/icons/flags/US.png";
 import DE from "../assets/img/icons/flags/DE.png";
 import GB from "../assets/img/icons/flags/GB.png";
@@ -353,6 +359,7 @@ export default {
     ProjectsCard,
     TimelineList,
     TimelineItem,
+    AuthorsTable,
   },
 };
 </script>

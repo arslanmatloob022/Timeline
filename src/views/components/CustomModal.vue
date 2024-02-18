@@ -14,11 +14,11 @@
         <!-- Slot for custom content -->
         <slot></slot>
       </div>
-      <!-- <div class="modal-footer">
+      <div class="modal-footer">
         <slot class="action-btn" name="actions">
           <button class="close-btn" @click="closeModal">Close</button>
         </slot>
-      </div> -->
+      </div>
     </div>
   </div>
 </template>

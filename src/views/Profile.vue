@@ -16,7 +16,7 @@
           <div class="col-auto">
             <div class="avatar avatar-xl position-relative">
               <img
-                src="@/assets/img/bruce-mars.jpg"
+                :src="this.userData.avatar"
                 alt="profile_image"
                 class="shadow-sm w-100 border-radius-lg"
               />
@@ -24,8 +24,10 @@
           </div>
           <div class="col-auto my-auto">
             <div class="h-100">
-              <h5 class="mb-1">Alec Thompson</h5>
-              <p class="mb-0 text-sm font-weight-bold">CEO / Co-Founder</p>
+              <h5 class="mb-1">{{ this.userData.username }}</h5>
+              <p class="mb-0 text-sm font-weight-bold">
+                {{ this.userData.role }}
+              </p>
             </div>
           </div>
           <div
@@ -281,9 +283,9 @@
             title="Profile Information"
             description="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
             :info="{
-              fullName: 'Alec M. Thompson',
+              fullName: this.userData.username,
               mobile: '(44) 123 1234 123',
-              email: 'alecthompson@mail.com',
+              email: this.userData.email,
               location: 'USA',
             }"
             :social="[
@@ -542,6 +544,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import SoftSwitch from "@/components/SoftSwitch.vue";
 import ProfileInfoCard from "./components/ProfileInfoCard.vue";
 import SoftAvatar from "@/components/SoftAvatar.vue";
@@ -594,10 +597,28 @@ export default {
       faFacebook,
       faTwitter,
       faInstagram,
+      userData: {
+        id: "",
+        is_superuser: Boolean,
+        first_name: "",
+        last_name: "",
+        email: "",
+        role: "",
+        username: "",
+        password: "",
+        avatar: "",
+      },
     };
   },
-
+  computed: {
+    ...mapGetters("auth", ["getUser"]),
+    user() {
+      return this.getUser;
+    },
+  },
   mounted() {
+    this.userData = this.$store.state.user.user;
+    console.log("user info", this.userData);
     this.$store.state.isAbsolute = true;
     setNavPills();
     setTooltip(this.$store.state.bootstrap);

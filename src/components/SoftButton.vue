@@ -3,7 +3,10 @@
     class="btn mb-0"
     :class="getClasses(variant, color, size, fullWidth, active)"
   >
-    <slot />
+    <slot v-if="!loading" />
+    <i v-else class="fa fa-spinner" style="color: #ffffff"></i>
+    <!-- <img  src="@/assets/logo/icons8-loading.gif" /> -->
+    <!-- <p >Loading...</p> -->
   </button>
 </template>
 
@@ -11,6 +14,10 @@
 export default {
   name: "SoftButton",
   props: {
+    loading: {
+      type: Boolean,
+      default: false,
+    },
     color: {
       type: String,
       default: "success",

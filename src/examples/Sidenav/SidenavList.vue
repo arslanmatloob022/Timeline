@@ -84,9 +84,26 @@
             </template>
           </sidenav-collapse>
         </li>
+        <li class="nav-item">
+          <div @click="handleLogout" class="nav-link" v-bind="$attrs">
+            <div
+              class="text-center bg-white shadow icon icon-shape icon-sm border-radius-md d-flex align-items-center justify-content-center"
+              :class="this.$store.state.isRTL ? ' ms-2' : 'me-2'"
+            >
+              <template>
+                <spaceship />
+              </template>
+            </div>
+            <span
+              class="nav-link-text"
+              :class="this.$store.state.isRTL ? ' me-1' : 'ms-1'"
+              >Logout</span
+            >
+          </div>
+        </li>
       </ul>
     </div>
-    <div class="pt-3 mx-3 mt-3 sidenav-footer">
+    <!-- <div class="pt-3 mx-3 mt-3 sidenav-footer">
       <sidenav-card
         :class="cardBg"
         textPrimary="Need Help?"
@@ -101,12 +118,12 @@
         type="button"
         >Upgrade to pro</a
       >
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
 import SidenavCollapse from "./SidenavCollapse.vue";
-import SidenavCard from "./SidenavCard.vue";
+// import SidenavCard from "./SidenavCard.vue";
 import Shop from "../../components/Icon/Shop.vue";
 import Office from "../../components/Icon/Office.vue";
 import CreditCard from "../../components/Icon/CreditCard.vue";
@@ -130,7 +147,7 @@ export default {
   },
   components: {
     SidenavCollapse,
-    SidenavCard,
+    // SidenavCard,
     Shop,
     Office,
     CreditCard,
@@ -144,6 +161,15 @@ export default {
     getRoute() {
       const routeArr = this.$route.path.split("/");
       return routeArr[1];
+    },
+    handleLogout() {
+      this.$store.commit("logout");
+      this.$router.push("/");
+      this.$notify({
+        type: "error",
+        title: "Logged out!",
+        text: "Thanks for working with use!",
+      });
     },
   },
 };
