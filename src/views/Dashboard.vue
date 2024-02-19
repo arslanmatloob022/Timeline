@@ -237,7 +237,7 @@
 
     <div class="row my-4">
       <div class="col-lg-8 col-md-6 mb-md-0 mb-4">
-        <projects-card />
+        <ProjectsVue />
       </div>
       <div class="col-lg-4 col-md-6">
         <timeline-list
@@ -288,7 +288,7 @@
 
     <div class="row">
       <div class="col-12">
-        <authors-table />
+        <ManagersVue />
       </div>
     </div>
   </div>
@@ -299,13 +299,15 @@ import MiniStatisticsCard from "@/examples/Cards/MiniStatisticsCard.vue";
 // import GradientLineChart from "@/examples/Charts/GradientLineChart.vue";
 import TimelineList from "./components/TimelineList.vue";
 import TimelineItem from "./components/TimelineItem.vue";
-import ProjectsCard from "@/views/Admin/AdminProjects.vue";
-import AuthorsTable from "./components/AuthorsTable";
+// import AuthorsTable from "./components/AuthorsTable";
 import US from "../assets/img/icons/flags/US.png";
 import DE from "../assets/img/icons/flags/DE.png";
 import GB from "../assets/img/icons/flags/GB.png";
 import BR from "../assets/img/icons/flags/BR.png";
 import useApi from "../supportElements/useAPI";
+import ProjectsVue from "../components/models/Projects.vue";
+import ManagersVue from "../components/models/Managers.vue";
+
 const api = useApi();
 import {
   faHandPointer,
@@ -360,10 +362,11 @@ export default {
     MiniStatisticsCard,
     // ReportsBarChart,
     // GradientLineChart,
-    ProjectsCard,
     TimelineList,
     TimelineItem,
-    AuthorsTable,
+    // AuthorsTable,
+    ProjectsVue,
+    ManagersVue,
   },
   methods: {
     async getManagershandler() {

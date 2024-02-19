@@ -1,7 +1,6 @@
 <template>
   <div class="container-fluid">
-    <Projects></Projects>
-    <!-- <div class="row">
+    <div class="row">
       <div class="col-lg-12 col-md-6 mb-md-0 mb-4">
         <div class="card mb-4">
           <div
@@ -9,8 +8,8 @@
             style="display: flex; justify-content: space-between"
           >
             <h6>Projects</h6>
-            <add-button-vue @click="openCustomModal"
-              ><slot>Add Project</slot></add-button-vue
+            <SoftButtonVue @click="openCustomModal"
+              ><slot>Add Project</slot></SoftButtonVue
             >
           </div>
           <div class="card-body px-0 pb-2">
@@ -105,140 +104,30 @@
           </div>
         </div>
       </div>
-    </div> -->
-
-    <div class="mt-4 row">
-      <div class="col-12">
-        <div class="mb-4 card">
-          <div class="p-3 pb-0 card-header">
-            <h6 class="mb-1">Projects</h6>
-            <p class="text-sm">Add and Build dream homes</p>
-          </div>
-          <div class="p-3 card-body">
-            <div class="row">
-              <div class="mb-4 col-xl-3 col-md-6 mb-xl-0">
-                <place-holder-card
-                  @click="openCustomModal"
-                  :title="{ text: 'New project', variant: 'h5' }"
-                />
-              </div>
-
-              <default-project-card
-                title="Modern"
-                :image="img1"
-                label="Project #2"
-                description="As Uber works through a huge amount of internal
-                management turmoil."
-                :authors="[
-                  {
-                    image: team1,
-                    name: 'Elena Morison',
-                  },
-                  {
-                    image: team2,
-                    name: 'Ryan Milly',
-                  },
-                  {
-                    image: team3,
-                    name: 'Nick Daniel',
-                  },
-                  {
-                    image: team4,
-                    name: 'Peterson',
-                  },
-                ]"
-                :action="{
-                  color: 'success',
-                  label: 'View Project',
-                }"
-              />
-
-              <default-project-card
-                title="Scandinavian"
-                :image="img2"
-                label="Project #1"
-                description="Music is something that every person has his or her own
-                      specific opinion about."
-                :authors="[
-                  {
-                    image: team3,
-                    name: 'Nick Daniel',
-                  },
-                  {
-                    image: team4,
-                    name: 'Peterson',
-                  },
-                  {
-                    image: team1,
-                    name: 'Elena Morison',
-                  },
-                  {
-                    image: team2,
-                    name: 'Ryan Milly',
-                  },
-                ]"
-                :action="{
-                  color: 'success',
-                  label: 'View Project',
-                }"
-              />
-
-              <default-project-card
-                title="Minimalist"
-                :image="img3"
-                label="Project #3"
-                description="Different people have different taste, and various types
-                      of music."
-                :authors="[
-                  {
-                    image: team4,
-                    name: 'Peterson',
-                  },
-                  {
-                    image: team3,
-                    name: 'Nick Daniel',
-                  },
-                  {
-                    image: team1,
-                    name: 'Elena Morison',
-                  },
-                  {
-                    image: team2,
-                    name: 'Ryan Milly',
-                  },
-                ]"
-                :action="{
-                  color: 'success',
-                  label: 'View Project',
-                }"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
     <custom-modal ref="customModal" :title="modalTitle">
       <form id="project-form" @submit.prevent="addNewProject">
         <div>
-          <label for="inputField">Title : *</label>
+          <label for="inputField">Title: *</label>
           <input
-            required
             class="inputField"
             type="text"
+            required
             placeholder="Project title"
             v-model="project.title"
+            size="md"
           />
         </div>
 
         <div>
-          <label for="inputField">Description *</label>
+          <label for="inputField">Description: *</label>
           <input
-            required
             class="inputField"
             type="text"
             placeholder="Project description"
             v-model="project.description"
+            size="md"
           />
         </div>
 
@@ -250,6 +139,7 @@
             type="file"
             placeholder=""
             @change="handleFileChange"
+            size="md"
           />
         </div>
 
@@ -261,6 +151,7 @@
               type="date"
               placeholder="Start date"
               v-model="project.startDate"
+              size="md"
             />
           </div>
 
@@ -271,6 +162,7 @@
               type="date"
               placeholder="End date"
               v-model="project.endDate"
+              size="md"
             />
           </div>
         </div>
@@ -308,6 +200,9 @@
         <SoftButtonVue form="project-form" type="submit" :loading="loading">
           Add Project
         </SoftButtonVue>
+        <!-- <button >
+          Add Project
+        </button> -->
       </template>
     </custom-modal>
   </div>
@@ -315,14 +210,12 @@
 
 <script>
 import { useAPI } from "@/supportElements/useAPI.js";
-// import SoftAvatar from "@/components/SoftAvatar.vue";
+import SoftAvatar from "@/components/SoftAvatar.vue";
 import img1 from "@/assets/img/home-decor-1.jpg";
 import img2 from "@/assets/img/home-decor-2.jpg";
 import img3 from "@/assets/img/home-decor-3.jpg";
-import DefaultProjectCard from "./components/DefaultProjectCard.vue";
-import PlaceHolderCard from "@/examples/Cards/PlaceHolderCard.vue";
 import setTooltip from "@/assets/js/tooltip.js";
-// import SoftProgress from "@/components/SoftProgress.vue";
+import SoftProgress from "@/components/SoftProgress.vue";
 import img4 from "@/assets/img/team-3.jpg";
 import img5 from "@/assets/img/team-4.jpg";
 import img6 from "@/assets/img/small-logos/logo-atlassian.svg";
@@ -341,12 +234,11 @@ import img18 from "@/assets/img/team-4.jpg";
 import img19 from "@/assets/img/small-logos/logo-invision.svg";
 import img20 from "@/assets/img/team-1.jpg";
 import img21 from "@/assets/img/team-4.jpg";
-import { mapState } from "vuex";
-import { convertToFormData } from "../supportElements/common";
-import useApi from "../supportElements/useAPI";
-import Projects from "../components/models/Projects.vue";
 import CustomModal from "@/views/components/CustomModal.vue";
-import SoftButtonVue from "../components/SoftButton.vue";
+import { mapState } from "vuex";
+import SoftButtonVue from "../SoftButton.vue";
+import { convertToFormData } from "../../supportElements/common";
+import useApi from "../../supportElements/useAPI";
 const api = useApi();
 export default {
   name: "projects-card",
@@ -394,11 +286,10 @@ export default {
     };
   },
   components: {
-    Projects,
-    DefaultProjectCard,
-    SoftButtonVue,
-    PlaceHolderCard,
+    SoftAvatar,
+    SoftProgress,
     CustomModal,
+    SoftButtonVue,
   },
   computed: {
     ...mapState(["token"]),
@@ -430,7 +321,6 @@ export default {
     async addNewProject() {
       try {
         this.loading = true;
-        // const formData = new FormData();
         let formData = convertToFormData(this.project, ["image"]);
         Object.keys(this.project).forEach((key) => {
           formData.append(key, this.project[key]);
@@ -441,8 +331,10 @@ export default {
           title: "Project added",
           text: "Project added succesfuly",
         });
+        this.getProjectHandler();
         console.log(response);
         this.loading = false;
+        this.saveAndClose();
       } catch (err) {
         this.loading = false;
         this.$notify({
@@ -466,18 +358,8 @@ export default {
         console.log("");
       }
     },
-
-    async getManagers() {
-      try {
-        const resp = await api.get("/api/users/by-role/admin/", {});
-        console.log("managers", resp);
-      } catch (err) {
-        console.log(err);
-      }
-    },
   },
   mounted() {
-    // this.getManagers();
     this.userToken = this.token;
     setTooltip();
     this.getProjectHandler();
