@@ -234,6 +234,9 @@ export default {
   },
   updated() {
     const navbar = document.getElementById("navbarBlur");
+    if(navbar){
+
+
     window.addEventListener("scroll", () => {
       if (window.scrollY > 10 && this.$store.state.isNavFixed) {
         navbar.classList.add("blur");
@@ -245,6 +248,7 @@ export default {
         navbar.classList.remove("shadow-blur");
       }
     });
+  }
   },
 };
 </script>

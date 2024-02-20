@@ -10,7 +10,7 @@
         "
       >
         <h6>Mangers</h6>
-        <soft-button-vue @click="openCustomModal"
+        <soft-button-vue @click="openCustomModal()"
           ><slot>Add Manager</slot></soft-button-vue
         >
       </div>
@@ -38,13 +38,13 @@
                 <th
                   class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
                 >
-                  Employed
+                  Employed 
                 </th>
                 <th class="text-secondary opacity-7"></th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in filteredManagers" :key="item.id">
+              <tr v-for="item in managersData" :key="item.id">
                 <td>
                   <div class="d-flex px-2 py-1">
                     <div>
@@ -81,7 +81,7 @@
                 <td class="align-middle">
                   <div class="dropdown-container">
                     <a
-                      @click="showCard(item.id)"
+                      @click="openCustomModal(true, item)"
                       href="javascript:;"
                       class="text-secondary font-weight-bold text-xs"
                       data-toggle="tooltip"
@@ -121,15 +121,18 @@
             type="text"
             placeholder="First name"
             v-model="userData.username"
+            required
           />
         </div>
 
         <div>
           <label for="inputField">Email</label>
           <input
+          autocomplete="username"
             class="inputField"
             v-model="userData.email"
             type="email"
+            required
             placeholder="Email"
           />
         </div>
@@ -143,24 +146,12 @@
             size="md"
           />
         </div>
-        <div>
-          <label for="inputField">Role</label>
-          <select class="inputField" v-model="userData.role">
-            <option value="manager" selected>Select Manger</option>
-            <option
-              class="dropdownOptions"
-              v-for="manager in roles"
-              :key="manager.id"
-              :value="manager.value"
-            >
-              {{ manager.name }}
-            </option>
-          </select>
-        </div>
+
 
         <div>
           <label for="inputField">Password</label>
           <input
+          required
             class="inputField"
             type="password"
             placeholder="Password"
@@ -169,8 +160,8 @@
         </div>
       </form>
       <template v-slot:actions>
-        <soft-button-vue form="manger-form" type="submit">
-          Add Manager
+        <soft-button-vue :loading="loading" form="manger-form" type="submit">
+          {{editModeId ? 'Save Manager':'Add Manager'}}
         </soft-button-vue>
       </template>
     </custom-modal>
@@ -200,7 +191,7 @@ export default {
       selectedUserId: null,
       showDropDown: false,
       loading: false,
-      modalTitle: "Add New Manager",
+      modalTitle: "Add Manager",
       img1,
       img2,
       img3,
@@ -226,11 +217,7 @@ export default {
         role: "manager",
         avatar: File | null | String,
       },
-      roles: [
-        { id: 1, value: "admin", name: "Admin" },
-        { id: 2, value: "manager", name: "Manager" },
-        { id: 3, value: "worker", name: "Worker" },
-      ],
+      editModeId:0
     };
   },
   components: {
@@ -244,16 +231,29 @@ export default {
       (this.userData.username = ""),
         (this.userData.email = ""),
         (this.userData.password = ""),
-        (this.userData.status = ""),
-        (this.userData.role = "");
+        (this.userData.status = "")
     },
     showCard(userId) {
       this.showDropDown = true;
       this.selectedUserId = userId;
     },
 
-    openCustomModal() {
+    openCustomModal(isEdit=false, manager ={}) {
       this.closeUserModalHandler();
+      if(isEdit)
+      {
+        console.log("inside is edit", isEdit)
+        this.editModeId = manager.id
+        this.modalTitle = 'Edit Manager'
+        this.userData.username = manager.username
+        this.userData.email = manager.email
+        this.userData.password = manager.password
+        this.userData.avatar = manager.avatar
+      }else{
+        this.editModeId = 0
+        this.modalTitle = 'Add Manager'
+      }
+      
       this.$refs.customModal.openModal();
     },
     saveAndClose() {
@@ -266,7 +266,7 @@ export default {
 
     async getManagershandler() {
       try {
-        const response = await api.get("/api/users/", {});
+        const response = await api.get("/api/users/by-role/manager/", {});
         this.managersData = response.data;
         console.log("data", this.managersData);
       } catch (err) {
@@ -279,28 +279,25 @@ export default {
     async addNewManger() {
       try {
         this.loading = true;
-        let formData = convertToFormData(this.userData, ["image"]);
-        Object.keys(this.userData).forEach((key) => {
-          formData.append(key, this.userData[key]);
-        });
 
-        const response = await api.post("/api/users/", formData);
+        let formData = convertToFormData(this.userData, ["avatar"]);
+       
+        const response = this.editModeId ? await api.patch(`/api/users/${this.editModeId}/`, formData) : await api.post("/api/users/", formData);
         this.$notify({
           type: "success",
-          title: "Manager Added",
-          text: "Manager added succesfuly",
+          title: "Manager",
+          text: "Manager added or updated succesfuly",
         });
-        this.loading = false;
+
         this.saveAndClose();
         this.getManagershandler();
         console.log(response);
       } catch (err) {
         console.log(err);
-        this.loading = false;
         this.$notify({
           type: "error",
           title: "Something went wrong",
-          text: "Enter the information carefuly and try again",
+          text: "Enter the information carefuly and try again OR user with email already exist",
         });
       } finally {
         this.loading = false;
@@ -311,9 +308,7 @@ export default {
     this.getManagershandler();
   },
   computed: {
-    filteredManagers() {
-      return this.managersData.filter((item) => item.role === "manager");
-    },
+    
   },
 };
 </script>
