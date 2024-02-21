@@ -39,6 +39,20 @@
         </li>
 
         <li class="nav-item">
+          <!-- <sidenav-collapse navText="Billing" :to="{ name: 'Billing' }">
+            <template #icon>
+              <credit-card />
+            </template>
+          </sidenav-collapse> -->
+
+          <sidenav-collapse navText="Workers" :to="{ name: 'Workers' }">
+            <template #icon>
+              <credit-card />
+            </template>
+          </sidenav-collapse>
+        </li>
+
+        <li class="nav-item">
           <!-- <sidenav-collapse
             navText="Virtual Reality"
             :to="{ name: 'Virtual Reality' }"

@@ -97,7 +97,7 @@
     <!-- add manager modal -->
     <custom-modal ref="customModal" :title="modalTitle">
       <!-- Custom content for the modal -->
-      <form id="manger-form" @submit.prevent="addNewManger">
+      <form id="worker-form" @submit.prevent="addWorkerManger">
         <div>
           <label for="inputField">Full name</label>
           <input
@@ -127,7 +127,7 @@
             size="md"
           />
         </div>
-        <div>
+        <!-- <div>
           <label for="inputField">Role</label>
           <select class="inputField" v-model="userData.role">
             <option value="" selected>Select Role</option>
@@ -140,7 +140,7 @@
               {{ role.name }}
             </option>
           </select>
-        </div>
+        </div> -->
 
         <div>
           <label for="inputField">Password</label>
@@ -153,7 +153,7 @@
         </div>
       </form>
       <template v-slot:actions>
-        <soft-button-vue :loading="loading" form="manger-form" type="submit">
+        <soft-button-vue :loading="loading" form="worker-form" type="submit">
           Add Worker
         </soft-button-vue>
       </template>
@@ -199,11 +199,6 @@ export default {
         role: "worker",
         avatar: File | null | String,
       },
-      roles: [
-        { id: 1, value: "admin", name: "Admin" },
-        { id: 2, value: "manager", name: "Manager" },
-        { id: 3, value: "worker", name: "Worker" },
-      ],
     };
   },
   components: {
@@ -245,14 +240,11 @@ export default {
       }
     },
 
-    async addNewManger() {
+    async addWorkerManger() {
       try {
         this.loading = true;
+        this.userData.role = "worker";
         let formData = convertToFormData(this.userData, ["image"]);
-        Object.keys(this.userData).forEach((key) => {
-          formData.append(key, this.userData[key]);
-        });
-
         const response = await api.post("/api/users/", formData);
         this.$notify({
           type: "success",
