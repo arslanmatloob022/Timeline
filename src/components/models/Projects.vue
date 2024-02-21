@@ -41,7 +41,7 @@
                 </thead>
                 <tbody>
                   <tr v-for="item in projects" :key="item.id">
-                    <td>
+                    <td @click="this.$router.push(`/projectdetail/${item.id}`)">
                       <div class="d-flex px-2 py-1">
                         <div>
                           <soft-avatar

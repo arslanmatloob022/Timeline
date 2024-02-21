@@ -3,6 +3,7 @@ import Dashboard from "@/views/Dashboard.vue";
 import Projects from "@/views/Projects.vue";
 import Managers from "@/views/Managers.vue";
 import Workers from "@/views/Workers.vue";
+import Projectdetail from "@/views/Projectdetail.vue";
 
 // import Tables from "@/views/Tables.vue";
 // import Billing from "@/views/Billing.vue";
@@ -33,20 +34,19 @@ const routes = [
     component: Projects,
   },
   {
-    // path: "/billing",
-    // name: "Billing",
-    // component: Billing,
     path: "/mangers",
     name: "Mangers",
     component: Managers,
   },
   {
-    // path: "/billing",
-    // name: "Billing",
-    // component: Billing,
     path: "/workers",
     name: "Workers",
     component: Workers,
+  },
+  {
+    path: "/projectdetail/:id",
+    name: "Projectdetail",
+    component: Projectdetail,
   },
   {
     path: "/virtual-reality",
