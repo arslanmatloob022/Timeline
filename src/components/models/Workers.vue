@@ -10,14 +10,14 @@
         "
       >
         <h6>Workers</h6>
-        <soft-button-vue @click="openCustomModal"
+        <soft-button-vue @click="openCustomModal()"
           ><slot>Add Worker</slot></soft-button-vue
         >
       </div>
 
       <div class="card-body px-0 pt-0 pb-2">
         <div class="table-responsive p-0">
-          <table class="table align-items-center mb-0">
+          <table v-if="!loading" class="table align-items-center mb-0">
             <thead>
               <tr>
                 <th
@@ -38,18 +38,18 @@
                 <th
                   class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
                 >
-                  Employed
+                  Joined from 
                 </th>
-                <th class="text-secondary opacity-7"></th>
+                <th class="text-secondary opacity-7">Actions</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in filteredWorkers" :key="item.id">
+              <tr v-for="item in managersData" :key="item.id">
                 <td>
                   <div class="d-flex px-2 py-1">
                     <div>
                       <soft-avatar
-                        :img="item.avatar ? item.avatar : img2"
+                        :img="item.avatar ? item.avatar : '/preview.jpeg'"
                         size="sm"
                         border-radius="lg"
                         class="me-3"
@@ -79,17 +79,33 @@
                   }}</span>
                 </td>
                 <td class="align-middle">
-                  <a
-                    href="javascript:;"
-                    class="text-secondary font-weight-bold text-xs"
-                    data-toggle="tooltip"
-                    data-original-title="Edit user"
-                    >Edit</a
-                  >
+                  <div class="dropdown-container">
+                    <a
+                      @click="openCustomModal(true, item)"
+                      href="javascript:;"
+                      class="text-secondary font-weight-bold text-xs"
+                      data-toggle="tooltip"
+                      data-original-title="Edit user"
+                      >Edit</a
+                    >
+                    /
+                    <a
+                     
+                      href="javascript:;"
+                      class="text-secondary font-weight-bold text-xs"
+                      data-toggle="tooltip"
+                      data-original-title="Edit user"
+                      >delete</a
+                    >
+                    
+                  </div>
                 </td>
               </tr>
             </tbody>
           </table>
+          <div v-else style="display: flex; align-items: center; justify-content: center; width:100%;">
+              <img src="/loading.gif" alt="">
+          </div>
         </div>
       </div>
     </div>
@@ -97,7 +113,7 @@
     <!-- add manager modal -->
     <custom-modal ref="customModal" :title="modalTitle">
       <!-- Custom content for the modal -->
-      <form id="worker-form" @submit.prevent="addWorkerManger">
+      <form id="manger-form" @submit.prevent="addNewManger">
         <div>
           <label for="inputField">Full name</label>
           <input
@@ -105,56 +121,55 @@
             type="text"
             placeholder="First name"
             v-model="userData.username"
+            required
           />
         </div>
 
         <div>
           <label for="inputField">Email</label>
           <input
+          autocomplete="username"
             class="inputField"
             v-model="userData.email"
             type="email"
+            required
             placeholder="Email"
           />
         </div>
         <div>
-          <label for="inputField">Image</label>
-          <input
-            class="inputField"
-            type="file"
-            placeholder="Start date"
-            @change="handleFileChange"
-            size="md"
-          />
-        </div>
-        <!-- <div>
-          <label for="inputField">Role</label>
-          <select class="inputField" v-model="userData.role">
-            <option value="" selected>Select Role</option>
-            <option
-              class="dropdownOptions"
-              v-for="role in roles"
-              :key="role.id"
-              :value="role.value"
-            >
-              {{ role.name }}
-            </option>
-          </select>
-        </div> -->
-
-        <div>
           <label for="inputField">Password</label>
           <input
+          required
             class="inputField"
             type="password"
             placeholder="Password"
             v-model="userData.password"
           />
         </div>
+      <div class="row">
+        <div class="col-6">
+          <label for="inputField">Image</label>
+          <input
+            class="inputField"
+            type="file"
+            accept="image/*"
+           
+            @change="handleFileChange"
+            size="md"
+          />
+      
+        </div>
+        <div class="col-6">
+        <img style="width:200px; border-radius: 100px; margin-top: 20px;" :src="preview?preview:'/preview.jpeg'" alt="asdas">
+        </div>
+      </div>
+
+
+        
       </form>
       <template v-slot:actions>
-        <soft-button-vue :loading="loading" form="worker-form" type="submit">
-          Add Worker
+        <soft-button-vue :loading="loading" form="manger-form" type="submit">
+          {{editModeId ? 'Save Worker':'Add Worker'}}
         </soft-button-vue>
       </template>
     </custom-modal>
@@ -166,13 +181,6 @@
 import CustomModal from "@/views/components/CustomModal.vue";
 import SoftAvatar from "@/components/SoftAvatar.vue";
 import SoftBadge from "@/components/SoftBadge.vue";
-// import img1 from "@/assets/img/team-2.jpg";
-import img1 from "@/assets/img/team-1.jpg";
-import img2 from "@/assets/img/team-3.jpg";
-import img3 from "@/assets/img/team-4.jpg";
-import img4 from "@/assets/img/team-3.jpg";
-import img5 from "@/assets/img/team-2.jpg";
-import img6 from "@/assets/img/team-4.jpg";
 import useApi from "../../supportElements/useAPI";
 import SoftButtonVue from "../SoftButton.vue";
 import { convertToFormData } from "../../supportElements/common";
@@ -181,24 +189,23 @@ export default {
   name: "authors-table",
   data() {
     return {
-      modalTitle: "Add New Worker",
-      img1,
-      img2,
-      img3,
-      img4,
-      img5,
-      img6,
-      inputFieldValue: "",
+      selectedUserId: null,
+      showDropDown: false,
       loading: false,
+      modalTitle: "Add Worker",
+
       managersData: [],
       userData: {
         username: "",
         email: "",
         password: "",
-        status: true,
+        status: "",
         role: "worker",
         avatar: File | null | String,
       },
+      editModeId:0,
+      preview: null
+    
     };
   },
   components: {
@@ -213,11 +220,28 @@ export default {
         (this.userData.email = ""),
         (this.userData.password = ""),
         (this.userData.status = ""),
-        (this.userData.role = "");
+        this.preview =null
     },
 
-    openCustomModal() {
+
+
+    openCustomModal(isEdit=false, manager ={}) {
       this.closeUserModalHandler();
+      if(isEdit)
+      {
+        console.log("inside is edit", isEdit)
+        this.editModeId = manager.id
+        this.modalTitle = 'Edit Worker'
+        this.userData.username = manager.username
+        this.userData.email = manager.email
+        this.userData.password = manager.password
+        this.userData.avatar = manager.avatar
+        this.preview = manager.avatar
+      }else{
+        this.editModeId = 0
+        this.modalTitle = 'Add Worker'
+      }
+      
       this.$refs.customModal.openModal();
     },
     saveAndClose() {
@@ -226,11 +250,21 @@ export default {
 
     handleFileChange(event) {
       this.userData.avatar = event.target.files[0];
+      var input = event.target;
+      if (input.files) {
+        var reader = new FileReader();
+        reader.onload = (e) => {
+          this.preview = e.target.result;
+        }
+        this.image=input.files[0];
+        reader.readAsDataURL(input.files[0]);
+      }
     },
 
     async getManagershandler() {
       try {
-        const response = await api.get("/api/users/", {});
+        this.loading = true
+        const response = await api.get("/api/users/by-role/worker/", {});
         this.managersData = response.data;
         console.log("data", this.managersData);
       } catch (err) {
@@ -240,28 +274,28 @@ export default {
       }
     },
 
-    async addWorkerManger() {
+    async addNewManger() {
       try {
         this.loading = true;
-        this.userData.role = "worker";
-        let formData = convertToFormData(this.userData, ["image"]);
-        const response = await api.post("/api/users/", formData);
+
+        let formData = convertToFormData(this.userData, ["avatar"]);
+       
+        const response = this.editModeId ? await api.patch(`/api/users/${this.editModeId}/`, formData) : await api.post("/api/users/", formData);
         this.$notify({
           type: "success",
-          title: "Worker Added",
-          text: "Worker added succesfuly",
+          title: "Worker",
+          text: "Worker added or updated succesfuly",
         });
+
         this.saveAndClose();
         this.getManagershandler();
-        this.loading = false;
         console.log(response);
       } catch (err) {
-        this.loading = false;
         console.log(err);
         this.$notify({
           type: "error",
           title: "Something went wrong",
-          text: "Enter the information carefuly and try again",
+          text: "Enter the information carefuly and try again OR user with email already exist",
         });
       } finally {
         this.loading = false;
@@ -272,9 +306,7 @@ export default {
     this.getManagershandler();
   },
   computed: {
-    filteredWorkers() {
-      return this.managersData.filter((item) => item.role === "worker");
-    },
+    
   },
 };
 </script>
@@ -304,5 +336,40 @@ export default {
 }
 .dropdownOptions {
   border-radius: 8px;
+}
+
+/* Add these styles or adjust as needed */
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-card {
+  position: absolute;
+  left: -150px; /* Adjust as needed */
+  top: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border-radius: 8px;
+  z-index: 1;
+}
+
+.dropdown-card button {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 8px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-card button:hover {
+  background-color: #0056b3;
 }
 </style>
