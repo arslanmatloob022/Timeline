@@ -1,20 +1,10 @@
 <template>
   <div class="custom-modal" v-if="show">
     <div class="modal-content">
-      <!-- <div class="modal-header"> -->
-
-      <!-- <button >Close</button> -->
-      <!-- <i
-          @click="closeModal"
-          style="color: #ffffff"
-          class="fa fa-close close-btn"
-        ></i> -->
-      <!-- </div> -->
       <div class="modal-body">
         <i :class="alertData.icon" class="icon"></i>
         <h4>{{ alertData.alertTitle }}</h4>
         <p>{{ alertData.alertDescription }}</p>
-        <!-- Slot for custom content -->
         <slot></slot>
       </div>
       <div class="modal-footer">
