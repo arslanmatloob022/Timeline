@@ -26,6 +26,11 @@
                   Name
                 </th>
                 <th
+                  class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                >
+                  Phone no
+                </th>
+                <th
                   class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
                 >
                   Function
@@ -67,6 +72,10 @@
                   </div>
                 </td>
                 <td>
+                  <p class="text-xs font-weight-bold mb-0">{{ item.phoneNumber?item.phoneNumber:'---' }}</p>
+                 
+                </td>
+                <td>
                   <p class="text-xs font-weight-bold mb-0">{{ item.role }}</p>
                   <p class="text-xs text-secondary mb-0">Organization</p>
                 </td>
@@ -93,7 +102,7 @@
 
                     /
                     <a
-                     
+                     @click="openDeleteModal(item.id)"
                       href="javascript:;"
                       class="text-secondary font-weight-bold text-xs"
                       data-toggle="tooltip"
@@ -129,17 +138,30 @@
           />
         </div>
 
-        <div>
-          <label for="inputField">Email</label>
-          <input
+        <div class="row">   
+          <div class="col-6">
+            <label for="inputField">Email</label>
+            <input
             autocomplete="username"
-            class="inputField"
-            v-model="userData.email"
-            type="email"
-            required
-            placeholder="Email"
-          />
-        </div>
+              class="inputField"
+              v-model="userData.email"
+              type="email"
+              required
+              placeholder="Email"
+            />
+          </div>
+          <div class="col-6">
+            <label for="inputField">Phone No</label>
+            <input
+            
+              class="inputField"
+              v-model="userData.phoneNumber"
+              type="tel"
+              required
+              placeholder="Phone number"
+            />
+          </div>
+          </div>
         <div>
           <label for="inputField">Password</label>
           <input
@@ -169,21 +191,25 @@
       </div>
 
 
-        <div>
-          <label for="inputField">Password</label>
-          <input
-            required
-            class="inputField"
-            type="password"
-            placeholder="Password"
-            v-model="userData.password"
-          />
-        </div>
+    
 
       </form>
       <template v-slot:actions>
         <soft-button-vue :loading="loading" form="manger-form" type="submit">
           {{ editModeId ? "Save Manager" : "Add Manager" }}
+        </soft-button-vue>
+      </template>
+    </custom-modal>
+    <custom-modal ref="deleteModal" title="" size="small">
+      <!-- Custom content for the modal -->
+      <div style="display: flex; align-items: center; justify-content: center; min-height: 200px; text-align: center; flex-direction: column;">
+        <h2 class="mb-4">Are you suer ?</h2>
+        <p >Are you sure to delete this manager, press button below to perform the actiona.</p>
+
+      </div>
+      <template v-slot:actions>
+        <soft-button-vue :loading="loading" color="danger" @click="deletUser" >
+          Yes,  Delete it
         </soft-button-vue>
       </template>
     </custom-modal>
@@ -215,11 +241,13 @@ export default {
         password: "",
         status: "",
         role: "manager",
+        phoneNumber:'',
         avatar: File | null | String,
       },
 
       editModeId:0,
-      preview: null
+      preview: null,
+      selectedIdToDelete :0
     
 
 
@@ -239,10 +267,37 @@ export default {
 
         (this.userData.status = ""),
         this.preview =null
+        this.phoneNumber = ''
     },
 
 
-
+    openDeleteModal(id){
+      this.selectedIdToDelete =id
+      this.$refs.deleteModal.openModal()
+    },
+    async deletUser (){
+      try {
+        this.loading = true
+        await api.delete(`/api/users/${this.selectedIdToDelete}/`, {});
+        this.getManagershandler()
+        this.$notify({
+          type: "warning",
+          title: "Manager",
+          text: "Manager deleted succesfuly",
+        });
+      } catch (err) {
+        console.log(err);
+        this.$notify({
+          type: "error",
+          title: "Something went wrong",
+          text:
+            "Error while deleteing",
+        });
+      } finally {
+        this.$refs.deleteModal.closeModal()
+        this.loading = false;
+      }
+    },
     openCustomModal(isEdit=false, manager ={}) {
       this.closeUserModalHandler();
       if(isEdit)
@@ -255,6 +310,7 @@ export default {
         this.userData.password = manager.password
         this.userData.avatar = manager.avatar
         this.preview = manager.avatar
+        this.userData.phoneNumber = manager.phoneNumber
       }else{
         this.editModeId = 0
         this.modalTitle = 'Add Manager'
