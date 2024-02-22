@@ -1,8 +1,8 @@
 <template>
   <div class="custom-modal" v-if="show">
-    <div class="modal-content">
+    <div class="modal-content" :class="size?size:'sm'">
       <div class="modal-header">
-        <h4>{{ title }}</h4>
+        <h4>{{ title }} </h4>
         <!-- <button >Close</button> -->
         <i
           @click="closeModal"
@@ -35,10 +35,15 @@ export default {
       type: String,
       default: "Modal Title",
     },
+    size: {
+      type: String,
+      default: "large",
+    },
   },
   methods: {
     openModal() {
       this.show = true;
+    
     },
     closeModal() {
       this.show = false;
@@ -62,11 +67,17 @@ export default {
 }
 
 .modal-content {
-  width: 50%;
+ 
   background-color: #fff;
   padding: 8px;
-  border-radius: 8px;
+  border-radius: 30px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.large{
+  width: 700px;
+}
+.small{
+  width: 400px;
 }
 
 .modal-header {
