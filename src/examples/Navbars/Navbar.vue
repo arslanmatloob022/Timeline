@@ -6,7 +6,7 @@
     data-scroll="true"
   >
     <div class="px-3 py-1 container-fluid">
-      <breadcrumbs :currentPage="currentRouteName" :textWhite="textWhite" />
+      <!-- <breadcrumbs :currentPage="currentRouteName" :textWhite="textWhite" /> -->
       <div
         class="mt-2 collapse navbar-collapse mt-sm-0 me-md-0 me-sm-4"
         :class="this.$store.state.isRTL ? 'px-0' : 'me-sm-4'"
@@ -201,7 +201,7 @@
   </nav>
 </template>
 <script>
-import Breadcrumbs from "../Breadcrumbs.vue";
+// import Breadcrumbs from "../Breadcrumbs.vue";
 import { mapMutations, mapActions } from "vuex";
 
 export default {
@@ -225,7 +225,7 @@ export default {
     },
   },
   components: {
-    Breadcrumbs,
+    // Breadcrumbs,
   },
   computed: {
     currentRouteName() {
@@ -234,21 +234,19 @@ export default {
   },
   updated() {
     const navbar = document.getElementById("navbarBlur");
-    if(navbar){
-
-
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 10 && this.$store.state.isNavFixed) {
-        navbar.classList.add("blur");
-        navbar.classList.add("position-sticky");
-        navbar.classList.add("shadow-blur");
-      } else {
-        navbar.classList.remove("blur");
-        navbar.classList.remove("position-sticky");
-        navbar.classList.remove("shadow-blur");
-      }
-    });
-  }
+    if (navbar) {
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 10 && this.$store.state.isNavFixed) {
+          navbar.classList.add("blur");
+          navbar.classList.add("position-sticky");
+          navbar.classList.add("shadow-blur");
+        } else {
+          navbar.classList.remove("blur");
+          navbar.classList.remove("position-sticky");
+          navbar.classList.remove("shadow-blur");
+        }
+      });
+    }
   },
 };
 </script>

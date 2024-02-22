@@ -38,7 +38,9 @@
                 <th
                   class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
                 >
+
                   Joined from 
+
                 </th>
                 <th class="text-secondary opacity-7">Actions</th>
               </tr>
@@ -88,6 +90,7 @@
                       data-original-title="Edit user"
                       >Edit</a
                     >
+
                     /
                     <a
                      
@@ -98,6 +101,7 @@
                       >delete</a
                     >
                     
+
                   </div>
                 </td>
               </tr>
@@ -128,7 +132,7 @@
         <div>
           <label for="inputField">Email</label>
           <input
-          autocomplete="username"
+            autocomplete="username"
             class="inputField"
             v-model="userData.email"
             type="email"
@@ -165,11 +169,21 @@
       </div>
 
 
-        
+        <div>
+          <label for="inputField">Password</label>
+          <input
+            required
+            class="inputField"
+            type="password"
+            placeholder="Password"
+            v-model="userData.password"
+          />
+        </div>
+
       </form>
       <template v-slot:actions>
         <soft-button-vue :loading="loading" form="manger-form" type="submit">
-          {{editModeId ? 'Save Manager':'Add Manager'}}
+          {{ editModeId ? "Save Manager" : "Add Manager" }}
         </soft-button-vue>
       </template>
     </custom-modal>
@@ -203,9 +217,12 @@ export default {
         role: "manager",
         avatar: File | null | String,
       },
+
       editModeId:0,
       preview: null
     
+
+
     };
   },
   components: {
@@ -219,6 +236,7 @@ export default {
       (this.userData.username = ""),
         (this.userData.email = ""),
         (this.userData.password = ""),
+
         (this.userData.status = ""),
         this.preview =null
     },
@@ -240,8 +258,9 @@ export default {
       }else{
         this.editModeId = 0
         this.modalTitle = 'Add Manager'
+
       }
-      
+
       this.$refs.customModal.openModal();
     },
     saveAndClose() {
@@ -279,8 +298,10 @@ export default {
         this.loading = true;
 
         let formData = convertToFormData(this.userData, ["avatar"]);
-       
-        const response = this.editModeId ? await api.patch(`/api/users/${this.editModeId}/`, formData) : await api.post("/api/users/", formData);
+
+        const response = this.editModeId
+          ? await api.patch(`/api/users/${this.editModeId}/`, formData)
+          : await api.post("/api/users/", formData);
         this.$notify({
           type: "success",
           title: "Manager",
@@ -295,7 +316,8 @@ export default {
         this.$notify({
           type: "error",
           title: "Something went wrong",
-          text: "Enter the information carefuly and try again OR user with email already exist",
+          text:
+            "Enter the information carefuly and try again OR user with email already exist",
         });
       } finally {
         this.loading = false;
@@ -305,9 +327,7 @@ export default {
   mounted() {
     this.getManagershandler();
   },
-  computed: {
-    
-  },
+  computed: {},
 };
 </script>
 <style scoped>
