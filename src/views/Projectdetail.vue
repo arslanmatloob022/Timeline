@@ -7,32 +7,37 @@
             <div class="mb-4 card">
               <div class="p-3 pb-0 card-header">
                 <h6 class="mb-1">Project information</h6>
-                <p class="text-sm">
+                <!-- <p class="text-sm">
                   Here you can see and update any information of your project
-                </p>
+                </p> -->
               </div>
               <div class="p-3 card-body">
                 <div class="row">
                   <default-project-card
                     class="mb-4 col-xl-3 col-md-6 mb-xl-0"
-                    :title="projectData.title"
-                    :image="projectData.image"
-                    :description="projectData.description"
+                    :title="
+                      projectData.title ? projectData.title : 'Project Title'
+                    "
+                    :image="projectData.image ? projectData.image : img1"
+                    :description="
+                      projectData.description
+                        ? projectData.description
+                        : 'Here you can see the description of your project that will briefly describe your project.'
+                    "
                     :action="{
                       color: 'danger',
                       label: 'Delete Project',
                     }"
                   />
-
                   <div class="mb-4 ml-3 col-xl-3 col-md-6 mb-xl-0">
                     <div class="card card-blog card-plain">
                       <div class="px-1 pb-0 card-body">
-                        <h5>Information</h5>
-                        <ul
-                          class="show dropdown-menu dropdown-menu-end me-sm-n4"
+                        <!-- <h5>Information</h5> -->
+                        <div
+                          class="show dropdown-menu-end me-sm-n4"
                           aria-labelledby="dropdownMenuButton"
                         >
-                          <li class="mb-2">
+                          <div class="mb-2">
                             <a
                               class="dropdown-item border-radius-md"
                               href="javascript:;"
@@ -53,9 +58,9 @@
                                 </div>
                               </div>
                             </a>
-                          </li>
+                          </div>
 
-                          <li class="mb-2">
+                          <div class="mb-2">
                             <a
                               class="dropdown-item border-radius-md"
                               href="javascript:;"
@@ -76,9 +81,9 @@
                                 </div>
                               </div>
                             </a>
-                          </li>
+                          </div>
 
-                          <li class="mb-2">
+                          <div class="mb-2">
                             <a
                               class="dropdown-item border-radius-md"
                               href="javascript:;"
@@ -104,8 +109,8 @@
                                 </div>
                               </div>
                             </a>
-                          </li>
-                          <li class="mb-2">
+                          </div>
+                          <div class="mb-2">
                             <a
                               class="dropdown-item border-radius-md"
                               href="javascript:;"
@@ -126,21 +131,24 @@
                                 </div>
                               </div>
                             </a>
-                          </li>
-                        </ul>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  <div class="mb-4 ml-3 col-xl-3 col-md-6 mb-xl-0">
+                  <div
+                    class="mb-4 ml-3 col-xl-3 col-md-6 mb-xl-0"
+                    style="border-left: 1px solid #898989"
+                  >
                     <div class="card card-blog card-plain">
                       <div class="px-1 pb-0 card-body">
                         <h5>Managers</h5>
-                        <ul
-                          class="show dropdown-menu dropdown-menu-end me-sm-n4"
+                        <div
+                          class="show dropdown-menu-end me-sm-n4"
                           aria-labelledby="dropdownMenuButton"
                         >
-                          <li
+                          <div
                             v-for="manager in projectData.managers"
                             :key="manager.id"
                             class="mb-2"
@@ -172,9 +180,9 @@
                                 </div>
                               </div>
                             </a>
-                          </li>
+                          </div>
 
-                          <li class="mb-2">
+                          <div class="mb-2">
                             <a
                               class="dropdown-item border-radius-md"
                               href="javascript:;"
@@ -202,8 +210,8 @@
                                 </div>
                               </div>
                             </a>
-                          </li>
-                          <li class="mb-2">
+                          </div>
+                          <div class="mb-2">
                             <a
                               class="dropdown-item border-radius-md"
                               href="javascript:;"
@@ -231,8 +239,8 @@
                                 </div>
                               </div>
                             </a>
-                          </li>
-                          <li class="mb-2">
+                          </div>
+                          <div class="mb-2">
                             <a
                               class="dropdown-item border-radius-md"
                               href="javascript:;"
@@ -260,8 +268,8 @@
                                 </div>
                               </div>
                             </a>
-                          </li>
-                        </ul>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -285,7 +293,13 @@
           "
         >
           <h6>Tasks</h6>
-          <soft-button-vue><slot>Add Task</slot></soft-button-vue>
+          <soft-button-vue
+            size="md"
+            variant="gradient"
+            @click="this.openAlert()"
+          >
+            <slot>Add Task</slot></soft-button-vue
+          >
         </div>
 
         <div class="card-body px-0 pt-0 pb-2">
@@ -386,7 +400,36 @@
         </div>
       </div>
     </div>
-    <div class="project-timeline"></div>
+    <div class="project-timeline">Project Timeline</div>
+    <!-- <div
+      class="card"
+      style="position: absolute; top: 40%; left: 40%; z-index: 1"
+    >
+      <div class="px-1 pb-0 card-body">
+        <div class="p-3 pb-0 card-header">
+          <i class="fas fa-close"></i>
+        </div>
+        <div class="p-3 card-body">
+          <h5 style="text-align: center">Alert</h5>
+        </div>
+      </div>
+    </div> -->
+    <CustomModal ref="customModal" :alertData="alertData">
+      <template v-slot:actions>
+        <soft-button-vue
+          color="danger"
+          :loading="loading"
+          @click="
+            () => {
+              this.$refs.customModal.closeModal();
+            }
+          "
+        >
+          Cancel
+        </soft-button-vue>
+        <soft-button-vue :loading="loading"> Confirm </soft-button-vue>
+      </template>
+    </CustomModal>
   </div>
 </template>
 <script>
@@ -397,12 +440,19 @@ import SoftButtonVue from "../components/SoftButton.vue";
 import SoftBadge from "../components/SoftBadge.vue";
 import img2 from "@/assets//img/home-decor-1.jpg";
 import useApi from "../supportElements/useAPI";
+import CustomModal from "./components/customAlert.vue";
 
 const api = useApi();
 export default {
   name: "ProjectsDetail",
   data() {
     return {
+      alertData: {
+        icon: "fa fa-bell",
+        alertTitle: "Alert",
+        alertDescription: "This is Alert Description",
+      },
+
       projectId: this.$route.params.id,
       projectData: {
         id: 0,
@@ -432,6 +482,7 @@ export default {
   },
 
   components: {
+    CustomModal,
     DefaultProjectCard,
     SoftAvatar,
     SoftBadge,
@@ -447,7 +498,11 @@ export default {
         console.log(err);
       }
     },
+    openAlert() {
+      this.$refs.customModal.openModal();
+    },
   },
+
   mounted() {
     this.getProject(this.projectId);
   },

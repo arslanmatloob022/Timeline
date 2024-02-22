@@ -6,6 +6,17 @@
     data-scroll="true"
   >
     <div class="px-3 py-1 container-fluid">
+      <i
+        class="fa fa-chevron-left"
+        style="font-size: 18px; cursor: pointer"
+        aria-hidden="true"
+        @click="
+          () => {
+            this.$router.go(-1);
+          }
+        "
+      ></i>
+      <!-- <i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i> -->
       <!-- <breadcrumbs :currentPage="currentRouteName" :textWhite="textWhite" /> -->
       <div
         class="mt-2 collapse navbar-collapse mt-sm-0 me-md-0 me-sm-4"
