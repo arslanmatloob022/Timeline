@@ -9,7 +9,7 @@
           align-items: center;
         "
       >
-        <h6>Mangers</h6>
+        <h6>Managers</h6>
         <soft-button-vue @click="openCustomModal()"
           ><slot>Add Manager</slot></soft-button-vue
         >
@@ -17,7 +17,7 @@
 
       <div class="card-body px-0 pt-0 pb-2">
         <div class="table-responsive p-0">
-          <table class="table align-items-center mb-0">
+          <table v-if="!loading" class="table align-items-center mb-0">
             <thead>
               <tr>
                 <th
@@ -38,9 +38,11 @@
                 <th
                   class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
                 >
-                  Employed
+
+                  Joined from 
+
                 </th>
-                <th class="text-secondary opacity-7"></th>
+                <th class="text-secondary opacity-7">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -49,7 +51,7 @@
                   <div class="d-flex px-2 py-1">
                     <div>
                       <soft-avatar
-                        :img="item.avatar ? item.avatar : img2"
+                        :img="item.avatar ? item.avatar : '/preview.jpeg'"
                         size="sm"
                         border-radius="lg"
                         class="me-3"
@@ -88,11 +90,26 @@
                       data-original-title="Edit user"
                       >Edit</a
                     >
+
+                    /
+                    <a
+                     
+                      href="javascript:;"
+                      class="text-secondary font-weight-bold text-xs"
+                      data-toggle="tooltip"
+                      data-original-title="Edit user"
+                      >delete</a
+                    >
+                    
+
                   </div>
                 </td>
               </tr>
             </tbody>
           </table>
+          <div v-else style="display: flex; align-items: center; justify-content: center; width:100%;">
+              <img src="/loading.gif" alt="">
+          </div>
         </div>
       </div>
     </div>
@@ -124,15 +141,33 @@
           />
         </div>
         <div>
+          <label for="inputField">Password</label>
+          <input
+          required
+            class="inputField"
+            type="password"
+            placeholder="Password"
+            v-model="userData.password"
+          />
+        </div>
+      <div class="row">
+        <div class="col-6">
           <label for="inputField">Image</label>
           <input
             class="inputField"
             type="file"
-            placeholder="Start date"
+            accept="image/*"
+           
             @change="handleFileChange"
             size="md"
           />
+      
         </div>
+        <div class="col-6">
+        <img style="width:200px; border-radius: 100px; margin-top: 20px;" :src="preview?preview:'/preview.jpeg'" alt="asdas">
+        </div>
+      </div>
+
 
         <div>
           <label for="inputField">Password</label>
@@ -144,6 +179,7 @@
             v-model="userData.password"
           />
         </div>
+
       </form>
       <template v-slot:actions>
         <soft-button-vue :loading="loading" form="manger-form" type="submit">
@@ -159,13 +195,6 @@
 import CustomModal from "@/views/components/CustomModal.vue";
 import SoftAvatar from "@/components/SoftAvatar.vue";
 import SoftBadge from "@/components/SoftBadge.vue";
-// import img1 from "@/assets/img/team-2.jpg";
-import img1 from "@/assets/img/team-1.jpg";
-import img2 from "@/assets/img/team-3.jpg";
-import img3 from "@/assets/img/team-4.jpg";
-import img4 from "@/assets/img/team-3.jpg";
-import img5 from "@/assets/img/team-2.jpg";
-import img6 from "@/assets/img/team-4.jpg";
 import useApi from "../../supportElements/useAPI";
 import SoftButtonVue from "../SoftButton.vue";
 import { convertToFormData } from "../../supportElements/common";
@@ -178,23 +207,8 @@ export default {
       showDropDown: false,
       loading: false,
       modalTitle: "Add Manager",
-      img1,
-      img2,
-      img3,
-      img4,
-      img5,
-      img6,
-      inputFieldValue: "",
+
       managersData: [],
-      project: {
-        title: "",
-        description: "",
-        image: File | null | String,
-        startDate: "",
-        endDate: "",
-        status: "",
-        managers: [],
-      },
       userData: {
         username: "",
         email: "",
@@ -203,7 +217,12 @@ export default {
         role: "manager",
         avatar: File | null | String,
       },
-      editModeId: 0,
+
+      editModeId:0,
+      preview: null
+    
+
+
     };
   },
   components: {
@@ -217,26 +236,29 @@ export default {
       (this.userData.username = ""),
         (this.userData.email = ""),
         (this.userData.password = ""),
-        (this.userData.status = "");
-    },
-    showCard(userId) {
-      this.showDropDown = true;
-      this.selectedUserId = userId;
+
+        (this.userData.status = ""),
+        this.preview =null
     },
 
-    openCustomModal(isEdit = false, manager = {}) {
+
+
+    openCustomModal(isEdit=false, manager ={}) {
       this.closeUserModalHandler();
-      if (isEdit) {
-        console.log("inside is edit", isEdit);
-        this.editModeId = manager.id;
-        this.modalTitle = "Edit Manager";
-        this.userData.username = manager.username;
-        this.userData.email = manager.email;
-        this.userData.password = manager.password;
-        this.userData.avatar = manager.avatar;
-      } else {
-        this.editModeId = 0;
-        this.modalTitle = "Add Manager";
+      if(isEdit)
+      {
+        console.log("inside is edit", isEdit)
+        this.editModeId = manager.id
+        this.modalTitle = 'Edit Manager'
+        this.userData.username = manager.username
+        this.userData.email = manager.email
+        this.userData.password = manager.password
+        this.userData.avatar = manager.avatar
+        this.preview = manager.avatar
+      }else{
+        this.editModeId = 0
+        this.modalTitle = 'Add Manager'
+
       }
 
       this.$refs.customModal.openModal();
@@ -247,10 +269,20 @@ export default {
 
     handleFileChange(event) {
       this.userData.avatar = event.target.files[0];
+      var input = event.target;
+      if (input.files) {
+        var reader = new FileReader();
+        reader.onload = (e) => {
+          this.preview = e.target.result;
+        }
+        this.image=input.files[0];
+        reader.readAsDataURL(input.files[0]);
+      }
     },
 
     async getManagershandler() {
       try {
+        this.loading = true
         const response = await api.get("/api/users/by-role/manager/", {});
         this.managersData = response.data;
         console.log("data", this.managersData);
