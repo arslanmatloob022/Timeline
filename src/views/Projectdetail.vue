@@ -293,11 +293,7 @@
           "
         >
           <h6>Tasks</h6>
-          <soft-button-vue
-            size="md"
-            variant="gradient"
-            @click="this.openAlert()"
-          >
+          <soft-button-vue size="md" variant="gradient">
             <slot>Add Task</slot></soft-button-vue
           >
         </div>
@@ -389,6 +385,7 @@
                         class="text-secondary font-weight-bold text-xs"
                         data-toggle="tooltip"
                         data-original-title="Edit user"
+                        @click="this.openAlert()"
                         >Delete</a
                       >
                     </div>

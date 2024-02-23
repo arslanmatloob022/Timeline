@@ -14,7 +14,7 @@
           </div>
           <div class="card-body px-0 pb-2">
             <div class="table-responsive">
-              <table class="table align-items-center mb-0">
+              <table v-if="!loading" class="table align-items-center mb-0">
                 <thead>
                   <tr>
                     <th
@@ -37,12 +37,18 @@
                     >
                       Completion
                     </th>
+
+                    <th
+                      class="text-start text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                    >
+                      Actions
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-for="item in projects" :key="item.id">
                     <td @click="this.$router.push(`/projectdetail/${item.id}`)">
-                      <div class="d-flex px-2 py-1">
+                      <div style="cursor: pointer" class="d-flex px-2 py-1">
                         <div>
                           <soft-avatar
                             :img="item.image ? item.image : img9"
@@ -57,23 +63,26 @@
                       </div>
                     </td>
                     <td>
-                      <div
-                        class="avatar-group mt-2"
-                        v-for="manager in item.managers"
-                        :key="manager.id"
-                      >
+                      <div class="avatar-group mt-2">
                         <a
-                          href="javascript:;"
-                          class="avatar avatar-xs rounded-circle"
+                          v-for="manager in item.managers"
+                          :key="manager.id"
+                          href="#"
+                          class="avatar avatar-xs rounded-circle zoomout"
                           data-bs-toggle="tooltip"
                           data-bs-placement="bottom"
-                          data-bs-original-title="Jessica Doe"
+                          :data-bs-original-title="
+                            manager.username ? manager.username : 'Hi'
+                          "
                         >
                           <img
                             :src="manager.avatar ? manager.avatar : img5"
                             rounded-circle
-                            alt="team4"
+                            alt="image"
                           />
+                          <P style="position: absolute; bottom: 7px">{{
+                            manager.username
+                          }}</P>
                         </a>
                       </div>
                     </td>
@@ -97,9 +106,54 @@
                         </div>
                       </div>
                     </td>
+                    <td class="align-end">
+                      <div class="dropdown-container">
+                        <a
+                          @click="
+                            this.$router.push(`/projectdetail/${item.id}`)
+                          "
+                          href="javascript:;"
+                          class="text-secondary font-weight-bold text-xs"
+                          data-toggle="tooltip"
+                          data-original-title="Edit user"
+                          >View</a
+                        >
+                        /
+                        <!-- @click="
+                          this.$router.push(`/projectdetail/${item.id}`)
+                        " -->
+                        <a
+                          href="javascript:;"
+                          class="text-secondary font-weight-bold text-xs"
+                          data-toggle="tooltip"
+                          data-original-title="Edit user"
+                          >Done</a
+                        >
+                        /
+                        <a
+                          @click="this.openDeleteAlert(item.id)"
+                          href="javascript:;"
+                          class="text-secondary font-weight-bold text-xs"
+                          data-toggle="tooltip"
+                          data-original-title="Edit user"
+                          >Delete</a
+                        >
+                      </div>
+                    </td>
                   </tr>
                 </tbody>
               </table>
+              <div
+                v-else
+                style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  width: 100%;
+                "
+              >
+                <img src="/loading.gif" alt="" />
+              </div>
             </div>
           </div>
         </div>
@@ -183,15 +237,16 @@
             required
             class="inputField"
             v-model="project.managers"
-            multiple="false"
+            multiple="true"
           >
             <option
               class="dropdownOptions"
-              v-for="manager in managers"
+              v-for="(manager, index) in managers"
               :key="manager.id"
               :value="manager.id"
             >
-              {{ manager.name }}
+              <p>{{ index + 1 }}).</p>
+              {{ manager.username }}
             </option>
           </select>
         </div>
@@ -205,10 +260,34 @@
         </button> -->
       </template>
     </custom-modal>
+
+    <SweetAlert ref="sweetAlert" :alertData="alertData">
+      <template v-slot:actions>
+        <soft-button-vue
+          color="danger"
+          size="md"
+          @click="
+            () => {
+              this.$refs.sweetAlert.closeModal();
+            }
+          "
+        >
+          Cancel
+        </soft-button-vue>
+        <soft-button-vue
+          @click="this.deleteProject()"
+          size="md"
+          :loading="loading"
+        >
+          Confirm
+        </soft-button-vue>
+      </template>
+    </SweetAlert>
   </div>
 </template>
 
 <script>
+import SweetAlert from "@/views/components/customAlert.vue";
 import { useAPI } from "@/supportElements/useAPI.js";
 import SoftAvatar from "@/components/SoftAvatar.vue";
 import img1 from "@/assets/img/home-decor-1.jpg";
@@ -244,6 +323,14 @@ export default {
   name: "projects-card",
   data() {
     return {
+      managerCount: 1,
+      projectIdDeleteTobe: 0,
+      alertData: {
+        icon: "fa fa-warning",
+        alertTitle: "Alert",
+        alertDescription:
+          "After deleting this Project, you will not be able to recover it.",
+      },
       img1,
       img2,
       img3,
@@ -279,10 +366,7 @@ export default {
         is_active: false,
         managers: [],
       },
-      managers: [
-        { id: 1, name: "Manager 1" },
-        { id: 9, name: "Manager 9" },
-      ],
+      managers: [{ id: 0, avatar: "", email: "", username: "" }],
     };
   },
   components: {
@@ -290,6 +374,7 @@ export default {
     SoftProgress,
     CustomModal,
     SoftButtonVue,
+    SweetAlert,
   },
   computed: {
     ...mapState(["token"]),
@@ -302,6 +387,11 @@ export default {
       this.project.startDate = "";
       this.project.endDate = "";
       this.project.managers = [];
+    },
+
+    openDeleteAlert(id) {
+      this.$refs.sweetAlert.openModal();
+      this.projectIdDeleteTobe = id;
     },
 
     openCustomModal() {
@@ -322,9 +412,9 @@ export default {
       try {
         this.loading = true;
         let formData = convertToFormData(this.project, ["image"]);
-        Object.keys(this.project).forEach((key) => {
-          formData.append(key, this.project[key]);
-        });
+        // Object.keys(this.project).forEach((key) => {
+        //   formData.append(key, this.project[key]);
+        // });
         const response = await api.post("/api/project/", formData);
         this.$notify({
           type: "success",
@@ -358,11 +448,42 @@ export default {
         console.log("");
       }
     },
+
+    async getManagersHandler() {
+      try {
+        const response = await api.get("/api/users/by-role/manager/", {});
+        this.managers = response.data;
+        console.log("mangers", this.managers);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        console.log("");
+      }
+    },
+
+    async deleteProject() {
+      try {
+        this.loading = true;
+        const response = api.delete(
+          `/api/project/${this.projectIdDeleteTobe}/`
+        );
+        this.$refs.sweetAlert.closeModal();
+        this.getProjectHandler();
+        console.log("deleted", response);
+      } catch (err) {
+        console.log(err);
+        console.log("not deleted");
+      } finally {
+        this.getProjectHandler();
+        this.loading = false;
+      }
+    },
   },
   mounted() {
     this.userToken = this.token;
     setTooltip();
     this.getProjectHandler();
+    this.getManagersHandler();
   },
 };
 </script>
@@ -395,6 +516,17 @@ export default {
   background-color: #f8f9fa;
 }
 .dropdownOptions {
+  display: flex;
+  gap: 16px;
   border-radius: 8px;
+}
+
+.zoomout:hover {
+  z-index: 1;
+}
+.dropdownOptions img {
+  width: 24px;
+  height: 24px;
+  border-radius: 30px;
 }
 </style>

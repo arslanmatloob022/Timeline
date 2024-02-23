@@ -99,6 +99,7 @@ export default {
 
 .modal-body {
   display: flex;
+  text-align: center;
   flex-direction: column;
   align-items: center;
   justify-content: center;

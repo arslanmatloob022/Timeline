@@ -43,7 +43,7 @@
                 <th
                   class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
                 >
-                  Joined from 
+                  Joined from
                 </th>
                 <th class="text-secondary opacity-7">Actions</th>
               </tr>
@@ -70,8 +70,9 @@
                   </div>
                 </td>
                 <td>
-                  <p class="text-xs font-weight-bold mb-0">{{ item.phoneNumber?item.phoneNumber:'---' }}</p>
-                 
+                  <p class="text-xs font-weight-bold mb-0">
+                    {{ item.phoneNumber ? item.phoneNumber : "---" }}
+                  </p>
                 </td>
                 <td>
                   <p class="text-xs font-weight-bold mb-0">{{ item.role }}</p>
@@ -99,21 +100,28 @@
                     >
                     /
                     <a
-                    @click="openDeleteModal(item.id)"
+                      @click="openDeleteModal(item.id)"
                       href="javascript:;"
                       class="text-secondary font-weight-bold text-xs"
                       data-toggle="tooltip"
                       data-original-title="Edit user"
                       >delete</a
                     >
-                    
                   </div>
                 </td>
               </tr>
             </tbody>
           </table>
-          <div v-else style="display: flex; align-items: center; justify-content: center; width:100%;">
-              <img src="/loading.gif" alt="">
+          <div
+            v-else
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 100%;
+            "
+          >
+            <img src="/loading.gif" alt="" />
           </div>
         </div>
       </div>
@@ -134,81 +142,82 @@
           />
         </div>
         <div class="row">
-
-        
-        <div class="col-6">
-          <label for="inputField">Email</label>
-          <input
-          autocomplete="username"
-            class="inputField"
-            v-model="userData.email"
-            type="email"
-            required
-            placeholder="Email"
-          />
+          <div class="col-6">
+            <label for="inputField">Email</label>
+            <input
+              autocomplete="username"
+              class="inputField"
+              v-model="userData.email"
+              type="email"
+              required
+              placeholder="Email"
+            />
+          </div>
+          <div class="col-6">
+            <label for="inputField">Phone No</label>
+            <input
+              class="inputField"
+              v-model="userData.phoneNumber"
+              type="tel"
+              required
+              placeholder="Phone number"
+            />
+          </div>
         </div>
-        <div class="col-6">
-          <label for="inputField">Phone No</label>
-          <input
-          
-            class="inputField"
-            v-model="userData.phoneNumber"
-            type="tel"
-            required
-            placeholder="Phone number"
-          />
-        </div>
-      </div>
         <div>
           <label for="inputField">Password</label>
           <input
-          required
+            required
             class="inputField"
             type="password"
             placeholder="Password"
             v-model="userData.password"
           />
         </div>
-      <div class="row">
-        <div class="col-6">
-          <label for="inputField">Image</label>
-          <input
-            class="inputField"
-            type="file"
-            accept="image/*"
-           
-            @change="handleFileChange"
-            size="md"
-          />
-      
+        <div class="row">
+          <div class="col-6">
+            <label for="inputField">Image</label>
+            <input
+              class="inputField"
+              type="file"
+              accept="image/*"
+              @change="handleFileChange"
+              size="md"
+            />
+          </div>
+          <div class="col-6">
+            <img
+              style="width: 200px; border-radius: 100px; margin-top: 20px"
+              :src="preview ? preview : '/preview.jpeg'"
+              alt="asdas"
+            />
+          </div>
         </div>
-        <div class="col-6">
-        <img style="width:200px; border-radius: 100px; margin-top: 20px;" :src="preview?preview:'/preview.jpeg'" alt="asdas">
-        </div>
-      </div>
-
-
-        
       </form>
       <template v-slot:actions>
         <soft-button-vue :loading="loading" form="manger-form" type="submit">
-          {{editModeId ? 'Save Worker':'Add Worker'}}
+          {{ editModeId ? "Save Worker" : "Add Worker" }}
         </soft-button-vue>
       </template>
     </custom-modal>
-    <custom-modal ref="deleteModal" title="" size="small">
-      <!-- Custom content for the modal -->
-      <div style="display: flex; align-items: center; justify-content: center; min-height: 200px; text-align: center; flex-direction: column;">
-        <h2 class="mb-4">Are you suer ?</h2>
-        <p >Are you sure to delete this worker, press button below to perform the actiona.</p>
-
-      </div>
+    <SweetAlert ref="sweetAlert" :alertData="alertData">
       <template v-slot:actions>
-        <soft-button-vue :loading="loading" color="danger" @click="deletUser" >
-          Yes,  Delete it
+        <soft-button-vue
+          color="danger"
+          size="md"
+          @click="
+            () => {
+              this.$refs.sweetAlert.closeModal();
+            }
+          "
+        >
+          Cancel
+        </soft-button-vue>
+        <soft-button-vue size="md" @click="this.deletUser()" :loading="loading">
+          Confirm
         </soft-button-vue>
       </template>
-    </custom-modal>
+    </SweetAlert>
   </div>
 </template>
 
@@ -220,11 +229,18 @@ import SoftBadge from "@/components/SoftBadge.vue";
 import useApi from "../../supportElements/useAPI";
 import SoftButtonVue from "../SoftButton.vue";
 import { convertToFormData } from "../../supportElements/common";
+import SweetAlert from "@/views/components/customAlert.vue";
+
 const api = useApi();
 export default {
   name: "authors-table",
   data() {
     return {
+      alertData: {
+        icon: "fa fa-warning",
+        alertTitle: "Alert",
+        alertDescription: "After delete, you will not be able to recover it.",
+      },
       selectedUserId: null,
       showDropDown: false,
       loading: false,
@@ -237,16 +253,16 @@ export default {
         password: "",
         status: "",
         role: "worker",
-        phoneNumber:'',
+        phoneNumber: "",
         avatar: File | null | String,
       },
-      editModeId:0,
+      editModeId: 0,
       preview: null,
-      selectedIdToDelete :0
-    
+      selectedIdToDelete: 0,
     };
   },
   components: {
+    SweetAlert,
     SoftAvatar,
     SoftBadge,
     CustomModal,
@@ -258,20 +274,19 @@ export default {
         (this.userData.email = ""),
         (this.userData.password = ""),
         (this.userData.status = ""),
-        this.preview =null
-        this.phoneNumber = ''
+        (this.preview = null);
+      this.phoneNumber = "";
     },
 
-
-    openDeleteModal(id){
-      this.selectedIdToDelete =id
-      this.$refs.deleteModal.openModal()
+    openDeleteModal(id) {
+      this.selectedIdToDelete = id;
+      this.$refs.sweetAlert.openModal();
     },
-    async deletUser (){
+    async deletUser() {
       try {
-        this.loading = true
+        this.loading = true;
         await api.delete(`/api/users/${this.selectedIdToDelete}/`, {});
-        this.getManagershandler()
+        this.getManagershandler();
         this.$notify({
           type: "warning",
           title: "Worker",
@@ -282,32 +297,30 @@ export default {
         this.$notify({
           type: "error",
           title: "Something went wrong",
-          text:
-            "Error while deleteing",
+          text: "Error while deleteing",
         });
       } finally {
-        this.$refs.deleteModal.closeModal()
+        this.$refs.sweetAlert.closeModal();
         this.loading = false;
       }
     },
-    openCustomModal(isEdit=false, manager ={}) {
+    openCustomModal(isEdit = false, manager = {}) {
       this.closeUserModalHandler();
-      if(isEdit)
-      {
-        console.log("inside is edit", isEdit)
-        this.editModeId = manager.id
-        this.modalTitle = 'Edit Worker'
-        this.userData.username = manager.username
-        this.userData.email = manager.email
-        this.userData.password = manager.password
-        this.userData.avatar = manager.avatar
-        this.preview = manager.avatar
-        this.userData.phoneNumber = manager.phoneNumber
-      }else{
-        this.editModeId = 0
-        this.modalTitle = 'Add Worker'
+      if (isEdit) {
+        console.log("inside is edit", isEdit);
+        this.editModeId = manager.id;
+        this.modalTitle = "Edit Worker";
+        this.userData.username = manager.username;
+        this.userData.email = manager.email;
+        this.userData.password = manager.password;
+        this.userData.avatar = manager.avatar;
+        this.preview = manager.avatar;
+        this.userData.phoneNumber = manager.phoneNumber;
+      } else {
+        this.editModeId = 0;
+        this.modalTitle = "Add Worker";
       }
-      
+
       this.$refs.customModal.openModal();
     },
     saveAndClose() {
@@ -321,15 +334,15 @@ export default {
         var reader = new FileReader();
         reader.onload = (e) => {
           this.preview = e.target.result;
-        }
-        this.image=input.files[0];
+        };
+        this.image = input.files[0];
         reader.readAsDataURL(input.files[0]);
       }
     },
 
     async getManagershandler() {
       try {
-        this.loading = true
+        this.loading = true;
         const response = await api.get("/api/users/by-role/worker/", {});
         this.managersData = response.data;
         console.log("data", this.managersData);
@@ -345,8 +358,10 @@ export default {
         this.loading = true;
 
         let formData = convertToFormData(this.userData, ["avatar"]);
-       
-        const response = this.editModeId ? await api.patch(`/api/users/${this.editModeId}/`, formData) : await api.post("/api/users/", formData);
+
+        const response = this.editModeId
+          ? await api.patch(`/api/users/${this.editModeId}/`, formData)
+          : await api.post("/api/users/", formData);
         this.$notify({
           type: "success",
           title: "Worker",
@@ -361,7 +376,8 @@ export default {
         this.$notify({
           type: "error",
           title: "Something went wrong",
-          text: "Enter the information carefuly and try again OR user with email already exist",
+          text:
+            "Enter the information carefuly and try again OR user with email already exist",
         });
       } finally {
         this.loading = false;
@@ -371,9 +387,7 @@ export default {
   mounted() {
     this.getManagershandler();
   },
-  computed: {
-    
-  },
+  computed: {},
 };
 </script>
 <style scoped>
