@@ -29,7 +29,7 @@ export default createStore({
       email: "",
       first_name: "",
       last_name: "",
-      avatar: "",
+      avatar: File | null | String,
       is_superuser: Boolean,
       role: "",
       last_login: "",
@@ -45,7 +45,6 @@ export default createStore({
 
     setUser(state, user) {
       state.user = user;
-
       localStorage.setItem("user", JSON.stringify(user));
       console.log(user);
     },

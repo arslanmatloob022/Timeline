@@ -412,9 +412,7 @@ export default {
       try {
         this.loading = true;
         let formData = convertToFormData(this.project, ["image"]);
-        // Object.keys(this.project).forEach((key) => {
-        //   formData.append(key, this.project[key]);
-        // });
+
         const response = await api.post("/api/project/", formData);
         this.$notify({
           type: "success",
@@ -439,24 +437,30 @@ export default {
 
     async getProjectHandler() {
       try {
+        this.loading = true;
         const response = await api.get("/api/project/", {});
         this.projects = response.data;
         console.log(this.projects);
+        this.loading = false;
       } catch (err) {
         console.log(err);
       } finally {
         console.log("");
+        this.loading = false;
       }
     },
 
     async getManagersHandler() {
       try {
+        this.loading = true;
         const response = await api.get("/api/users/by-role/manager/", {});
         this.managers = response.data;
         console.log("mangers", this.managers);
+        this.loading = false;
       } catch (err) {
         console.log(err);
       } finally {
+        this.loading = false;
         console.log("");
       }
     },

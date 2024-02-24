@@ -16,7 +16,7 @@
           <div class="col-auto">
             <div class="avatar avatar-xl position-relative">
               <img
-                :src="userData.avatar ? userData.avatar : team4"
+                :src="this.userData.avatar"
                 alt="profile_image"
                 class="shadow-sm w-100 border-radius-lg"
               />
@@ -188,7 +188,16 @@
                         </g>
                       </g>
                     </svg>
-                    <span class="ms-1">Settings</span>
+                    <span
+                      @click="
+                        () => {
+                          this.$refs.editProfileModal.openModal();
+                          this.editpreview = userData.avatar;
+                        }
+                      "
+                      class="ms-1"
+                      >Edit Profile</span
+                    >
                   </a>
                 </li>
               </ul>
@@ -284,7 +293,7 @@
             description="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
             :info="{
               fullName: this.userData.username,
-              mobile: '(44) 123 1234 123',
+              mobile: this.userData.phoneNumber,
               email: this.userData.email,
               location: 'USA',
             }"
@@ -303,7 +312,6 @@
               },
             ]"
             :action="{
-              route: 'javascript:;',
               tooltip: 'Edit Profile',
             }"
           />
@@ -315,7 +323,14 @@
               class="p-3 pb-0 card-header d-flex"
             >
               <h6 class="mb-0">Admins</h6>
-              <i class="fa fa-user-plus"></i>
+              <i
+                class="fa fa-user-plus"
+                @click="
+                  () => {
+                    this.$refs.customAdminModal.openModal();
+                  }
+                "
+              ></i>
             </div>
             <div class="p-3 card-body">
               <ul class="list-group">
@@ -474,16 +489,170 @@
         >
           Cancel
         </soft-button-vue>
-        <soft-button-vue size="md" @click="this.deletUser()" :loading="loading">
+        <soft-button-vue
+          size="md"
+          @click="this.deletAdmin()"
+          :loading="loading"
+        >
           Confirm
         </soft-button-vue>
       </template>
     </SweetAlert>
+
+    <!-- add manager modal -->
+    <custom-modal ref="customAdminModal" :title="modalTitle">
+      <!-- Custom content for the modal -->
+      <form id="manger-form" @submit.prevent="addNewAdmin">
+        <div>
+          <label for="inputField">Full name</label>
+          <input
+            class="inputField"
+            type="text"
+            placeholder="First name"
+            v-model="adminFormData.username"
+            required
+          />
+        </div>
+
+        <div class="row">
+          <div class="col-6">
+            <label for="inputField">Email</label>
+            <input
+              autocomplete="username"
+              class="inputField"
+              v-model="adminFormData.email"
+              type="email"
+              required
+              placeholder="Email"
+            />
+          </div>
+          <div class="col-6">
+            <label for="inputField">Phone No</label>
+            <input
+              class="inputField"
+              v-model="adminFormData.phoneNumber"
+              type="tel"
+              required
+              placeholder="Phone number"
+            />
+          </div>
+        </div>
+        <div>
+          <label for="inputField">Password</label>
+          <input
+            required
+            class="inputField"
+            type="password"
+            placeholder="Password"
+            v-model="adminFormData.password"
+          />
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <label for="inputField">Image</label>
+            <input
+              class="inputField"
+              type="file"
+              accept="image/*"
+              @change="handleFileChange"
+              size="md"
+            />
+          </div>
+          <div class="col-6">
+            <img
+              style="width: 200px; border-radius: 100px; margin-top: 20px"
+              :src="preview ? preview : '/preview.jpeg'"
+              alt="asdas"
+            />
+          </div>
+        </div>
+      </form>
+      <template v-slot:actions>
+        <soft-button-vue :loading="loading" form="manger-form" type="submit">
+          Add Admin
+        </soft-button-vue>
+      </template>
+    </custom-modal>
+
+    <custom-modal ref="editProfileModal" :title="modalTitle">
+      <!-- Custom content for the modal -->
+      <form id="manger-form" @submit.prevent="editselfProfile">
+        <div>
+          <label for="inputField">Full name</label>
+          <input
+            class="inputField"
+            type="text"
+            placeholder="First name"
+            v-model="userData.username"
+            required
+          />
+        </div>
+
+        <div class="row">
+          <div class="col-6">
+            <label for="inputField">Email</label>
+            <input
+              autocomplete="username"
+              class="inputField"
+              v-model="userData.email"
+              type="email"
+              required
+              placeholder="Email"
+            />
+          </div>
+          <div class="col-6">
+            <label for="inputField">Phone No</label>
+            <input
+              class="inputField"
+              v-model="userData.phoneNumber"
+              type="tel"
+              required
+              placeholder="Phone number"
+            />
+          </div>
+        </div>
+        <div>
+          <label for="inputField">Password</label>
+          <input
+            required
+            class="inputField"
+            type="password"
+            placeholder="Password"
+            v-model="userData.password"
+          />
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <label for="inputField">Image</label>
+            <input
+              class="inputField"
+              type="file"
+              accept="image/*"
+              @change="handleFileChange"
+              size="md"
+            />
+          </div>
+          <div class="col-6">
+            <img
+              style="width: 200px; border-radius: 100px; margin-top: 20px"
+              :src="editpreview ? editpreview : '/preview.jpeg'"
+              alt="asdas"
+            />
+          </div>
+        </div>
+      </form>
+      <template v-slot:actions>
+        <soft-button-vue :loading="loading" form="manger-form" type="submit">
+          Save changes
+        </soft-button-vue>
+      </template>
+    </custom-modal>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
+import CustomModal from "@/views/components/CustomModal.vue";
 import SoftButtonVue from "@/components/SoftButton.vue";
 import SoftSwitch from "@/components/SoftSwitch.vue";
 import ProfileInfoCard from "./components/ProfileInfoCard.vue";
@@ -511,11 +680,13 @@ import setNavPills from "@/assets/js/nav-pills.js";
 import setTooltip from "@/assets/js/tooltip.js";
 import useApi from "../supportElements/useAPI";
 import SweetAlert from "@/views/components/customAlert.vue";
+import { convertToFormData } from "../supportElements/common.js";
 
 const api = useApi();
 export default {
   name: "ProfileOverview",
   components: {
+    CustomModal,
     SoftButtonVue,
     SoftSwitch,
     ProfileInfoCard,
@@ -526,6 +697,9 @@ export default {
   },
   data() {
     return {
+      loading: false,
+      preview: null,
+      editpreview: null,
       selectedIdToDelete: 0,
       alertData: {
         icon: "fa fa-warning",
@@ -535,6 +709,7 @@ export default {
       },
       adminsData: [],
       showMenu: false,
+      modalTitle: "Add Admin",
       sophie,
       marie,
       ivana,
@@ -551,15 +726,22 @@ export default {
       faTwitter,
       faInstagram,
       userData: {
-        id: "",
-        is_superuser: Boolean,
-        first_name: "",
-        last_name: "",
-        email: "",
-        role: "",
+        id: 0,
         username: "",
+        email: "",
         password: "",
-        avatar: "",
+        status: "",
+        phoneNumber: "",
+        avatar: File | null | String,
+      },
+      adminFormData: {
+        username: "",
+        email: "",
+        password: "",
+        status: "",
+        role: "admin",
+        phoneNumber: "",
+        avatar: File | null | String,
       },
     };
   },
@@ -586,7 +768,7 @@ export default {
       this.$refs.sweetAlert.openModal();
       this.selectedIdToDelete = id;
     },
-    async deletUser() {
+    async deletAdmin() {
       try {
         this.loading = true;
         await api.delete(`/api/users/${this.selectedIdToDelete}/`, {});
@@ -608,10 +790,80 @@ export default {
         this.loading = false;
       }
     },
+
+    handleFileChange(event) {
+      this.userData.avatar = event.target.files[0];
+      this.adminFormData.avatar = event.target.files[0];
+      var input = event.target;
+      if (input.files) {
+        var reader = new FileReader();
+        reader.onload = (e) => {
+          this.preview = e.target.result;
+          this.editpreview = e.target.result;
+        };
+        this.image = input.files[0];
+        reader.readAsDataURL(input.files[0]);
+      }
+    },
+
+    async addNewAdmin() {
+      try {
+        this.loading = true;
+        let formData = convertToFormData(this.adminFormData, ["avatar"]);
+        const response = await api.post("/api/users/", formData);
+        this.$notify({
+          type: "success",
+          title: "Admin Added ",
+          text: "Admin added  succesfuly",
+        });
+
+        this.$refs.customAdminModal.closeModal();
+        this.getManagershandler();
+        console.log(response);
+      } catch (err) {
+        console.log(err);
+        this.$notify({
+          type: "error",
+          title: "Something went wrong",
+          text:
+            "Enter the information carefuly and try again OR user with email already exist",
+        });
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    async editselfProfile() {
+      try {
+        this.loading = true;
+        let formData = convertToFormData(this.userData, ["avatar"]);
+        const resp = await api.patch(
+          `/api/users/${this.userData.id}/`,
+          formData
+        );
+        this.$store.commit("setUser", resp.data);
+
+        this.userData = resp.data;
+        this.$notify({
+          type: "success",
+          title: "Profile updated",
+          text: "Entered information of your profile has beed updated",
+        });
+        this.$refs.editProfileModal.closeModal();
+      } catch (err) {
+        console.log(err);
+        this.$notify({
+          type: "error",
+          title: "Something went wrong !",
+          text: "Something wrong has happened please try again.",
+        });
+      } finally {
+        this.loading = false;
+      }
+    },
   },
   mounted() {
-    this.userData = this.$store.state.user.user;
-    console.log("user info", this.userData);
+    this.userData = this.$store.state.user;
     this.$store.state.isAbsolute = true;
     setNavPills();
     setTooltip(this.$store.state.bootstrap);
@@ -622,3 +874,66 @@ export default {
   },
 };
 </script>
+<style scoped>
+.action-btn {
+  background-color: #82d616;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.inputField {
+  width: 100%;
+  padding: 4px 14px;
+  border-radius: 8px;
+  border: 1px solid #cccccc;
+}
+.inputField:focus {
+  border: 2px solid #82d616; /* Change the border color when in focus */
+  outline: none; /* Remove the default focus outline */
+  box-shadow: 0 0 5px #82d61670;
+}
+.inputField:active {
+  background-color: #f8f9fa;
+}
+.dropdownOptions {
+  border-radius: 8px;
+}
+
+/* Add these styles or adjust as needed */
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-card {
+  position: absolute;
+  left: -150px; /* Adjust as needed */
+  top: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border-radius: 8px;
+  z-index: 1;
+}
+
+.dropdown-card button {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 8px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-card button:hover {
+  background-color: #0056b3;
+}
+</style>

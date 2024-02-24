@@ -131,7 +131,6 @@
 
     <!-- add manager modal -->
     <custom-modal ref="customModal" :title="modalTitle">
-      <!-- Custom content for the modal -->
       <form id="manger-form" @submit.prevent="addNewManger">
         <div>
           <label for="inputField">Full name</label>

@@ -70,7 +70,6 @@
                     <div class="text-center">
                       <soft-button
                         :loading="loading"
-                        @click="handleLogin"
                         class="my-4 mb-2"
                         variant="gradient"
                         color="success"

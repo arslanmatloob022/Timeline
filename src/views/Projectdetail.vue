@@ -332,6 +332,7 @@
                         class="text-secondary font-weight-bold text-xs"
                         data-toggle="tooltip"
                         data-original-title="Edit user"
+                        @click="this.openTaskForm(task.id)"
                         >Edit</a
                       >
                       |
@@ -361,19 +362,7 @@
       </div>
     </div>
     <div class="project-timeline">Project Timeline</div>
-    <!-- <div
-      class="card"
-      style="position: absolute; top: 40%; left: 40%; z-index: 1"
-    >
-      <div class="px-1 pb-0 card-body">
-        <div class="p-3 pb-0 card-header">
-          <i class="fas fa-close"></i>
-        </div>
-        <div class="p-3 card-body">
-          <h5 style="text-align: center">Alert</h5>
-        </div>
-      </div>
-    </div> -->
+
     <sweetAlert ref="sweetAlert" :alertData="alertData">
       <template v-slot:actions>
         <soft-button-vue
@@ -496,6 +485,12 @@
         </SoftButtonVue>
       </template>
     </custom-modal>
+
+    <update-task-vue
+      :isOpen="isTaskFormOpen"
+      :closeModal="closeTaskForm"
+      :taskId="editTaskId"
+    />
   </div>
 </template>
 <script>
@@ -508,13 +503,16 @@ import img2 from "@/assets//img/home-decor-1.jpg";
 import useApi from "../supportElements/useAPI";
 import sweetAlert from "./components/customAlert.vue";
 import CustomModal from "./components/CustomModal.vue";
-// import { convertToFormData } from "@/supportElements/common.js";
+import { convertToFormData } from "@/supportElements/common.js";
+import updateTaskVue from "./SupportComponents/updateTask.vue";
 
 const api = useApi();
 export default {
   name: "ProjectsDetail",
   data() {
     return {
+      isTaskFormOpen: false,
+      editTaskId: null,
       loading: false,
       Taskstatus: [
         { value: "active", name: "Active" },
@@ -563,6 +561,7 @@ export default {
         project: this.$route.params.id,
         workers: [],
       },
+
       projectTasks: [
         {
           id: 0,
@@ -582,6 +581,7 @@ export default {
 
   components: {
     CustomModal,
+    updateTaskVue,
     sweetAlert,
     DefaultProjectCard,
     // SoftAvatar,
@@ -616,11 +616,7 @@ export default {
     async addTaskHandler() {
       try {
         this.loading = true;
-        let formData = new FormData();
-        Object.keys(this.taskData).forEach((key) => {
-          formData.append(key, this.taskData[key]);
-        });
-
+        let formData = convertToFormData(this.taskData, []);
         const resp = await api.post("/api/task/", formData);
         this.$refs.customModal.closeModal();
         this.getProject(this.projectId);
@@ -652,6 +648,17 @@ export default {
       } catch (err) {
         console.log(err);
       }
+    },
+
+    openTaskForm(taskId = null) {
+      // Open the TaskForm modal
+      this.isTaskFormOpen = true;
+      this.editTaskId = taskId;
+    },
+    closeTaskForm() {
+      // Close the TaskForm modal
+      this.isTaskFormOpen = false;
+      this.editTaskId = null; // Reset the editTaskId after closing
     },
   },
 
