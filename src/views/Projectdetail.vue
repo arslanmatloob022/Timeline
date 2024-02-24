@@ -292,10 +292,28 @@
                     </div>
                   </td>
                   <td>
-                    <p class="text-xs font-weight-bold mb-0">
-                      {{ task.worker.length }}
-                    </p>
-                    <p class="text-xs text-secondary mb-0">Organization</p>
+                    <div class="avatar-group mt-2">
+                      <a
+                        v-for="manager in task.workers"
+                        :key="manager.id"
+                        href="#"
+                        class="avatar avatar-xs rounded-circle zoomout"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="bottom"
+                        :data-bs-original-title="
+                          manager.username ? manager.username : 'Hi'
+                        "
+                      >
+                        <img
+                          :src="manager.avatar ? manager.avatar : img5"
+                          rounded-circle
+                          alt="image"
+                        />
+                        <P style="position: absolute; bottom: 7px">{{
+                          manager.username
+                        }}</P>
+                      </a>
+                    </div>
                   </td>
                   <td class="align-middle text-center text-sm">
                     <span class="text-secondary text-xs font-weight-bold">{{
@@ -629,8 +647,8 @@ export default {
         const resp = await api.get(
           `api/task/${this.$route.params.id}/project/`
         );
+        this.projectTasks = resp.data;
         console.log(resp.data);
-        this.projectTasks.value = resp.data;
       } catch (err) {
         console.log(err);
       }
