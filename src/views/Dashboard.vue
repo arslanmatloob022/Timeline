@@ -235,11 +235,11 @@
       </div>
     </div> -->
 
-    <div class="row my-4">
-      <div class="col-lg-8 col-md-6 mb-md-0 mb-4">
+    <div class="row">
+      <div class="col-lg-12 col-md-6 mb-md-0 mb-4">
         <ProjectsVue />
       </div>
-      <div class="col-lg-4 col-md-6">
+      <!-- <div class="col-lg-4 col-md-6">
         <timeline-list
           class="h-100"
           title="Orders overview"
@@ -283,11 +283,11 @@
             date-time="15 DEC"
           />
         </timeline-list>
-      </div>
+      </div> -->
     </div>
 
     <div class="row">
-      <div class="col-12">
+      <div class="col-lg-12 col-md-6 mb-md-0 mb-4">
         <ManagersVue />
       </div>
     </div>
@@ -297,8 +297,8 @@
 import MiniStatisticsCard from "@/examples/Cards/MiniStatisticsCard.vue";
 // import ReportsBarChart from "@/examples/Charts/ReportsBarChart.vue";
 // import GradientLineChart from "@/examples/Charts/GradientLineChart.vue";
-import TimelineList from "./components/TimelineList.vue";
-import TimelineItem from "./components/TimelineItem.vue";
+// import TimelineList from "./components/TimelineList.vue";
+// import TimelineItem from "./components/TimelineItem.vue";
 // import AuthorsTable from "./components/AuthorsTable";
 import US from "../assets/img/icons/flags/US.png";
 import DE from "../assets/img/icons/flags/DE.png";
@@ -362,8 +362,8 @@ export default {
     MiniStatisticsCard,
     // ReportsBarChart,
     // GradientLineChart,
-    TimelineList,
-    TimelineItem,
+    // TimelineList,
+    // TimelineItem,
     // AuthorsTable,
     ProjectsVue,
     ManagersVue,

@@ -310,119 +310,39 @@
         </div>
         <div class="mt-4 col-12 col-xl-4 mt-xl-0">
           <div class="card h-100">
-            <div class="p-3 pb-0 card-header">
-              <h6 class="mb-0">Conversations</h6>
+            <div
+              style="align-items: center; justify-content: space-between"
+              class="p-3 pb-0 card-header d-flex"
+            >
+              <h6 class="mb-0">Admins</h6>
+              <i class="fa fa-user-plus"></i>
             </div>
             <div class="p-3 card-body">
               <ul class="list-group">
                 <li
+                  v-for="admin in adminsData"
+                  :key="admin.id"
                   class="px-0 mb-2 border-0 list-group-item d-flex align-items-center"
                 >
                   <soft-avatar
                     class="me-3"
-                    :img="sophie"
+                    :img="admin.avatar"
                     alt="kal"
-                    border-radius="lg"
                     shadow="regular"
+                    circular
+                    size="md"
                   />
                   <div
                     class="d-flex align-items-start flex-column justify-content-center"
                   >
-                    <h6 class="mb-0 text-sm">Sophie B.</h6>
-                    <p class="mb-0 text-xs">Hi! I need more information..</p>
+                    <h6 class="mb-0 text-sm">{{ admin.username }}</h6>
+                    <p class="mb-0 text-xs">{{ admin.email }}</p>
                   </div>
                   <a
                     class="mb-0 btn btn-link pe-3 ps-0 ms-auto"
                     href="javascript:;"
-                    >Reply</a
-                  >
-                </li>
-                <li
-                  class="px-0 mb-2 border-0 list-group-item d-flex align-items-center"
-                >
-                  <soft-avatar
-                    class="me-3"
-                    :img="marie"
-                    alt="kal"
-                    border-radius="lg"
-                    shadow="regular"
-                  />
-                  <div
-                    class="d-flex align-items-start flex-column justify-content-center"
-                  >
-                    <h6 class="mb-0 text-sm">Anne Marie</h6>
-                    <p class="mb-0 text-xs">Awesome work, can you..</p>
-                  </div>
-                  <a
-                    class="mb-0 btn btn-link pe-3 ps-0 ms-auto"
-                    href="javascript:;"
-                    >Reply</a
-                  >
-                </li>
-                <li
-                  class="px-0 mb-2 border-0 list-group-item d-flex align-items-center"
-                >
-                  <soft-avatar
-                    class="me-3"
-                    :img="ivana"
-                    alt="kal"
-                    border-radius="lg"
-                    shadow="regular"
-                  />
-                  <div
-                    class="d-flex align-items-start flex-column justify-content-center"
-                  >
-                    <h6 class="mb-0 text-sm">Ivanna</h6>
-                    <p class="mb-0 text-xs">About files I can..</p>
-                  </div>
-                  <a
-                    class="mb-0 btn btn-link pe-3 ps-0 ms-auto"
-                    href="javascript:;"
-                    >Reply</a
-                  >
-                </li>
-                <li
-                  class="px-0 mb-2 border-0 list-group-item d-flex align-items-center"
-                >
-                  <soft-avatar
-                    class="me-3"
-                    :img="peterson"
-                    alt="kal"
-                    border-radius="lg"
-                    shadow="regular"
-                  />
-                  <div
-                    class="d-flex align-items-start flex-column justify-content-center"
-                  >
-                    <h6 class="mb-0 text-sm">Peterson</h6>
-                    <p class="mb-0 text-xs">Have a great afternoon..</p>
-                  </div>
-                  <a
-                    class="mb-0 btn btn-link pe-3 ps-0 ms-auto"
-                    href="javascript:;"
-                    >Reply</a
-                  >
-                </li>
-                <li
-                  class="px-0 border-0 list-group-item d-flex align-items-center"
-                >
-                  <soft-avatar
-                    class="me-3"
-                    :img="nick"
-                    alt="kal"
-                    border-radius="lg"
-                    shadow="regular"
-                  />
-                  <div
-                    class="d-flex align-items-start flex-column justify-content-center"
-                  >
-                    <h6 class="mb-0 text-sm">Nick Daniel</h6>
-                    <p class="mb-0 text-xs">Hi! I need more information..</p>
-                  </div>
-                  <a
-                    class="mb-0 btn btn-link pe-3 ps-0 ms-auto"
-                    href="javascript:;"
-                    >Reply</a
+                    @click="this.opendelteAlert(admin.id)"
+                    >Delete</a
                   >
                 </li>
               </ul>
@@ -540,11 +460,31 @@
         </div>
       </div>
     </div>
+
+    <SweetAlert ref="sweetAlert" :alertData="alertData">
+      <template v-slot:actions>
+        <soft-button-vue
+          color="danger"
+          size="md"
+          @click="
+            () => {
+              this.$refs.sweetAlert.closeModal();
+            }
+          "
+        >
+          Cancel
+        </soft-button-vue>
+        <soft-button-vue size="md" @click="this.deletUser()" :loading="loading">
+          Confirm
+        </soft-button-vue>
+      </template>
+    </SweetAlert>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
+import SoftButtonVue from "@/components/SoftButton.vue";
 import SoftSwitch from "@/components/SoftSwitch.vue";
 import ProfileInfoCard from "./components/ProfileInfoCard.vue";
 import SoftAvatar from "@/components/SoftAvatar.vue";
@@ -569,18 +509,31 @@ import DefaultProjectCard from "./components/DefaultProjectCard.vue";
 import PlaceHolderCard from "@/examples/Cards/PlaceHolderCard.vue";
 import setNavPills from "@/assets/js/nav-pills.js";
 import setTooltip from "@/assets/js/tooltip.js";
+import useApi from "../supportElements/useAPI";
+import SweetAlert from "@/views/components/customAlert.vue";
 
+const api = useApi();
 export default {
   name: "ProfileOverview",
   components: {
+    SoftButtonVue,
     SoftSwitch,
     ProfileInfoCard,
     SoftAvatar,
     DefaultProjectCard,
     PlaceHolderCard,
+    SweetAlert,
   },
   data() {
     return {
+      selectedIdToDelete: 0,
+      alertData: {
+        icon: "fa fa-warning",
+        alertTitle: "Alert",
+        alertDescription:
+          "After deleting this Admin, you will not be able to recover it.",
+      },
+      adminsData: [],
       showMenu: false,
       sophie,
       marie,
@@ -616,12 +569,53 @@ export default {
       return this.getUser;
     },
   },
+  methods: {
+    async getManagershandler() {
+      try {
+        this.loading = true;
+        const response = await api.get("/api/users/by-role/admin/", {});
+        this.adminsData = response.data;
+        console.log("data", this.adminsData);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        this.loading = false;
+      }
+    },
+    opendelteAlert(id) {
+      this.$refs.sweetAlert.openModal();
+      this.selectedIdToDelete = id;
+    },
+    async deletUser() {
+      try {
+        this.loading = true;
+        await api.delete(`/api/users/${this.selectedIdToDelete}/`, {});
+        this.getManagershandler();
+        this.$notify({
+          type: "warning",
+          title: "Manager",
+          text: "Manager deleted succesfuly",
+        });
+      } catch (err) {
+        console.log(err);
+        this.$notify({
+          type: "error",
+          title: "Something went wrong",
+          text: "Error while deleteing",
+        });
+      } finally {
+        this.$refs.sweetAlert.closeModal();
+        this.loading = false;
+      }
+    },
+  },
   mounted() {
     this.userData = this.$store.state.user.user;
     console.log("user info", this.userData);
     this.$store.state.isAbsolute = true;
     setNavPills();
     setTooltip(this.$store.state.bootstrap);
+    this.getManagershandler();
   },
   beforeUnmount() {
     this.$store.state.isAbsolute = false;

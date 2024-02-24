@@ -148,41 +148,42 @@
                           class="show dropdown-menu-end me-sm-n4"
                           aria-labelledby="dropdownMenuButton"
                         >
-                          <div
-                            v-for="manager in projectData.managers"
-                            :key="manager.id"
-                            class="mb-2"
-                          >
-                            <a
-                              class="dropdown-item border-radius-md"
-                              href="javascript:;"
+                          <div v-if="projectData.managers.length > 0">
+                            <div
+                              v-for="manager in projectData.managers"
+                              :key="manager.id"
+                              class="mb-2"
                             >
-                              <div class="py-1 d-flex">
-                                <div class="my-auto">
-                                  <img
-                                    src="@/assets/img/team-2.jpg"
-                                    class="avatar avatar-sm me-3"
-                                    alt="user image"
-                                  />
+                              <a
+                                class="dropdown-item border-radius-md"
+                                href="javascript:;"
+                              >
+                                <div class="py-1 d-flex">
+                                  <div class="my-auto">
+                                    <img
+                                      src="@/assets/img/team-2.jpg"
+                                      class="avatar avatar-sm me-3"
+                                      alt="user image"
+                                    />
+                                  </div>
+                                  <div
+                                    class="d-flex flex-column justify-content-center"
+                                  >
+                                    <h6 class="mb-1 text-sm font-weight-normal">
+                                      <span class="font-weight-bold">{{
+                                        manager.username
+                                      }}</span>
+                                    </h6>
+                                    <p class="mb-0 text-xs text-secondary">
+                                      <i class="fa fa-envelope me-1"></i>
+                                      {{ manager.email }}
+                                    </p>
+                                  </div>
                                 </div>
-                                <div
-                                  class="d-flex flex-column justify-content-center"
-                                >
-                                  <h6 class="mb-1 text-sm font-weight-normal">
-                                    <span class="font-weight-bold">{{
-                                      manager.username
-                                    }}</span>
-                                  </h6>
-                                  <p class="mb-0 text-xs text-secondary">
-                                    <i class="fa fa-envelope me-1"></i>
-                                    {{ manager.email }}
-                                  </p>
-                                </div>
-                              </div>
-                            </a>
+                              </a>
+                            </div>
                           </div>
-
-                          <div class="mb-2">
+                          <div v-else class="mb-2">
                             <a
                               class="dropdown-item border-radius-md"
                               href="javascript:;"
@@ -205,65 +206,7 @@
                                   </h6>
                                   <p class="mb-0 text-xs text-secondary">
                                     <i class="fa fa-envelope me-1"></i>
-                                    manager@gmail.com
-                                  </p>
-                                </div>
-                              </div>
-                            </a>
-                          </div>
-                          <div class="mb-2">
-                            <a
-                              class="dropdown-item border-radius-md"
-                              href="javascript:;"
-                            >
-                              <div class="py-1 d-flex">
-                                <div class="my-auto">
-                                  <img
-                                    src="@/assets/img/team-2.jpg"
-                                    class="avatar avatar-sm me-3"
-                                    alt="user image"
-                                  />
-                                </div>
-                                <div
-                                  class="d-flex flex-column justify-content-center"
-                                >
-                                  <h6 class="mb-1 text-sm font-weight-normal">
-                                    <span class="font-weight-bold"
-                                      >Manager Name</span
-                                    >
-                                  </h6>
-                                  <p class="mb-0 text-xs text-secondary">
-                                    <i class="fa fa-envelope me-1"></i>
-                                    manager@gmail.com
-                                  </p>
-                                </div>
-                              </div>
-                            </a>
-                          </div>
-                          <div class="mb-2">
-                            <a
-                              class="dropdown-item border-radius-md"
-                              href="javascript:;"
-                            >
-                              <div class="py-1 d-flex">
-                                <div class="my-auto">
-                                  <img
-                                    src="@/assets/img/team-2.jpg"
-                                    class="avatar avatar-sm me-3"
-                                    alt="user image"
-                                  />
-                                </div>
-                                <div
-                                  class="d-flex flex-column justify-content-center"
-                                >
-                                  <h6 class="mb-1 text-sm font-weight-normal">
-                                    <span class="font-weight-bold"
-                                      >Manager Name</span
-                                    >
-                                  </h6>
-                                  <p class="mb-0 text-xs text-secondary">
-                                    <i class="fa fa-envelope me-1"></i>
-                                    manager@gmail.com
+                                    manager@email.com
                                   </p>
                                 </div>
                               </div>
@@ -293,11 +236,20 @@
           "
         >
           <h6>Tasks</h6>
-          <soft-button-vue size="md" variant="gradient">
+          <soft-button-vue
+            @click="
+              () => {
+                this.$refs.customModal.openModal();
+              }
+            "
+            size="md"
+            variant="gradient"
+          >
             <slot>Add Task</slot></soft-button-vue
           >
         </div>
 
+        <!-- tasks -->
         <div class="card-body px-0 pt-0 pb-2">
           <div class="table-responsive p-0">
             <table class="table align-items-center mb-0">
@@ -328,39 +280,32 @@
               </thead>
               <tbody>
                 <!-- v-for="item in managersData" :key="item.id" -->
-                <tr>
+                <tr v-for="task in projectTasks" :key="task.id">
                   <td>
                     <div class="d-flex px-2 py-1">
-                      <div>
-                        <soft-avatar
-                          :img="img2"
-                          size="sm"
-                          border-radius="lg"
-                          class="me-3"
-                          alt="user1"
-                        />
-                      </div>
                       <div class="d-flex flex-column justify-content-center">
-                        <h6 class="mb-0 text-sm">Title</h6>
+                        <h6 class="mb-0 text-sm">{{ task.title }}</h6>
                         <p class="text-xs text-secondary mb-0">
-                          Description will appear here
+                          {{ task.description }}
                         </p>
                       </div>
                     </div>
                   </td>
                   <td>
-                    <p class="text-xs font-weight-bold mb-0">Workers</p>
+                    <p class="text-xs font-weight-bold mb-0">
+                      {{ task.worker.length }}
+                    </p>
                     <p class="text-xs text-secondary mb-0">Organization</p>
                   </td>
                   <td class="align-middle text-center text-sm">
-                    <span class="text-secondary text-xs font-weight-bold"
-                      >12-34-5678</span
-                    >
+                    <span class="text-secondary text-xs font-weight-bold">{{
+                      task.endDate
+                    }}</span>
                   </td>
                   <td class="align-middle text-center">
-                    <soft-badge color="warning" variant="gradient" size="sm"
-                      >Pending</soft-badge
-                    >
+                    <soft-badge color="warning" variant="gradient" size="sm">{{
+                      task.status
+                    }}</soft-badge>
                   </td>
                   <td class="align-middle">
                     <div class="dropdown-container">
@@ -411,14 +356,14 @@
         </div>
       </div>
     </div> -->
-    <CustomModal ref="customModal" :alertData="alertData">
+    <sweetAlert ref="sweetAlert" :alertData="alertData">
       <template v-slot:actions>
         <soft-button-vue
           color="danger"
           :loading="loading"
           @click="
             () => {
-              this.$refs.customModal.closeModal();
+              this.$refs.sweetAlert.closeModal();
             }
           "
         >
@@ -426,29 +371,146 @@
         </soft-button-vue>
         <soft-button-vue :loading="loading"> Confirm </soft-button-vue>
       </template>
-    </CustomModal>
+    </sweetAlert>
+
+    <custom-modal ref="customModal" :title="modalTitle">
+      <form id="project-form" @submit.prevent="addTaskHandler">
+        <div>
+          <label for="inputField">Title: *</label>
+          <input
+            class="inputField"
+            type="text"
+            required
+            placeholder="Task title"
+            v-model="taskData.title"
+            size="md"
+          />
+        </div>
+
+        <div>
+          <label for="inputField">Description: *</label>
+          <input
+            class="inputField"
+            type="text"
+            placeholder="Task description"
+            v-model="taskData.description"
+            size="md"
+          />
+        </div>
+
+        <!-- <div>
+          <label for="inputField">Image</label>
+          <input
+            class="inputField"
+            id="avatarInput"
+            type="file"
+            placeholder=""
+            @change="handleFileChange"
+            size="md"
+          />
+        </div> -->
+
+        <div style="display: flex; justify-content: space-between">
+          <div>
+            <label for="inputField">Start Date</label>
+            <input
+              class="inputField"
+              type="date"
+              placeholder="Start date"
+              v-model="taskData.startDate"
+              size="md"
+            />
+          </div>
+
+          <div>
+            <label for="inputField">End Date</label>
+            <input
+              class="inputField"
+              type="date"
+              placeholder="End date"
+              v-model="taskData.endDate"
+              size="md"
+            />
+          </div>
+        </div>
+        <div>
+          <label for="inputField">Set status</label>
+          <select
+            required
+            class="inputField"
+            v-model="taskData.status"
+            multiple="false"
+          >
+            <option
+              class="dropdownOptions"
+              v-for="task in Taskstatus"
+              :key="task.value"
+              :value="task.value"
+            >
+              {{ task.name }}
+            </option>
+          </select>
+        </div>
+        <div>
+          <label for="inputField">Workers : *</label>
+          <select
+            required
+            class="inputField"
+            v-model="taskData.workers"
+            multiple="true"
+          >
+            <option
+              class="dropdownOptions"
+              v-for="(worker, index) in workersData"
+              :key="worker.id"
+              :value="worker.id"
+            >
+              <p>{{ index + 1 }}).</p>
+              {{ worker.username }}
+            </option>
+          </select>
+          <span>Press ctrl to selecte multiple</span>
+        </div>
+      </form>
+      <template v-slot:actions>
+        <SoftButtonVue form="project-form" type="submit" :loading="loading">
+          Add Task
+        </SoftButtonVue>
+      </template>
+    </custom-modal>
   </div>
 </template>
 <script>
 import DefaultProjectCard from "./components/DefaultProjectCard.vue";
 import img1 from "@/assets/img/home-decor-1.jpg";
-import SoftAvatar from "../components/SoftAvatar.vue";
+// import SoftAvatar from "../components/SoftAvatar.vue";
 import SoftButtonVue from "../components/SoftButton.vue";
 import SoftBadge from "../components/SoftBadge.vue";
 import img2 from "@/assets//img/home-decor-1.jpg";
 import useApi from "../supportElements/useAPI";
-import CustomModal from "./components/customAlert.vue";
+import sweetAlert from "./components/customAlert.vue";
+import CustomModal from "./components/CustomModal.vue";
+// import { convertToFormData } from "@/supportElements/common.js";
 
 const api = useApi();
 export default {
   name: "ProjectsDetail",
   data() {
     return {
+      loading: false,
+      Taskstatus: [
+        { value: "active", name: "Active" },
+        { value: "pending", name: "Pending" },
+        { value: "completed", name: "Completed" },
+        { value: "cancelled", name: "cancelled" },
+      ],
+      modalTitle: "Add Task",
       alertData: {
         icon: "fa fa-bell",
         alertTitle: "Alert",
         alertDescription: "This is Alert Description",
       },
+      workersData: [{ id: 0, username: "", email: "", phoneNumber: "" }],
 
       projectId: this.$route.params.id,
       projectData: {
@@ -473,6 +535,28 @@ export default {
           },
         ],
       },
+
+      taskData: {
+        title: "",
+        description: "",
+        startDate: "",
+        endDate: "",
+        status: "",
+        project: this.$route.params.id,
+        workers: [],
+      },
+      projectTasks: [
+        {
+          id: 0,
+          title: "",
+          description: "",
+          startDate: "",
+          endDate: "",
+          project: 0,
+          status: "",
+          worker: [{ id: 0, username: "", email: "", role: "", avatar: "" }],
+        },
+      ],
       img1,
       img2,
     };
@@ -480,8 +564,9 @@ export default {
 
   components: {
     CustomModal,
+    sweetAlert,
     DefaultProjectCard,
-    SoftAvatar,
+    // SoftAvatar,
     SoftBadge,
     SoftButtonVue,
   },
@@ -496,14 +581,130 @@ export default {
       }
     },
     openAlert() {
-      this.$refs.customModal.openModal();
+      this.$refs.sweetAlert.openModal();
+    },
+    async getWorkershandler() {
+      try {
+        this.loading = true;
+        const response = await api.get("/api/users/by-role/worker/", {});
+        this.workersData = response.data;
+        console.log("data", this.workersData);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        this.loading = false;
+      }
+    },
+    async addTaskHandler() {
+      try {
+        this.loading = true;
+        let formData = new FormData();
+        Object.keys(this.taskData).forEach((key) => {
+          formData.append(key, this.taskData[key]);
+        });
+
+        const resp = await api.post("/api/task/", formData);
+        this.$refs.customModal.closeModal();
+        this.getProject(this.projectId);
+        this.$notify({
+          type: "success",
+          title: "Task Added",
+          text: "Task added succesfuly",
+        });
+        console.log("task data", resp);
+      } catch (err) {
+        this.$notify({
+          type: "error",
+          title: "Warning",
+          text: "Something went wrong",
+        });
+        console.log(err);
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    async getProjectTasks() {
+      try {
+        const resp = await api.get(
+          `api/task/${this.$route.params.id}/project/`
+        );
+        console.log(resp.data);
+        this.projectTasks.value = resp.data;
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
 
   mounted() {
     this.getProject(this.projectId);
+    this.getWorkershandler();
+    this.getProjectTasks();
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.action-btn {
+  background-color: #82d616;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.inputField {
+  width: 100%;
+  padding: 4px 14px;
+  border-radius: 8px;
+  border: 1px solid #cccccc;
+}
+.inputField:focus {
+  border: 2px solid #82d616; /* Change the border color when in focus */
+  outline: none; /* Remove the default focus outline */
+  box-shadow: 0 0 5px #82d61670;
+}
+.inputField:active {
+  background-color: #f8f9fa;
+}
+.dropdownOptions {
+  border-radius: 8px;
+}
+
+/* Add these styles or adjust as needed */
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-card {
+  position: absolute;
+  left: -150px; /* Adjust as needed */
+  top: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border-radius: 8px;
+  z-index: 1;
+}
+
+.dropdown-card button {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 8px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-card button:hover {
+  background-color: #0056b3;
+}
+</style>

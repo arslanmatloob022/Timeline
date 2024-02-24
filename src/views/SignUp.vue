@@ -1,6 +1,6 @@
 <template>
   <div>
-    <navbar btn-background="bg-gradient-primary" />
+    <!-- <navbar btn-background="bg-gradient-primary" /> -->
     <div
       class="pt-5 m-3 page-header align-items-start min-vh-50 pb-11 border-radius-lg"
       :style="{
@@ -29,7 +29,7 @@
               <h5>Register with</h5>
             </div>
             <div class="px-3 row px-xl-5 px-sm-4">
-              <div class="px-1 col-3 ms-auto">
+              <!-- <div class="px-1 col-3 ms-auto">
                 <a class="btn btn-outline-light w-100" href="javascript:;">
                   <svg
                     width="24px"
@@ -61,8 +61,8 @@
                     </g>
                   </svg>
                 </a>
-              </div>
-              <div class="px-1 col-3">
+              </div> -->
+              <!-- <div class="px-1 col-3">
                 <a class="btn btn-outline-light w-100" href="javascript:;">
                   <svg
                     width="24px"
@@ -88,8 +88,8 @@
                     </g>
                   </svg>
                 </a>
-              </div>
-              <div class="px-1 col-3 me-auto">
+              </div> -->
+              <!-- <div class="px-1 col-3 me-auto">
                 <a class="btn btn-outline-light w-100" href="javascript:;">
                   <svg
                     width="24px"
@@ -127,14 +127,14 @@
                     </g>
                   </svg>
                 </a>
-              </div>
-              <div class="mt-2 position-relative text-center">
+              </div> -->
+              <!-- <div class="mt-2 position-relative text-center">
                 <p
                   class="text-sm font-weight-bold mb-2 text-secondary text-border d-inline z-index-2 bg-white px-3"
                 >
                   or
                 </p>
-              </div>
+              </div> -->
             </div>
             <div class="card-body">
               <form role="form">
@@ -198,13 +198,13 @@
         </div>
       </div>
     </div>
-    <app-footer />
+    <!-- <app-footer /> -->
   </div>
 </template>
 
 <script>
-import Navbar from "@/examples/PageLayout/Navbar.vue";
-import AppFooter from "@/examples/PageLayout/Footer.vue";
+// import Navbar from "@/examples/PageLayout/Navbar.vue";
+// import AppFooter from "@/examples/PageLayout/Footer.vue";
 import SoftInput from "@/components/SoftInput.vue";
 import SoftCheckbox from "@/components/SoftCheckbox.vue";
 import SoftButton from "@/components/SoftButton.vue";
@@ -214,8 +214,8 @@ import { mapMutations } from "vuex";
 export default {
   name: "SignupBasic",
   components: {
-    Navbar,
-    AppFooter,
+    // Navbar,
+    // AppFooter,
     SoftInput,
     SoftCheckbox,
     SoftButton,

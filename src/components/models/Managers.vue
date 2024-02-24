@@ -203,6 +203,7 @@
         </soft-button-vue>
       </template>
     </custom-modal>
+
     <SweetAlert ref="sweetAlert" :alertData="alertData">
       <template v-slot:actions>
         <soft-button-vue

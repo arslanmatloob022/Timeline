@@ -1,5 +1,5 @@
 <template>
-  <div class="container top-0 position-sticky z-index-sticky">
+  <!-- <div class="container top-0 position-sticky z-index-sticky">
     <div class="row">
       <div class="col-12">
         <navbar
@@ -9,7 +9,7 @@
         />
       </div>
     </div>
-  </div>
+  </div> -->
   <main class="mt-0 main-content main-content-bg">
     <section>
       <div class="page-header min-vh-75">
@@ -32,7 +32,7 @@
                     <div>
                       <label for="inputField">User name</label>
                       <input
-                        class="inputField"
+                        class="inputField mb-2"
                         type="text"
                         placeholder="Email"
                         v-model="username"
@@ -42,7 +42,7 @@
                     <div>
                       <label for="inputField">Password</label>
                       <input
-                        class="inputField"
+                        class="inputField mb-3"
                         v-model="password"
                         type="password"
                         placeholder="Password"
@@ -93,7 +93,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-xl-8 col-lg-5 col-md-6">
               <div
                 class="top-0 oblique position-absolute h-100 d-md-block d-none me-n8"
               >
@@ -114,12 +114,12 @@
     </section>
   </main>
   <!-- eslint-disable-next-line vue/no-multiple-template-root -->
-  <app-footer />
+  <!-- <app-footer /> -->
 </template>
 
 <script>
-import Navbar from "@/examples/PageLayout/Navbar.vue";
-import AppFooter from "@/examples/PageLayout/Footer.vue";
+// import Navbar from "@/examples/PageLayout/Navbar.vue";
+// import AppFooter from "@/examples/PageLayout/Footer.vue";
 // import SoftInput from "@/components/SoftInput.vue";
 import SoftSwitch from "@/components/SoftSwitch.vue";
 import SoftButton from "@/components/SoftButton.vue";
@@ -140,8 +140,8 @@ export default {
     };
   },
   components: {
-    Navbar,
-    AppFooter,
+    // Navbar,
+    // AppFooter,
     SoftSwitch,
     SoftButton,
   },
