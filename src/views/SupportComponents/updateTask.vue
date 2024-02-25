@@ -104,7 +104,7 @@
           <select class="inputField" v-model="taskData.workers" multiple="true">
             <option
               class="dropdownOptions"
-              v-for="(worker, index) in taskData.workers"
+              v-for="worker in taskData.workers"
               :key="worker.id"
               :value="worker.id"
             >
