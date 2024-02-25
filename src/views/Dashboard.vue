@@ -290,6 +290,9 @@
       <div class="col-lg-12 col-md-6 mb-md-0 mb-4">
         <ManagersVue />
       </div>
+      <div class="col-12">
+        <CalenderView/>
+      </div>
     </div>
   </div>
 </template>
@@ -307,7 +310,7 @@ import BR from "../assets/img/icons/flags/BR.png";
 import useApi from "../supportElements/useAPI";
 import ProjectsVue from "../components/models/Projects.vue";
 import ManagersVue from "../components/models/Managers.vue";
-
+import CalenderView from "../components/CalenderView.vue";
 const api = useApi();
 import {
   faHandPointer,
@@ -367,6 +370,7 @@ export default {
     // AuthorsTable,
     ProjectsVue,
     ManagersVue,
+    CalenderView
   },
   methods: {
     async getManagershandler() {
