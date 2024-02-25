@@ -46,7 +46,7 @@ export default {
         start: task.startDate,
         end: task.endDate,
         title: task.title,
-        color: task.eventColor,
+        color: task.color,
         description: task.description,
         workers: task.workers
       }));
@@ -90,7 +90,7 @@ export default {
         <p style="font-weight: 600; margin-bottom: 0px; padding-left: 10px;">{{ arg.event.title }} </p>
         <div class="avatars">
 
-          <div class="avatars__item" v-for="worker in arg.event.extendedProps.workers">
+          <div class="avatars__item" v-for="worker in arg.event.extendedProps.workers" :key="worker.id">
             <img v-if="worker.avatar" 
                :src="worker.avatar" alt="">
             <div v-else
