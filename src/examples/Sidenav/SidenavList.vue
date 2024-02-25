@@ -24,6 +24,22 @@
             </template>
           </sidenav-collapse>
         </li>
+
+        <li class="nav-item">
+          <!-- <sidenav-collapse navText="Tables" :to="{ name: 'Tables' }">
+            <template #icon>
+              <office />
+            </template>
+          </sidenav-collapse> -->
+          <sidenav-collapse
+            navText="Projects Timeline"
+            :to="{ name: 'Timeline' }"
+          >
+            <template #icon>
+              <MultiUsers />
+            </template>
+          </sidenav-collapse>
+        </li>
         <li class="nav-item">
           <!-- <sidenav-collapse navText="Billing" :to="{ name: 'Billing' }">
             <template #icon>
@@ -47,7 +63,7 @@
 
           <sidenav-collapse navText="Workers" :to="{ name: 'Workers' }">
             <template #icon>
-              <credit-card />
+              <customer-support />
             </template>
           </sidenav-collapse>
         </li>
@@ -80,33 +96,31 @@
         <li class="nav-item">
           <sidenav-collapse navText="Profile" :to="{ name: 'Profile' }">
             <template #icon>
-              <customer-support />
+              <settings />
             </template>
           </sidenav-collapse>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <sidenav-collapse navText="Sign In" :to="{ name: 'Sign In' }">
             <template #icon>
               <document />
             </template>
           </sidenav-collapse>
-        </li>
-        <li class="nav-item">
+        </li> -->
+        <!-- <li class="nav-item">
           <sidenav-collapse navText="Sign Up" :to="{ name: 'Sign Up' }">
             <template #icon>
               <spaceship />
             </template>
           </sidenav-collapse>
-        </li>
+        </li> -->
         <li class="nav-item">
           <div @click="handleLogout" class="nav-link" v-bind="$attrs">
             <div
               class="text-center bg-white shadow icon icon-shape icon-sm border-radius-md d-flex align-items-center justify-content-center"
               :class="this.$store.state.isRTL ? ' ms-2' : 'me-2'"
             >
-              <template>
-                <spaceship />
-              </template>
+              <spaceship />
             </div>
             <span
               class="nav-link-text"
@@ -139,14 +153,15 @@
 import SidenavCollapse from "./SidenavCollapse.vue";
 // import SidenavCard from "./SidenavCard.vue";
 import Shop from "../../components/Icon/Shop.vue";
+
 import Office from "../../components/Icon/Office.vue";
 import CreditCard from "../../components/Icon/CreditCard.vue";
 // import Box3d from "../../components/Icon/Box3d.vue";
 import CustomerSupport from "../../components/Icon/CustomerSupport.vue";
-import Document from "../../components/Icon/Document.vue";
+// import Document from "../../components/Icon/Document.vue";
 import Spaceship from "../../components/Icon/Spaceship.vue";
-// import Settings from "../../components/Icon/Settings.vue";
-
+import Settings from "../../components/Icon/Settings.vue";
+import MultiUsers from "../../components/Icon/MultiUsers.vue";
 export default {
   name: "SidenavList",
   props: {
@@ -161,15 +176,16 @@ export default {
   },
   components: {
     SidenavCollapse,
+    MultiUsers,
     // SidenavCard,
     Shop,
     Office,
     CreditCard,
     // Box3d,
     CustomerSupport,
-    Document,
+    // Document,
     Spaceship,
-    // Settings,
+    Settings,
   },
   methods: {
     getRoute() {

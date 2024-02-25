@@ -286,7 +286,7 @@
                       <div class="d-flex flex-column justify-content-center">
                         <h6 class="mb-0 text-sm">{{ task.title }}</h6>
                         <p class="text-xs text-secondary mb-0">
-                          {{ task.description }}
+                          {{ task.description.slice(0, 42) }}
                         </p>
                       </div>
                     </div>
@@ -303,15 +303,19 @@
                         :data-bs-original-title="
                           manager.username ? manager.username : 'Hi'
                         "
+                        :title="manager.username"
                       >
                         <img
                           :src="manager.avatar ? manager.avatar : img5"
                           rounded-circle
                           alt="image"
                         />
-                        <P style="position: absolute; bottom: 7px">{{
-                          manager.username
-                        }}</P>
+                        <P
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="bottom"
+                          style="position: absolute; bottom: 7px"
+                          >{{ manager.username }}</P
+                        >
                       </a>
                     </div>
                   </td>
@@ -651,12 +655,11 @@ export default {
     },
 
     openTaskForm(taskId = null) {
-      // Open the TaskForm modal
       this.isTaskFormOpen = true;
       this.editTaskId = taskId;
     },
     closeTaskForm() {
-      // Close the TaskForm modal
+      this.getProjectTasks();
       this.isTaskFormOpen = false;
       this.editTaskId = null; // Reset the editTaskId after closing
     },

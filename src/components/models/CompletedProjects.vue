@@ -1,14 +1,14 @@
 <template>
   <div>
-    <div class="card mb-4">
+    <div class="card mb-4 mt-6">
       <div
         class="card-header pb-0"
         style="display: flex; justify-content: space-between"
       >
-        <h6>Projects</h6>
-        <SoftButtonVue @click="openCustomModal"
+        <h6>Completed Projects</h6>
+        <!-- <SoftButtonVue @click="openCustomModal"
           ><slot>Add Project</slot></SoftButtonVue
-        >
+        > -->
       </div>
       <div class="card-body px-0 pb-2">
         <div class="table-responsive">
@@ -44,7 +44,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in filteredProjects" :key="item.id">
+              <tr v-for="item in completedProjects" :key="item.id">
                 <td @click="this.$router.push(`/projectdetail/${item.id}`)">
                   <div style="cursor: pointer" class="d-flex px-2 py-1">
                     <div>
@@ -120,12 +120,11 @@
                           this.$router.push(`/projectdetail/${item.id}`)
                         " -->
                     <a
-                      @click="this.openCompleteAlert(item.id)"
                       href="javascript:;"
                       class="text-secondary font-weight-bold text-xs"
                       data-toggle="tooltip"
                       data-original-title="Edit user"
-                      >Complete</a
+                      >Done</a
                     >
                     /
                     <a
@@ -155,105 +154,6 @@
         </div>
       </div>
     </div>
-
-    <custom-modal ref="customModal" :title="modalTitle">
-      <form id="project-form" @submit.prevent="addNewProject">
-        <div>
-          <label for="inputField">Title: *</label>
-          <input
-            class="inputField"
-            type="text"
-            required
-            placeholder="Project title"
-            v-model="project.title"
-            size="md"
-          />
-        </div>
-
-        <div>
-          <label for="inputField">Description: *</label>
-          <input
-            class="inputField"
-            type="text"
-            placeholder="Project description"
-            v-model="project.description"
-            size="md"
-          />
-        </div>
-
-        <div>
-          <label for="inputField">Image</label>
-          <input
-            class="inputField"
-            id="avatarInput"
-            type="file"
-            placeholder=""
-            @change="handleFileChange"
-            size="md"
-          />
-        </div>
-
-        <div style="display: flex; justify-content: space-between">
-          <div>
-            <label for="inputField">Start Date</label>
-            <input
-              class="inputField"
-              type="date"
-              placeholder="Start date"
-              v-model="project.startDate"
-              size="md"
-            />
-          </div>
-
-          <div>
-            <label for="inputField">End Date</label>
-            <input
-              class="inputField"
-              type="date"
-              placeholder="End date"
-              v-model="project.endDate"
-              size="md"
-            />
-          </div>
-        </div>
-        <div>
-          <input
-            style="width: 40px; width: 40px"
-            class="custom-checkbox"
-            id="inputField"
-            type="checkbox"
-            placeholder="Active"
-            v-model="project.is_active"
-          />
-          <label for="inputField">Set Project Active</label>
-        </div>
-        <div>
-          <label for="inputField">Managers : *</label>
-          <select
-            required
-            class="inputField"
-            v-model="project.managers"
-            multiple="true"
-          >
-            <option
-              class="dropdownOptions"
-              v-for="(manager, index) in managers"
-              :key="manager.id"
-              :value="manager.id"
-            >
-              <p>{{ index + 1 }}).</p>
-              {{ manager.username }}
-            </option>
-          </select>
-        </div>
-      </form>
-      <template v-slot:actions>
-        <SoftButtonVue form="project-form" type="submit" :loading="loading">
-          Add Project
-        </SoftButtonVue>
-      </template>
-    </custom-modal>
-
     <SweetAlert ref="sweetAlert" :alertData="alertData">
       <template v-slot:actions>
         <soft-button-vue
@@ -268,11 +168,7 @@
           Cancel
         </soft-button-vue>
         <soft-button-vue
-          @click="
-            this.isProjectCompleted
-              ? this.completeproject()
-              : this.deleteProject()
-          "
+          @click="this.deleteProject()"
           size="md"
           :loading="loading"
         >
@@ -310,17 +206,14 @@ import img18 from "@/assets/img/team-4.jpg";
 import img19 from "@/assets/img/small-logos/logo-invision.svg";
 import img20 from "@/assets/img/team-1.jpg";
 import img21 from "@/assets/img/team-4.jpg";
-import CustomModal from "@/views/components/CustomModal.vue";
 import { mapState } from "vuex";
 import SoftButtonVue from "../SoftButton.vue";
-import { convertToFormData } from "../../supportElements/common";
 import useApi from "../../supportElements/useAPI";
 const api = useApi();
 export default {
   name: "projects-card",
   data() {
     return {
-      isProjectCompleted: false,
       managerCount: 1,
       projectIdDeleteTobe: 0,
       alertData: {
@@ -354,13 +247,25 @@ export default {
       modalTitle: "Add New Project",
       inputFieldValue: "",
       loading: false,
-      projects: [],
+      projects: [
+        {
+          title: "",
+          description: "",
+          image: File | String,
+          startDate: "",
+          endDate: "",
+          status: "",
+          is_active: false,
+          managers: [],
+        },
+      ],
       project: {
         title: "",
         description: "",
         image: File | String,
         startDate: "",
         endDate: "",
+        status: "",
         is_active: false,
         managers: [],
       },
@@ -370,39 +275,20 @@ export default {
   components: {
     SoftAvatar,
     SoftProgress,
-    CustomModal,
+    // CustomModal,
     SoftButtonVue,
     SweetAlert,
   },
   computed: {
     ...mapState(["token"]),
-    filteredProjects() {
-      return this.projects.filter((project) => project.status != "completed");
+    completedProjects() {
+      return this.projects.filter((project) => project.status == "completed");
     },
   },
   methods: {
-    closeProjectModalHandler() {
-      this.project.title = "";
-      this.project.description = "";
-      this.project.image = null;
-      this.project.startDate = "";
-      this.project.endDate = "";
-      this.project.managers = [];
-    },
-
     openDeleteAlert(id) {
       this.$refs.sweetAlert.openModal();
       this.projectIdDeleteTobe = id;
-    },
-
-    openCompleteAlert(id) {
-      (this.isProjectCompleted = true), this.$refs.sweetAlert.openModal();
-      this.projectIdDeleteTobe = id;
-      this.alertData = {
-        icon: "fa fa-bell",
-        alertTitle: "Alert",
-        alertDescription: "Are you sure you have completed this project ?",
-      };
     },
 
     openCustomModal() {
@@ -413,37 +299,6 @@ export default {
     saveAndClose() {
       console.log("Input Field Value:", this.inputFieldValue);
       this.$refs.customModal.closeModal();
-    },
-
-    handleFileChange(event) {
-      this.project.image = event.target.files[0];
-    },
-
-    async addNewProject() {
-      try {
-        this.loading = true;
-        let formData = convertToFormData(this.project, ["image"]);
-
-        const response = await api.post("/api/project/", formData);
-        this.$notify({
-          type: "success",
-          title: "Project added",
-          text: "Project added succesfuly",
-        });
-        this.getProjectHandler();
-        console.log(response);
-        this.loading = false;
-        this.saveAndClose();
-      } catch (err) {
-        this.loading = false;
-        this.$notify({
-          type: "error",
-          title: "Something went wrong",
-          text: err,
-        });
-      } finally {
-        this.loading = false;
-      }
     },
 
     async getProjectHandler() {
@@ -458,21 +313,6 @@ export default {
       } finally {
         console.log("");
         this.loading = false;
-      }
-    },
-
-    async getManagersHandler() {
-      try {
-        this.loading = true;
-        const response = await api.get("/api/users/by-role/manager/", {});
-        this.managers = response.data;
-        console.log("mangers", this.managers);
-        this.loading = false;
-      } catch (err) {
-        console.log(err);
-      } finally {
-        this.loading = false;
-        console.log("");
       }
     },
 
@@ -493,31 +333,12 @@ export default {
         this.loading = false;
       }
     },
-
-    async completeproject() {
-      try {
-        const response = await api.patch(
-          `/api/project/${this.projectIdDeleteTobe}/`,
-          { status: "completed" }
-        );
-
-        console.log(response);
-        this.$notify({
-          type: "error",
-          title: "Project completed",
-          text: "Project marked as completed",
-        });
-        this.getProjectHandler();
-      } catch (err) {
-        console.log(err);
-      }
-    },
   },
+
   mounted() {
     this.userToken = this.token;
     setTooltip();
     this.getProjectHandler();
-    this.getManagersHandler();
   },
 };
 </script>

@@ -316,8 +316,11 @@
             }"
           />
         </div>
-        <div class="mt-4 col-12 col-xl-4 mt-xl-0">
-          <div class="card h-100">
+        <div
+          style="height: 420px; overflow-y: auto"
+          class="mt-4 col-12 col-xl-4 h-40 mt-xl-0"
+        >
+          <div class="card">
             <div
               style="align-items: center; justify-content: space-between"
               class="p-3 pb-0 card-header d-flex"
@@ -842,13 +845,13 @@ export default {
           formData
         );
         this.$store.commit("setUser", resp.data);
-
         this.userData = resp.data;
         this.$notify({
           type: "success",
           title: "Profile updated",
           text: "Entered information of your profile has beed updated",
         });
+        this.userData = this.$store.state.user;
         this.$refs.editProfileModal.closeModal();
       } catch (err) {
         console.log(err);

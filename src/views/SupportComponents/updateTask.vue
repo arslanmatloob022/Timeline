@@ -13,7 +13,7 @@
           class="inputField"
           type="text"
           required
-          placeholder="Task title"
+          :placeholder="loading ? 'Loading...' : 'Titile'"
           v-model="taskData.title"
           size="md"
         />
@@ -24,7 +24,7 @@
         <input
           class="inputField"
           type="text"
-          placeholder="Task description"
+          :placeholder="loading ? 'Loading...' : 'Description'"
           v-model="taskData.description"
           size="md"
         />
@@ -48,7 +48,7 @@
           <input
             class="inputField"
             type="date"
-            placeholder="Start date"
+            :placeholder="loading ? 'Loading...' : 'Start date'"
             v-model="taskData.startDate"
             size="md"
           />
@@ -59,7 +59,7 @@
           <input
             class="inputField"
             type="date"
-            placeholder="End date"
+            :placeholder="loading ? 'Loading...' : 'End date'"
             v-model="taskData.endDate"
             size="md"
           />
@@ -69,7 +69,7 @@
           <input
             class="inputField"
             type="color"
-            placeholder="End date"
+            placeholder="Color"
             v-model="taskData.color"
             size="md"
           />
@@ -101,7 +101,7 @@
               >Add More worker(s)</i
             ></label
           >
-          <select class="inputField" v-model="taskData.workers" multiple="true">
+          <select class="inputField" v-model="selectedWorkers" multiple="true">
             <option
               class="dropdownOptions"
               v-for="worker in taskData.workers"
@@ -122,7 +122,7 @@
           @click="handleModalClosed"
           >Close</soft-button
         >
-        <soft-button type="submit" color="success" size="lg">
+        <soft-button type="submit" :loading="loading" color="success" size="lg">
           Save
         </soft-button>
       </div>
@@ -152,6 +152,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       Taskstatus: [
         { value: "active", name: "Active" },
         { value: "pending", name: "Pending" },
@@ -166,16 +167,16 @@ export default {
         status: "",
         color: "",
         project: "", // Populate this as needed
-        workers: [
-          {
-            id: 0,
-            username: "",
-            email: "",
-            role: "worker",
-            avatar: null | String,
-          },
-        ],
+        workers: [],
       },
+      selectedWorkers: [],
+      // {
+      //   id: 0,
+      //   username: "",
+      //   email: "",
+      //   role: "worker",
+      //   avatar: null | String,
+      // },
     };
   },
   components: {
@@ -197,23 +198,26 @@ export default {
   methods: {
     async fetchTaskData() {
       try {
+        this.loading = true;
         const response = await api.get(`/api/task/${this.taskId}`);
         this.taskData = response.data;
       } catch (err) {
         console.log(err);
+      } finally {
+        this.loading = false;
       }
     },
 
     async editTaskHandler() {
       try {
         this.loading = true;
+        this.taskData.workers = this.selectedWorkers;
         let formData = convertToFormData(this.taskData, []);
         const resp = await api.patch(
           `/api/task/${this.taskData.id}/`,
           formData
         );
-        // this.$refs.customModal.closeModal();
-        // this.getProject(this.projectId);
+
         this.$notify({
           type: "success",
           title: "Task Updated",

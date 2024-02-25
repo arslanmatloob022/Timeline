@@ -236,7 +236,7 @@
     </div> -->
 
     <div class="row">
-      <div class="col-lg-12 col-md-6 mb-md-0 mb-4">
+      <div class="col-lg-12 col-md-12 col-sm-12 mb-md-0 mb-4">
         <ProjectsVue />
       </div>
       <!-- <div class="col-lg-4 col-md-6">
@@ -287,11 +287,11 @@
     </div>
 
     <div class="row">
-      <div class="col-lg-12 col-md-6 mb-md-0 mb-4">
+      <div class="col-lg-12 col-md-12 col-sm-12 mb-md-0 mb-4">
         <ManagersVue />
       </div>
       <div class="col-12">
-        <CalenderView/>
+        <CalenderView />
       </div>
     </div>
   </div>
@@ -370,7 +370,7 @@ export default {
     // AuthorsTable,
     ProjectsVue,
     ManagersVue,
-    CalenderView
+    CalenderView,
   },
   methods: {
     async getManagershandler() {

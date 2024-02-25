@@ -169,7 +169,7 @@ export default {
           }
         );
         const token = response.data.token;
-        const user = response.data;
+        const user = response.data.user;
         console.log("new", response.data.token);
         this.$store.commit("setToken", token);
         this.$store.commit("setUser", user);

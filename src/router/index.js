@@ -4,6 +4,7 @@ import Projects from "@/views/Projects.vue";
 import Managers from "@/views/Managers.vue";
 import Workers from "@/views/Workers.vue";
 import Projectdetail from "@/views/Projectdetail.vue";
+import ProjectTimeline from "@/views/ProjectTimeline.vue";
 
 // import Tables from "@/views/Tables.vue";
 // import Billing from "@/views/Billing.vue";
@@ -28,6 +29,11 @@ const routes = [
     path: "/projects",
     name: "Projects",
     component: Projects,
+  },
+  {
+    path: "/timeline",
+    name: "Timeline",
+    component: ProjectTimeline,
   },
   {
     path: "/mangers",

@@ -1,11 +1,11 @@
 <script>
-import FullCalendar from '@fullcalendar/vue3'
-import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
+import FullCalendar from "@fullcalendar/vue3";
+import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import useApi from "../supportElements/useAPI";
 const api = useApi();
 export default {
   components: {
-    FullCalendar
+    FullCalendar,
   },
   data() {
     return {
@@ -13,33 +13,38 @@ export default {
       projects: [],
       calendarOptions: {
         plugins: [resourceTimelinePlugin],
-        schedulerLicenseKey: '0965592368-fcs-1694657447',
-        initialView: 'resourceTimelineMonth',
+        schedulerLicenseKey: "0965592368-fcs-1694657447",
+        initialView: "resourceTimelineMonth",
         height: "auto",
-        resourceAreaWidth: '20%',
+        resourceAreaWidth: "20%",
         selectable: true,
         headerToolbar: {
-          left: 'today prev,next',
-          center: 'title',
-          right: 'resourceTimelineWeek,resourceTimelineMonth,resourceTimelineYear'
+          left: "today prev,next",
+          center: "title",
+          right:
+            "resourceTimelineWeek,resourceTimelineMonth,resourceTimelineYear",
         },
         editable: true,
         views: {
           resourceTimelineWeek: {
-          slotDuration: { days: 1, hours: 1 }, // Each slot represents 1 hour
-          slotLabelFormat: { weekday: 'short', month: 'numeric', day: 'numeric', year: 'numeric' } // Custom slot label format
-          }
+            slotDuration: { days: 1, hours: 1 }, // Each slot represents 1 hour
+            slotLabelFormat: {
+              weekday: "short",
+              month: "numeric",
+              day: "numeric",
+              year: "numeric",
+            }, // Custom slot label format
+          },
         },
-        resourceAreaHeaderContent: 'Projects',
+        resourceAreaHeaderContent: "Projects",
         resources: [],
-      }
-
-    }
+      },
+    };
   },
   methods: {
     renderCalender() {
-      console.log("calende render")
-      console.log(this.tasks)
+      console.log("calende render");
+      console.log(this.tasks);
       const events = this.tasks.map((task) => ({
         id: task.id,
         resourceId: task.project,
@@ -48,20 +53,20 @@ export default {
         title: task.title,
         color: task.color,
         description: task.description,
-        workers: task.workers
+        workers: task.workers,
       }));
-      this.calendarOptions.resources = this.projects
-      this.calendarOptions.events = events
+      this.calendarOptions.resources = this.projects;
+      this.calendarOptions.events = events;
     },
 
     async getProjectHandler() {
       try {
-        console.log("inside all projects fun")
+        console.log("inside all projects fun");
         const response = await api.get("/api/project/projects", {});
         this.projects = response.data;
-        console.log(this.projects)
+        console.log(this.projects);
       } catch (err) {
-        this.projects = []
+        this.projects = [];
       }
     },
     async gettasksHandler() {
@@ -69,33 +74,51 @@ export default {
         const response = await api.get("/api/task", {});
         this.tasks = response.data;
       } catch (err) {
-        this.tasks = []
+        this.tasks = [];
       }
     },
-
-
   },
   async mounted() {
     await Promise.all([this.getProjectHandler(), this.gettasksHandler()]);
     this.renderCalender();
   },
-
-}
+};
 </script>
 <template>
-
   <FullCalendar :options="calendarOptions">
-    <template v-slot:eventContent='arg'>
-      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;">
-        <p style="font-weight: 600; margin-bottom: 0px; padding-left: 10px;">{{ arg.event.title }} </p>
+    <template v-slot:eventContent="arg">
+      <div
+        style="
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: space-between;
+        "
+      >
+        <p style="font-weight: 600; margin-bottom: 0px; padding-left: 10px">
+          {{ arg.event.title }}
+        </p>
         <div class="avatars">
-
-          <div class="avatars__item" v-for="worker in arg.event.extendedProps.workers" :key="worker.id">
-            <img v-if="worker.avatar" 
-               :src="worker.avatar" alt="">
-            <div v-else
-              style="width: 100%; height: 100%; background-color: #292f3c;  display: flex;align-items: center; justify-content: center;">
-              <h6 class="mb-0" style="color: white;">{{ worker.username ? worker.username.slice(0, 2) : 'AA' }}</h6>
+          <div
+            class="avatars__item"
+            v-for="worker in arg.event.extendedProps.workers"
+            :key="worker.id"
+          >
+            <img v-if="worker.avatar" :src="worker.avatar" alt="" />
+            <div
+              v-else
+              style="
+                width: 100%;
+                height: 100%;
+                background-color: #292f3c;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              "
+            >
+              <h6 class="mb-0" style="color: white">
+                {{ worker.username ? worker.username.slice(0, 2) : "AA" }}
+              </h6>
             </div>
           </div>
         </div>
@@ -115,14 +138,10 @@ export default {
   margin: auto;
   padding: 0px;
   flex-direction: row;
-
-
 }
 
 .avatars:hover .avatars__item {
-
   margin-right: 30px;
-
 }
 
 .avatars__item {
@@ -144,7 +163,7 @@ export default {
   transition: all 0.4s ease-in-out;
 }
 
-.avatars__item>img {
+.avatars__item > img {
   width: 100%;
-
-}</style>
+}
+</style>
