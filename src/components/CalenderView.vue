@@ -9,7 +9,9 @@ export default {
   },
   data() {
     return {
+      query: '',
       tasks: [],
+      filteredResources: [],
       projects: [],
       calendarOptions: {
         plugins: [resourceTimelinePlugin],
@@ -58,12 +60,20 @@ export default {
       this.calendarOptions.resources = this.projects;
       this.calendarOptions.events = events;
     },
-
+    searchProjectHandler() {
+      if (this.query) {
+        this.filteredResources = this.projects.filter(project => project.title.toLowerCase().includes(this.query.toLowerCase()));
+      } else {
+        this.filteredResources = this.projects
+      }
+      this.calendarOptions.resources = this.filteredResources;
+    },
     async getProjectHandler() {
       try {
         console.log("inside all projects fun");
         const response = await api.get("/api/project/projects", {});
         this.projects = response.data;
+        this.filteredResources = response.data;
         console.log(this.projects);
       } catch (err) {
         this.projects = [];
@@ -85,47 +95,53 @@ export default {
 };
 </script>
 <template>
-  <FullCalendar :options="calendarOptions">
-    <template v-slot:eventContent="arg">
-      <div
-        style="
+  <div>
+    <form id="manger-form" @submit.prevent="searchProjectHandler">
+      <div>
+        <label for="inputField">Search project</label>
+        <br>
+        <input class="inputField mb-4 px-3 py-2"
+          style="border:none; background-color: white;box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;  border-radius: 20px; outline: none; width: 300px;"
+          type="text" placeholder="search ..." v-model="query" />
+      </div>
+    </form>
+
+    <FullCalendar :options="calendarOptions">
+      <template v-slot:eventContent="arg">
+        <div style="
           display: flex;
           flex-wrap: wrap;
           align-items: center;
           justify-content: space-between;
-        "
-      >
-        <p style="font-weight: 600; margin-bottom: 0px; padding-left: 10px">
-          {{ arg.event.title }}
-        </p>
-        <div class="avatars">
-          <div
-            class="avatars__item"
-            v-for="worker in arg.event.extendedProps.workers"
-            :key="worker.id"
-          >
-            <img v-if="worker.avatar" :src="worker.avatar" alt="" />
-            <div
-              v-else
-              style="
+        ">
+          <p style="font-weight: 600; margin-bottom: 0px; padding-left: 10px">
+            {{ arg.event.title }}
+          </p>
+          <div class="avatars">
+            <div class="avatars__item" v-for="worker in arg.event.extendedProps.workers" :key="worker.id">
+              <img v-if="worker.avatar" :src="worker.avatar" alt="" />
+              <div v-else style="
                 width: 100%;
                 height: 100%;
                 background-color: #292f3c;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-              "
-            >
-              <h6 class="mb-0" style="color: white">
-                {{ worker.username ? worker.username.slice(0, 2) : "AA" }}
-              </h6>
+              ">
+                <h6 class="mb-0" style="color: white">
+                  {{ worker.username ? worker.username.slice(0, 2) : "AA" }}
+                </h6>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <!-- <p>{{ arg.event.extendedProps.description }}</p> -->
-    </template>
-  </FullCalendar>
+        <!-- <p>{{ arg.event.extendedProps.description }}</p> -->
+      </template>
+    </FullCalendar>
+    <div v-if="filteredResources.length == 0" style="display: flex; align-items: center; justify-content: center;">
+      <h4 class="mt-5 mb-5" style="color: darkgray;">No project found</h4>
+    </div>
+  </div>
 </template>
 <style scss>
 .fc-h-event {
@@ -163,7 +179,7 @@ export default {
   transition: all 0.4s ease-in-out;
 }
 
-.avatars__item > img {
+.avatars__item>img {
   width: 100%;
 }
 </style>
