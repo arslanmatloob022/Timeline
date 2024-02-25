@@ -77,7 +77,7 @@
                       "
                     >
                       <img
-                        :src="manager.avatar ? manager.avatar : img5"
+                        :src="manager.avatar ? manager.avatar : img4"
                         rounded-circle
                         alt="image"
                       />

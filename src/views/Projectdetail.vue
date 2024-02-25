@@ -303,19 +303,15 @@
                         :data-bs-original-title="
                           manager.username ? manager.username : 'Hi'
                         "
-                        :title="manager.username"
                       >
                         <img
-                          :src="manager.avatar ? manager.avatar : img5"
+                          :src="manager.avatar ? manager.avatar : spaceImg"
                           rounded-circle
                           alt="image"
                         />
-                        <P
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="bottom"
-                          style="position: absolute; bottom: 7px"
-                          >{{ manager.username }}</P
-                        >
+                        <P style="position: absolute; bottom: 7px">{{
+                          manager.username
+                        }}</P>
                       </a>
                     </div>
                   </td>
@@ -510,6 +506,8 @@ import CustomModal from "./components/CustomModal.vue";
 import { convertToFormData } from "@/supportElements/common.js";
 import updateTaskVue from "./SupportComponents/updateTask.vue";
 
+import spaceImg from "@/assets/img/team-4.jpg";
+
 const api = useApi();
 export default {
   name: "ProjectsDetail",
@@ -527,8 +525,9 @@ export default {
       modalTitle: "Add Task",
       alertData: {
         icon: "fa fa-bell",
-        alertTitle: "Alert",
-        alertDescription: "This is Alert Description",
+        alertTitle: "Delete Task ?",
+        alertDescription:
+          "After deleting this task you will not be able to recover it",
       },
       workersData: [{ id: 0, username: "", email: "", phoneNumber: "" }],
 
@@ -580,6 +579,7 @@ export default {
       ],
       img1,
       img2,
+      spaceImg,
     };
   },
 

@@ -16,7 +16,7 @@
           <div class="col-auto">
             <div class="avatar avatar-xl position-relative">
               <img
-                :src="this.userData.avatar"
+                :src="this.userData.avatar ? this.userData.avatar : img4"
                 alt="profile_image"
                 class="shadow-sm w-100 border-radius-lg"
               />
@@ -344,7 +344,7 @@
                 >
                   <soft-avatar
                     class="me-3"
-                    :img="admin.avatar"
+                    :img="admin.avatar ? admin.avatar : team4"
                     alt="kal"
                     shadow="regular"
                     circular

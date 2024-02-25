@@ -119,14 +119,14 @@
                     <!-- @click="
                           this.$router.push(`/projectdetail/${item.id}`)
                         " -->
-                    <a
+                    <!-- <a
                       href="javascript:;"
                       class="text-secondary font-weight-bold text-xs"
                       data-toggle="tooltip"
                       data-original-title="Edit user"
                       >Done</a
                     >
-                    /
+                    / -->
                     <a
                       @click="this.openDeleteAlert(item.id)"
                       href="javascript:;"
