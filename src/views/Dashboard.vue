@@ -293,6 +293,9 @@
       <div class="col-12">
         <CalenderView />
       </div>
+      <div class="col-12">
+        <AdminCalenderView />
+      </div>
     </div>
   </div>
 </template>
@@ -311,6 +314,8 @@ import useApi from "../supportElements/useAPI";
 import ProjectsVue from "../components/models/Projects.vue";
 import ManagersVue from "../components/models/Managers.vue";
 import CalenderView from "../components/CalenderView.vue";
+import AdminCalenderView from "../components/AdminCalenderView.vue";
+
 const api = useApi();
 import {
   faHandPointer,
@@ -371,6 +376,7 @@ export default {
     ProjectsVue,
     ManagersVue,
     CalenderView,
+    AdminCalenderView
   },
   methods: {
     async getManagershandler() {
