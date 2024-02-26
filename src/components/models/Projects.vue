@@ -1,5 +1,34 @@
 <template>
-  <div>
+  <div class="mb-6">
+    <form id="manger-form" @submit.prevent="searchProjectHandler">
+      <div class="flex-between">
+        <div>
+          <label for="inputField">Search project</label>
+          <br />
+          <input
+            class="inputField mb-4 px-3 py-2"
+            style="
+              border: none;
+              background-color: white;
+              box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+              border-radius: 20px;
+              outline: none;
+              width: 300px;
+            "
+            type="text"
+            placeholder="search ..."
+            v-model="query"
+          />
+        </div>
+
+        <div class="tabs-container">
+          <button class="active">All</button>
+          <button>Active</button>
+          <button>Pending</button>
+          <button>Completed</button>
+        </div>
+      </div>
+    </form>
     <div class="card mb-4">
       <div
         class="card-header pb-0"

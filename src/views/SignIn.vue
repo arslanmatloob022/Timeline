@@ -177,7 +177,7 @@ export default {
         this.$notify({
           type: "success",
           title: "Important message",
-          text: "Hello user!",
+          text: `Hello ${response.data.user.username} !`,
         });
         this.$router.push("/dashboard");
         console.error("Login success");

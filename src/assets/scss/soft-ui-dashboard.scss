@@ -82,3 +82,23 @@
     }
   }
 }
+
+.fullView {
+  background-color: #ffffff;
+  padding: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999;
+  width: 100%;
+  height: 100%;
+}
+
+.view-button {
+  border-radius: 8px;
+  padding: 2px 8px;
+  color: #f1f1f1;
+  background-color: #344767;
+}

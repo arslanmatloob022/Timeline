@@ -9,6 +9,7 @@ export default {
   },
   data() {
     return {
+      fullWidthView: false,
       query: "",
       tasks: [],
       filteredResources: [],
@@ -89,6 +90,9 @@ export default {
         this.tasks = [];
       }
     },
+    showFullView() {
+      this.fullWidthView = !this.fullWidthView;
+    },
   },
   async mounted() {
     await Promise.all([this.getProjectHandler(), this.gettasksHandler()]);
@@ -97,7 +101,7 @@ export default {
 };
 </script>
 <template>
-  <div class="mb-6">
+  <div class="mb-6" :class="fullWidthView ? 'fullView' : ''">
     <form id="manger-form" @submit.prevent="searchProjectHandler">
       <div class="flex-between">
         <div>
@@ -125,6 +129,9 @@ export default {
           <button>Pending</button>
           <button>Completed</button>
         </div>
+        <button class="view-button" @click="showFullView()">
+          <i :class="fullWidthView ? 'fa fa-compress' : 'fa fa-expand'"></i>
+        </button>
       </div>
     </form>
 
@@ -177,7 +184,7 @@ export default {
     </div>
   </div>
 </template>
-<style scss>
+<style scss scoped>
 .fc-h-event {
   border-radius: 10px !important;
 }

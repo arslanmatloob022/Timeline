@@ -3,7 +3,9 @@
     <div class="col-12">
       <CalenderView />
     </div>
-
+    <div class="col-12">
+      <AdminCalenderView />
+    </div>
     <custom-modal ref="customModal" :title="modalTitle">
       <form id="project-form" @submit.prevent="addNewProject">
         <div>
@@ -134,6 +136,7 @@ import useApi from "../supportElements/useAPI";
 import CustomModal from "@/views/components/CustomModal.vue";
 import SoftButtonVue from "../components/SoftButton.vue";
 import CalenderView from "../components/CalenderView.vue";
+import AdminCalenderView from "../components/AdminCalenderView.vue";
 
 const api = useApi();
 export default {
@@ -183,6 +186,7 @@ export default {
   },
   components: {
     CalenderView,
+    AdminCalenderView,
     // Projects,
     // DefaultProjectCard,
     SoftButtonVue,
