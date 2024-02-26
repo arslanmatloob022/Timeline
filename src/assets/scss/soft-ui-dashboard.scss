@@ -28,3 +28,57 @@
 
 // Custom Variables
 @import "soft-ui-dashboard/custom/styles";
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.flex-around {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.tabs-container {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+
+  button {
+    background-color: #fff;
+    border-radius: 6px;
+    border: none;
+    font-weight: 500;
+    padding: 8px 22px;
+    color: #fff;
+
+    &:nth-child(1) {
+      background-color: #17c1e8;
+    }
+    &:nth-child(2) {
+      background-color: #82d616;
+    }
+    &:nth-child(3) {
+      background-color: #fbcf33;
+    }
+    &:nth-child(4) {
+      background-color: #cb0c9f;
+    }
+
+    &.active {
+      &:nth-child(1) {
+        box-shadow: 0 0 8px 1px #17c1e8d7;
+      }
+      &:nth-child(2) {
+        box-shadow: 0 0 8px 1px #82d616d7;
+      }
+      &:nth-child(3) {
+        box-shadow: 0 0 8px 1px #fbcf33d7;
+      }
+      &:nth-child(4) {
+        box-shadow: 0 0 8px 1px #cb0c9fd7;
+      }
+    }
+  }
+}

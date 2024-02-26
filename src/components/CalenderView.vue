@@ -9,7 +9,7 @@ export default {
   },
   data() {
     return {
-      query: '',
+      query: "",
       tasks: [],
       filteredResources: [],
       projects: [],
@@ -62,9 +62,11 @@ export default {
     },
     searchProjectHandler() {
       if (this.query) {
-        this.filteredResources = this.projects.filter(project => project.title.toLowerCase().includes(this.query.toLowerCase()));
+        this.filteredResources = this.projects.filter((project) =>
+          project.title.toLowerCase().includes(this.query.toLowerCase())
+        );
       } else {
-        this.filteredResources = this.projects
+        this.filteredResources = this.projects;
       }
       this.calendarOptions.resources = this.filteredResources;
     },
@@ -95,39 +97,68 @@ export default {
 };
 </script>
 <template>
-  <div>
+  <div class="mb-6">
     <form id="manger-form" @submit.prevent="searchProjectHandler">
-      <div>
-        <label for="inputField">Search project</label>
-        <br>
-        <input class="inputField mb-4 px-3 py-2"
-          style="border:none; background-color: white;box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;  border-radius: 20px; outline: none; width: 300px;"
-          type="text" placeholder="search ..." v-model="query" />
+      <div class="flex-between">
+        <div>
+          <label for="inputField">Search project</label>
+          <br />
+          <input
+            class="inputField mb-4 px-3 py-2"
+            style="
+              border: none;
+              background-color: white;
+              box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+              border-radius: 20px;
+              outline: none;
+              width: 300px;
+            "
+            type="text"
+            placeholder="search ..."
+            v-model="query"
+          />
+        </div>
+
+        <div class="tabs-container">
+          <button class="active">All</button>
+          <button>Active</button>
+          <button>Pending</button>
+          <button>Completed</button>
+        </div>
       </div>
     </form>
 
     <FullCalendar :options="calendarOptions">
       <template v-slot:eventContent="arg">
-        <div style="
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-          justify-content: space-between;
-        ">
+        <div
+          style="
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+          "
+        >
           <p style="font-weight: 600; margin-bottom: 0px; padding-left: 10px">
             {{ arg.event.title }}
           </p>
           <div class="avatars">
-            <div class="avatars__item" v-for="worker in arg.event.extendedProps.workers" :key="worker.id">
+            <div
+              class="avatars__item"
+              v-for="worker in arg.event.extendedProps.workers"
+              :key="worker.id"
+            >
               <img v-if="worker.avatar" :src="worker.avatar" alt="" />
-              <div v-else style="
-                width: 100%;
-                height: 100%;
-                background-color: #292f3c;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-              ">
+              <div
+                v-else
+                style="
+                  width: 100%;
+                  height: 100%;
+                  background-color: #292f3c;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                "
+              >
                 <h6 class="mb-0" style="color: white">
                   {{ worker.username ? worker.username.slice(0, 2) : "AA" }}
                 </h6>
@@ -138,8 +169,11 @@ export default {
         <!-- <p>{{ arg.event.extendedProps.description }}</p> -->
       </template>
     </FullCalendar>
-    <div v-if="filteredResources.length == 0" style="display: flex; align-items: center; justify-content: center;">
-      <h4 class="mt-5 mb-5" style="color: darkgray;">No project found</h4>
+    <div
+      v-if="filteredResources.length == 0"
+      style="display: flex; align-items: center; justify-content: center"
+    >
+      <h4 class="mt-5 mb-5" style="color: darkgray">No project found</h4>
     </div>
   </div>
 </template>
@@ -179,7 +213,7 @@ export default {
   transition: all 0.4s ease-in-out;
 }
 
-.avatars__item>img {
+.avatars__item > img {
   width: 100%;
 }
 </style>
