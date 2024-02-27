@@ -5,11 +5,17 @@
         <div class="mt-4 row">
           <div class="col-12">
             <div class="mb-4 card">
-              <div class="p-3 pb-0 card-header">
+              <div class="p-3 pb-0 card-header d-flex align-items-center">
                 <h6 class="mb-1">Project information</h6>
-                <!-- <p class="text-sm">
-                  Here you can see and update any information of your project
-                </p> -->
+                <i
+                  class="fa fa-pencil-square pointer"
+                  @click="
+                    () => {
+                      this.$refs.editCustomModal.openModal();
+                    }
+                  "
+                  aria-hidden="true"
+                ></i>
               </div>
               <div class="p-3 card-body">
                 <div class="row">
@@ -252,7 +258,7 @@
         <!-- tasks -->
         <div class="card-body px-0 pt-0 pb-2">
           <div class="table-responsive p-0">
-            <table class="table align-items-center mb-0">
+            <table class="table mb-0">
               <thead>
                 <tr>
                   <th
@@ -332,8 +338,7 @@
                         class="text-secondary font-weight-bold text-xs"
                         data-toggle="tooltip"
                         data-original-title="Edit user"
-                        @click="this.openTaskForm(task.id)"
-                        >Edit</a
+                        >Active</a
                       >
                       |
                       <a
@@ -341,7 +346,16 @@
                         class="text-secondary font-weight-bold text-xs"
                         data-toggle="tooltip"
                         data-original-title="Edit user"
-                        >Done</a
+                        >Completed</a
+                      >
+                      |
+                      <a
+                        href="javascript:;"
+                        class="text-secondary font-weight-bold text-xs"
+                        data-toggle="tooltip"
+                        data-original-title="Edit user"
+                        @click="this.openTaskForm(task.id)"
+                        >Edit</a
                       >
                       |
                       <a
@@ -486,6 +500,115 @@
       </template>
     </custom-modal>
 
+    <custom-modal ref="editCustomModal" :title="editmodalTitle">
+      <form id="project-form" @submit.prevent="editProject">
+        <div class="row">
+          <div class="col-6">
+            <div>
+              <label for="inputField">Title: *</label>
+              <input
+                class="inputField"
+                type="text"
+                required
+                placeholder="Project title"
+                v-model="projectData.title"
+                size="md"
+              />
+            </div>
+            <div>
+              <label for="inputField">Start Date</label>
+              <input
+                class="inputField"
+                type="date"
+                placeholder="Start date"
+                v-model="projectData.startDate"
+                size="md"
+              />
+            </div>
+
+            <div>
+              <label for="inputField">End Date</label>
+              <input
+                class="inputField"
+                type="date"
+                placeholder="End date"
+                v-model="projectData.endDate"
+                size="md"
+              />
+            </div>
+          </div>
+          <div class="col-6 justify-conten-center">
+            <img
+              class="mb-2 ml-5"
+              style="
+                width: 140px;
+                height: 140px;
+                border-radius: 50%;
+                margin-top: 10px;
+              "
+              :src="preview ? preview : '/preview.jpeg'"
+              alt="asdas"
+            />
+            <input
+              class="inputField"
+              type="file"
+              accept="image/*"
+              @change="handleFileChange"
+            />
+          </div>
+        </div>
+        <div>
+          <label for="inputField">Description: *</label>
+          <input
+            class="inputField"
+            type="text"
+            placeholder="Project description"
+            v-model="projectData.description"
+            size="md"
+          />
+        </div>
+
+        <div style="display: flex; justify-content: space-between"></div>
+        <div class="align-items-center">
+          <input
+            class="custom-checkbox"
+            id="inputFieldcheck"
+            type="checkbox"
+            placeholder="Active"
+            v-model="projectData.is_active"
+          />
+          <label class="mt-2" for="inputFieldcheck">Set Project Active</label>
+        </div>
+        <div>
+          <div class="flex-between">
+            <label for="inputField">Managers : </label>
+            <i
+              style="color: #249c56; font-size: 14px"
+              @click="getManagershandler()"
+              class="fa fa-plus"
+              aria-hidden="true"
+              >Add More Manager(s)</i
+            >
+          </div>
+          <select class="inputField" v-model="selectedManagers" multiple="true">
+            <option
+              class="dropdownOptions"
+              v-for="manager in projectData.managers"
+              :key="manager.id"
+              :value="manager.id"
+            >
+              {{ manager.username }}
+            </option>
+          </select>
+        </div>
+      </form>
+      <template v-slot:actions>
+        <SoftButtonVue form="project-form" type="submit" :loading="loading">
+          Save Project
+        </SoftButtonVue>
+      </template>
+    </custom-modal>
+
     <update-task-vue
       :isOpen="isTaskFormOpen"
       :closeModal="closeTaskForm"
@@ -513,6 +636,8 @@ export default {
   name: "ProjectsDetail",
   data() {
     return {
+      selectedManagers: [],
+      preview: null,
       isTaskFormOpen: false,
       editTaskId: null,
       loading: false,
@@ -522,6 +647,7 @@ export default {
         { value: "completed", name: "Completed" },
         { value: "cancelled", name: "cancelled" },
       ],
+      editmodalTitle: "Edit Project",
       modalTitle: "Add Task",
       alertData: {
         icon: "fa fa-bell",
@@ -597,6 +723,8 @@ export default {
       try {
         const resp = await api.get(`/api/project/${projectId}/`);
         this.projectData = resp.data;
+        this.preview = resp.data.image;
+
         console.log("project data ", this.projectData);
       } catch (err) {
         console.log(err);
@@ -624,6 +752,7 @@ export default {
         const resp = await api.post("/api/task/", formData);
         this.$refs.customModal.closeModal();
         this.getProject(this.projectId);
+        this.getProjectTasks();
         this.$notify({
           type: "success",
           title: "Task Added",
@@ -649,6 +778,53 @@ export default {
         );
         this.projectTasks = resp.data;
         console.log(resp.data);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    async getManagershandler() {
+      try {
+        this.loading = true;
+        const response = await api.get("/api/users/by-role/manager/", {});
+        this.projectData.managers = response.data;
+        console.log("data", this.managersData);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    handleFileChange(event) {
+      this.projectData.image = event.target.files[0];
+      var input = event.target;
+      if (input.files) {
+        var reader = new FileReader();
+        reader.onload = (e) => {
+          this.preview = e.target.result;
+        };
+        this.image = input.files[0];
+        reader.readAsDataURL(input.files[0]);
+      }
+    },
+
+    async editProject() {
+      try {
+        this.projectData.managers = this.selectedManagers;
+        let formData = convertToFormData(this.projectData, ["image"]);
+        const resp = await api.patch(
+          `/api/project/${this.$route.params.id}/`,
+          formData
+        );
+        console.log(resp);
+        this.$refs.editCustomModal.closeModal();
+        this.$notify({
+          type: "success",
+          title: "Project updated",
+          text: "Project updated succesfuly",
+        });
+        this.getProject(this.$route.params.id);
       } catch (err) {
         console.log(err);
       }
@@ -683,33 +859,9 @@ export default {
   cursor: pointer;
 }
 
-.inputField {
-  width: 100%;
-  padding: 4px 14px;
-  border-radius: 8px;
-  border: 1px solid #cccccc;
-}
-.inputField:focus {
-  border: 2px solid #82d616; /* Change the border color when in focus */
-  outline: none; /* Remove the default focus outline */
-  box-shadow: 0 0 5px #82d61670;
-}
-.inputField:active {
-  background-color: #f8f9fa;
-}
-.dropdownOptions {
-  border-radius: 8px;
-}
-
-/* Add these styles or adjust as needed */
-.dropdown-container {
-  position: relative;
-  display: inline-block;
-}
-
 .dropdown-card {
   position: absolute;
-  left: -150px; /* Adjust as needed */
+  left: 0; /* Adjust as needed */
   top: 0;
   background-color: #fff;
   border: 1px solid #ccc;

@@ -34,10 +34,28 @@
   align-items: center;
   justify-content: space-between;
 }
+
 .flex-around {
   display: flex;
   align-items: center;
   justify-content: space-around;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.align-items-center {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.justify-conten-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
 }
 
 .tabs-container {
@@ -50,21 +68,10 @@
     border-radius: 6px;
     border: none;
     font-weight: 500;
-    padding: 8px 22px;
-    color: #fff;
-
-    &:nth-child(1) {
-      background-color: #17c1e8;
-    }
-    &:nth-child(2) {
-      background-color: #82d616;
-    }
-    &:nth-child(3) {
-      background-color: #fbcf33;
-    }
-    &:nth-child(4) {
-      background-color: #cb0c9f;
-    }
+    padding: 6px 22px;
+    color: #82d616;
+    background-color: #ffffff;
+    box-shadow: 0 0 8px 1px #c0c0c0d7;
 
     &.active {
       &:nth-child(1) {
@@ -101,4 +108,66 @@
   padding: 2px 8px;
   color: #f1f1f1;
   background-color: #344767;
+}
+
+.action-btn {
+  background-color: #82d616;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.inputField {
+  width: 100%;
+  padding: 4px 14px;
+  border-radius: 8px;
+  border: 1px solid #82d616;
+}
+.inputField:focus {
+  border: 2px solid #cb0c9f; /* Change the border color when in focus */
+  outline: none; /* Remove the default focus outline */
+  box-shadow: 0 0 4px #cb0c9f;
+}
+.inputField:active {
+  background-color: #f8f9fa;
+}
+.dropdownOptions {
+  border-radius: 8px;
+}
+
+/* Add these styles or adjust as needed */
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-card {
+  position: absolute;
+  left: -150px; /* Adjust as needed */
+  top: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border-radius: 8px;
+  z-index: 1;
+}
+
+.dropdown-card button {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 8px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-card button:hover {
+  background-color: #0056b3;
 }

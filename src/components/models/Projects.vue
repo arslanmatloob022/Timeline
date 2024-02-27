@@ -22,10 +22,10 @@
         </div>
 
         <div class="tabs-container">
-          <button class="active">All</button>
-          <button>Active</button>
-          <button>Pending</button>
-          <button>Completed</button>
+          <button @click="filterProject('all')" class="active">All</button>
+          <button @click="filterProject('active')">Active</button>
+          <button @click="filterProject('pending')">Pending</button>
+          <!-- <button>Completed</button> -->
         </div>
       </div>
     </form>
@@ -41,7 +41,7 @@
       </div>
       <div class="card-body px-0 pb-2">
         <div class="table-responsive">
-          <table v-if="!loading" class="table align-items-center mb-0">
+          <table v-if="!loading" class="table mb-0">
             <thead>
               <tr>
                 <th
@@ -57,7 +57,7 @@
                 <th
                   class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
                 >
-                  Added at
+                  Status
                 </th>
                 <th
                   class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
@@ -118,7 +118,7 @@
                 </td>
                 <td class="align-middle text-center text-sm">
                   <span class="text-xs font-weight-bold">{{
-                    item.created.slice(0, 10)
+                    item.status
                   }}</span>
                 </td>
                 <td class="align-middle">
@@ -349,6 +349,7 @@ export default {
   name: "projects-card",
   data() {
     return {
+      filterProjects: "All",
       isProjectCompleted: false,
       managerCount: 1,
       projectIdDeleteTobe: 0,
@@ -406,10 +407,15 @@ export default {
   computed: {
     ...mapState(["token"]),
     filteredProjects() {
-      return this.projects.filter((project) => project.status != "completed");
+      return this.projects.filter(
+        (project) => project.status != this.filterProjects
+      );
     },
   },
   methods: {
+    filterProject(filters) {
+      this.filterProjects = filters;
+    },
     closeProjectModalHandler() {
       this.project.title = "";
       this.project.description = "";
