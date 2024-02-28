@@ -10,6 +10,13 @@ export default {
   data() {
     return {
       fullWidthView: false,
+      activeFilter:'active',
+      colors:{
+        'pending':'#fbcf33',
+        'active':'#82d616',
+        'completed':'#cb0c9f',
+        'canceled':'#344767'
+      },
       query: "",
       tasks: [],
       filteredResources: [],
@@ -40,7 +47,7 @@ export default {
           },
         },
         resourceAreaHeaderContent: "Projects",
-        resources: [],
+        resources: this.filteredResources,
       },
     };
   },
@@ -57,19 +64,32 @@ export default {
         color: task.color,
         description: task.description,
         workers: task.workers,
+        borderColor:this.colors[task.status]
       }));
       this.calendarOptions.resources = this.projects;
       this.calendarOptions.events = events;
     },
-    searchProjectHandler() {
+    changeFilterHandler (){
+      console.log("func caleed", this.activeFilter)
+     
+      if(this.activeFilter!='all'){
+        let data  = this.projects.filter((project) =>
+          project.status==this.activeFilter
+        );
+        console.log("local data length", data.length)
+        this.filteredResources= data
+      } else {
+        this.filteredResources = this.projects;
+      }
       if (this.query) {
         this.filteredResources = this.projects.filter((project) =>
           project.title.toLowerCase().includes(this.query.toLowerCase())
         );
-      } else {
-        this.filteredResources = this.projects;
       }
-      this.calendarOptions.resources = this.filteredResources;
+      this.calendarOptions.resources = this.filteredResources
+      console.log(this.filteredResources)
+      console.log(this.filteredResources.length)
+      // this.setResources([])
     },
     async getProjectHandler() {
       try {
@@ -94,6 +114,7 @@ export default {
       this.fullWidthView = !this.fullWidthView;
     },
   },
+
   async mounted() {
     await Promise.all([this.getProjectHandler(), this.gettasksHandler()]);
     this.renderCalender();
@@ -102,7 +123,7 @@ export default {
 </script>
 <template>
   <div class="mb-6" :class="fullWidthView ? 'fullView' : ''">
-    <form id="manger-form" @submit.prevent="searchProjectHandler">
+    <form id="manger-form" @submit.prevent="changeFilterHandler">
       <div class="flex-between">
         <div>
           <label for="inputField">Search project</label>
@@ -124,10 +145,10 @@ export default {
         </div>
 
         <div class="tabs-container">
-          <button class="active">All</button>
-          <button>Active</button>
-          <button>Pending</button>
-          <button>Completed</button>
+          <button @click="()=>{activeFilter='all'; changeFilterHandler();}" :class="activeFilter=='all'&&'active'">All</button>
+          <button @click="()=>{activeFilter='active';changeFilterHandler();}" :class="activeFilter=='active'&&'active'">Active</button>
+          <button @click="()=>{activeFilter='pending';changeFilterHandler();}" :class="activeFilter=='pending'&&'active'">Pending</button>
+          <button @click="()=>{activeFilter='completed'; changeFilterHandler();}" :class="activeFilter=='completed'&&'active'">Completed</button>
         </div>
         <button class="view-button" @click="showFullView()">
           <i :class="fullWidthView ? 'fa fa-compress' : 'fa fa-expand'"></i>
@@ -184,8 +205,9 @@ export default {
     </div>
   </div>
 </template>
-<style scss scoped>
+<style scss >
 .fc-h-event {
+  border-width: thick !important;
   border-radius: 10px !important;
 }
 
