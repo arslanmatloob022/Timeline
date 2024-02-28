@@ -6,102 +6,127 @@
     @closed="handleModalClosed"
   >
     <!-- submitTaskForm -->
-    <form id="project-form" @submit.prevent="editTaskHandler">
-      <div>
-        <label for="inputField">Title: *</label>
-        <input
-          class="inputField"
-          type="text"
-          required
-          :placeholder="loading ? 'Loading...' : 'Titile'"
-          v-model="taskData.title"
-          size="md"
-        />
-      </div>
+    <form id="project-form" @submit.prevent="editProject">
+      <div class="row">
+        <div class="col-6">
+          <div>
+            <label for="inputField">Title: *</label>
+            <input
+              class="inputField"
+              type="text"
+              required
+              placeholder="Project title"
+              v-model="projectData.title"
+              size="md"
+            />
+          </div>
+          <div>
+            <label for="inputField">Start Date</label>
+            <input
+              class="inputField"
+              type="date"
+              placeholder="Start date"
+              v-model="projectData.startDate"
+              size="md"
+            />
+          </div>
 
+          <div>
+            <label for="inputField">End Date</label>
+            <input
+              class="inputField"
+              type="date"
+              placeholder="End date"
+              v-model="projectData.endDate"
+              size="md"
+            />
+          </div>
+        </div>
+        <div class="col-6 justify-conten-center">
+          <img
+            class="mb-2 ml-5"
+            style="
+              width: 140px;
+              height: 140px;
+              border-radius: 50%;
+              margin-top: 10px;
+            "
+            :src="preview ? preview : '/preview.jpeg'"
+            alt="asdas"
+          />
+          <input
+            class="inputField"
+            type="file"
+            accept="image/*"
+            @change="handleFileChange"
+          />
+        </div>
+      </div>
       <div>
         <label for="inputField">Description: *</label>
         <input
           class="inputField"
           type="text"
-          :placeholder="loading ? 'Loading...' : 'Description'"
-          v-model="taskData.description"
+          placeholder="Project description"
+          v-model="projectData.description"
+          size="md"
+        />
+      </div>
+      <div>
+        <label for="inputField">Address</label>
+        <input
+          class="inputField"
+          type="text"
+          placeholder="Project address"
+          v-model="projectData.address"
           size="md"
         />
       </div>
 
-      <div style="display: flex; justify-content: space-between">
-        <div>
-          <label for="inputField">Start Date</label>
-          <input
-            class="inputField"
-            type="date"
-            :placeholder="loading ? 'Loading...' : 'Start date'"
-            v-model="taskData.startDate"
-            size="md"
-          />
-        </div>
-
-        <div>
-          <label for="inputField">End Date</label>
-          <input
-            class="inputField"
-            type="date"
-            :placeholder="loading ? 'Loading...' : 'End date'"
-            v-model="taskData.endDate"
-            size="md"
-          />
-        </div>
-        <div>
-          <label for="inputField">Color</label>
-          <input
-            class="inputField"
-            type="color"
-            placeholder="Color"
-            v-model="taskData.color"
-            size="md"
-          />
-        </div>
-      </div>
-
-      <div style="display: flex; justify-content: space-between">
+      <div style="width: 100%" class="flex-between">
         <div style="width: 45%">
-          <label for="inputField">Set status</label>
-          <select class="inputField" v-model="taskData.status" multiple="false">
-            <option
-              class="dropdownOptions"
-              v-for="task in Taskstatus"
-              :key="task.value"
-              :value="task.value"
-            >
-              {{ task.name }}
-            </option>
-          </select>
-        </div>
-        <div style="width: 45%">
-          <label for="inputField"
-            >Workers : *
+          <div class="flex-between">
+            <label for="inputField">Managers : </label>
             <i
-              style="margin-left: 26px; paddind: 4px 2px; color: #249c56"
-              @click="getWorkershandler()"
+              style="color: #249c56; font-size: 14px"
+              @click="this.getManagersershandler()"
               class="fa fa-plus"
               aria-hidden="true"
-              >Add More worker(s)</i
-            ></label
-          >
-          <select class="inputField" v-model="selectedWorkers" multiple="true">
+              >Add More Manager(s)</i
+            >
+          </div>
+          <select class="inputField" v-model="selectedManagers" multiple="true">
             <option
               class="dropdownOptions"
-              v-for="worker in taskData.workers"
-              :key="worker.id"
-              :value="worker.id"
+              v-for="manager in projectData.managers"
+              :key="manager.id"
+              :value="manager.id"
             >
-              {{ worker.username }}
+              {{ manager.username }}
             </option>
           </select>
-          <span>Press ctrl to selecte multiple</span>
+        </div>
+        <div style="width: 45%">
+          <div>
+            <label for="inputField">Status : </label>
+          </div>
+          <select
+            class="inputField"
+            v-model="projectData.status"
+            multiple="true"
+          >
+            <option
+              class="dropdownOptions"
+              v-for="manager in projectStatus"
+              :key="manager.value"
+              :value="manager.value"
+            >
+              {{ manager.name }}
+            </option>
+          </select>
         </div>
       </div>
+
       <div class="button-container">
         <soft-button
           type="button"
@@ -133,31 +158,33 @@ export default {
       type: Function,
       default: () => {},
     },
-    taskId: {
+    projectId: {
       type: Number,
       default: null,
     },
   },
   data() {
     return {
+      selectedManagers: [],
       loading: false,
-      Taskstatus: [
+      projectStatus: [
         { value: "active", name: "Active" },
         { value: "pending", name: "Pending" },
         { value: "completed", name: "Completed" },
         { value: "cancelled", name: "cancelled" },
       ],
-      taskData: {
+      projectData: {
         title: "",
         description: "",
         startDate: "",
         endDate: "",
         status: "",
+        address: "",
+        image: File | String | null,
         color: "",
         project: "", // Populate this as needed
-        workers: [],
+        managers: [],
       },
-      selectedWorkers: [],
     };
   },
   components: {
@@ -165,23 +192,22 @@ export default {
   },
   computed: {
     modalTitle() {
-      return this.taskId ? "Edit Task" : "Add Task";
+      return this.projectId ? "Edit Task" : "Add Task";
     },
   },
   watch: {
     isOpen(newVal) {
-      if (newVal && this.taskId) {
-        // Fetch task data when the modal is opened and taskId is available
-        this.fetchTaskData();
+      if (newVal && this.projectId) {
+        this.fetchProjectData(this.projectId);
       }
     },
   },
   methods: {
-    async fetchTaskData() {
+    async fetchProjectData(projectId) {
       try {
         this.loading = true;
-        const response = await api.get(`/api/task/${this.taskId}`);
-        this.taskData = response.data;
+        const response = await api.get(`/api/project/${projectId}`);
+        this.projectData = response.data;
       } catch (err) {
         console.log(err);
       } finally {
@@ -189,13 +215,13 @@ export default {
       }
     },
 
-    async editTaskHandler() {
+    async editProject() {
       try {
         this.loading = true;
-        this.taskData.workers = this.selectedWorkers;
-        let formData = convertToFormData(this.taskData, []);
+        this.projectData.managers = this.selectedManagers;
+        let formData = convertToFormData(this.projectData, ["image"]);
         const resp = await api.patch(
-          `/api/task/${this.taskData.id}/`,
+          `/api/project/${this.projectId}/`,
           formData
         );
 
@@ -205,7 +231,7 @@ export default {
           text: "Task updated succesfuly",
         });
         this.handleModalClosed();
-        console.log("task data", resp);
+        console.log("prject data", resp);
       } catch (err) {
         this.$notify({
           type: "error",
@@ -221,17 +247,17 @@ export default {
     submitTaskForm() {
       // Implement your logic to submit the task form
       // Example:
-      // api.post("/api/task/", this.taskData).then(() => {
+      // api.post("/api/task/", this.projectData).then(() => {
       //   this.handleModalClosed();
       //   // Additional logic after form submission
       // });
     },
 
-    async getWorkershandler() {
+    async getManagersershandler() {
       try {
         this.loading = true;
-        const response = await api.get("/api/users/by-role/worker/", {});
-        this.taskData.workers = response.data;
+        const response = await api.get("/api/users/by-role/mangers/", {});
+        this.projectData.managers = response.data;
       } catch (err) {
         console.log(err);
       } finally {
@@ -239,7 +265,7 @@ export default {
       }
     },
     handleModalClosed() {
-      this.taskData = {
+      this.projectData = {
         title: "",
         description: "",
         startDate: "",
@@ -247,7 +273,7 @@ export default {
         status: "",
         color: "",
         project: "",
-        workers: [],
+        managers: [],
       };
       this.closeModal();
     },

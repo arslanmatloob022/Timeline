@@ -10,12 +10,12 @@ export default {
   data() {
     return {
       fullWidthView: false,
-      activeFilter:'active',
-      colors:{
-        'pending':'#fbcf33',
-        'active':'#82d616',
-        'completed':'#cb0c9f',
-        'canceled':'#344767'
+      activeFilter: "all",
+      colors: {
+        pending: "#fbcf33",
+        active: "#82d616",
+        completed: "#cb0c9f",
+        canceled: "#344767",
       },
       query: "",
       tasks: [],
@@ -64,20 +64,20 @@ export default {
         color: task.color,
         description: task.description,
         workers: task.workers,
-        borderColor:this.colors[task.status]
+        borderColor: this.colors[task.status],
       }));
       this.calendarOptions.resources = this.projects;
       this.calendarOptions.events = events;
     },
-    changeFilterHandler (){
-      console.log("func caleed", this.activeFilter)
-     
-      if(this.activeFilter!='all'){
-        let data  = this.projects.filter((project) =>
-          project.status==this.activeFilter
+    changeFilterHandler() {
+      console.log("func caleed", this.activeFilter);
+
+      if (this.activeFilter != "all") {
+        let data = this.projects.filter(
+          (project) => project.status == this.activeFilter
         );
-        console.log("local data length", data.length)
-        this.filteredResources= data
+        console.log("local data length", data.length);
+        this.filteredResources = data;
       } else {
         this.filteredResources = this.projects;
       }
@@ -86,9 +86,9 @@ export default {
           project.title.toLowerCase().includes(this.query.toLowerCase())
         );
       }
-      this.calendarOptions.resources = this.filteredResources
-      console.log(this.filteredResources)
-      console.log(this.filteredResources.length)
+      this.calendarOptions.resources = this.filteredResources;
+      console.log(this.filteredResources);
+      console.log(this.filteredResources.length);
       // this.setResources([])
     },
     async getProjectHandler() {
@@ -110,8 +110,36 @@ export default {
         this.tasks = [];
       }
     },
-    showFullView() {
+
+    toggleFullScreen() {
       this.fullWidthView = !this.fullWidthView;
+      const fullScreenCalender = document.getElementById("fullCalendarView");
+      if (
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.mozFullScreenElement ||
+        document.msFullscreenElement
+      ) {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
+      } else {
+        if (fullScreenCalender.requestFullscreen) {
+          fullScreenCalender.requestFullscreen();
+        } else if (fullScreenCalender.webkitRequestFullscreen) {
+          fullScreenCalender.webkitRequestFullscreen();
+        } else if (fullScreenCalender.mozRequestFullScreen) {
+          fullScreenCalender.mozRequestFullScreen();
+        } else if (fullScreenCalender.msRequestFullscreen) {
+          fullScreenCalender.msRequestFullscreen();
+        }
+      }
     },
   },
 
@@ -122,7 +150,11 @@ export default {
 };
 </script>
 <template>
-  <div class="mb-6" :class="fullWidthView ? 'fullView' : ''">
+  <div
+    class="mb-6"
+    id="fullCalendarView"
+    :class="fullWidthView ? 'fullView' : ''"
+  >
     <form id="manger-form" @submit.prevent="changeFilterHandler">
       <div class="flex-between">
         <div>
@@ -145,12 +177,52 @@ export default {
         </div>
 
         <div class="tabs-container">
-          <button @click="()=>{activeFilter='all'; changeFilterHandler();}" :class="activeFilter=='all'&&'active'">All</button>
-          <button @click="()=>{activeFilter='active';changeFilterHandler();}" :class="activeFilter=='active'&&'active'">Active</button>
-          <button @click="()=>{activeFilter='pending';changeFilterHandler();}" :class="activeFilter=='pending'&&'active'">Pending</button>
-          <button @click="()=>{activeFilter='completed'; changeFilterHandler();}" :class="activeFilter=='completed'&&'active'">Completed</button>
+          <button
+            @click="
+              () => {
+                activeFilter = 'all';
+                changeFilterHandler();
+              }
+            "
+            :class="activeFilter == 'all' && 'active'"
+          >
+            All
+          </button>
+          <button
+            @click="
+              () => {
+                activeFilter = 'active';
+                changeFilterHandler();
+              }
+            "
+            :class="activeFilter == 'active' && 'active'"
+          >
+            Active
+          </button>
+          <button
+            @click="
+              () => {
+                activeFilter = 'pending';
+                changeFilterHandler();
+              }
+            "
+            :class="activeFilter == 'pending' && 'active'"
+          >
+            Pending
+          </button>
+          <button
+            @click="
+              () => {
+                activeFilter = 'completed';
+                changeFilterHandler();
+              }
+            "
+            :class="activeFilter == 'completed' && 'active'"
+          >
+            Completed
+          </button>
         </div>
-        <button class="view-button" @click="showFullView()">
+        <button class="view-button" @click="toggleFullScreen()">
           <i :class="fullWidthView ? 'fa fa-compress' : 'fa fa-expand'"></i>
         </button>
       </div>
@@ -205,7 +277,7 @@ export default {
     </div>
   </div>
 </template>
-<style scss >
+<style scss>
 .fc-h-event {
   border-width: thick !important;
   border-radius: 10px !important;

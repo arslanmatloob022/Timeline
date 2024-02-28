@@ -71,8 +71,35 @@ export default {
         this.projects = [];
       }
     },
-    showFullView() {
+    toggleFullScreen() {
       this.fullWidthView = !this.fullWidthView;
+      const fullScreenCalender = document.getElementById("fullCalendarView");
+      if (
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.mozFullScreenElement ||
+        document.msFullscreenElement
+      ) {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
+      } else {
+        if (fullScreenCalender.requestFullscreen) {
+          fullScreenCalender.requestFullscreen();
+        } else if (fullScreenCalender.webkitRequestFullscreen) {
+          fullScreenCalender.webkitRequestFullscreen();
+        } else if (fullScreenCalender.mozRequestFullScreen) {
+          fullScreenCalender.mozRequestFullScreen();
+        } else if (fullScreenCalender.msRequestFullscreen) {
+          fullScreenCalender.msRequestFullscreen();
+        }
+      }
     },
   },
   async mounted() {
@@ -110,7 +137,7 @@ export default {
           <button>Pending</button>
           <button>Completed</button>
         </div>
-        <button class="view-button" @click="showFullView()">
+        <button class="view-button" @click="toggleFullScreen()">
           <i :class="fullWidthView ? 'fa fa-compress' : 'fa fa-expand'"></i>
         </button>
       </div>

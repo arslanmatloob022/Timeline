@@ -69,21 +69,29 @@
     border: none;
     font-weight: 500;
     padding: 6px 22px;
-    color: #82d616;
+    color: #666666;
     background-color: #ffffff;
     box-shadow: 0 0 8px 1px #c0c0c0d7;
 
     &.active {
       &:nth-child(1) {
+        color: #fff;
+        background-color: #17c1e8d7;
         box-shadow: 0 0 8px 1px #17c1e8d7;
       }
       &:nth-child(2) {
+        color: #fff;
+        background-color: #82d616d7;
         box-shadow: 0 0 8px 1px #82d616d7;
       }
       &:nth-child(3) {
+        color: #fff;
+        background-color: #fbcf33d7;
         box-shadow: 0 0 8px 1px #fbcf33d7;
       }
       &:nth-child(4) {
+        color: #fff;
+        background-color: #cb0c9fd7;
         box-shadow: 0 0 8px 1px #cb0c9fd7;
       }
     }
@@ -95,12 +103,7 @@
   padding: 20px;
   position: fixed;
   top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
   z-index: 99999;
-  width: 100%;
-  height: 100%;
 }
 
 .view-button {
@@ -170,4 +173,8 @@
 
 .dropdown-card button:hover {
   background-color: #0056b3;
+}
+
+.active-color {
+  color: #82d616;
 }

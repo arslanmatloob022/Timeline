@@ -107,9 +107,9 @@
       </div>
     </div> -->
 
-    <div class="col-12">
+    <!-- <div class="col-12">
       <CalenderView />
-    </div>
+    </div> -->
     <!-- <ProjectsCard /> -->
     <completed-projects></completed-projects>
     <custom-modal ref="customModal" :title="modalTitle">
@@ -242,7 +242,7 @@ import Projects from "../components/models/Projects.vue";
 import CompletedProjects from "../components/models/CompletedProjects.vue";
 import CustomModal from "@/views/components/CustomModal.vue";
 import SoftButtonVue from "../components/SoftButton.vue";
-import CalenderView from "../components/CalenderView.vue";
+// import CalenderView from "../components/CalenderView.vue";
 // import ProjectsCard from "../components/models/ProjectsCard.vue";
 
 const api = useApi();
@@ -292,7 +292,7 @@ export default {
     };
   },
   components: {
-    CalenderView,
+    // CalenderView,
     Projects,
     // DefaultProjectCard,
     SoftButtonVue,

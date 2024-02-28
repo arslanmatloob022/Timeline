@@ -9,11 +9,7 @@
                 <h6 class="mb-1">Project information</h6>
                 <i
                   class="fa fa-pencil-square pointer"
-                  @click="
-                    () => {
-                      this.$refs.editCustomModal.openModal();
-                    }
-                  "
+                  @click="this.openProjectForm(this.projectId)"
                   aria-hidden="true"
                 ></i>
               </div>
@@ -133,6 +129,31 @@
                                   <p class="mb-0 text-xs text-secondary">
                                     <i class="fa fa-list me-1"></i>
                                     1
+                                  </p>
+                                </div>
+                              </div>
+                            </a>
+                          </div>
+                          <div class="mb-2">
+                            <a
+                              class="dropdown-item border-radius-md"
+                              href="javascript:;"
+                            >
+                              <div class="py-1 d-flex">
+                                <div
+                                  class="d-flex flex-column justify-content-center"
+                                >
+                                  <h6 class="mb-1 text-sm font-weight-normal">
+                                    <span class="font-weight-bold"
+                                      >Address</span
+                                    >
+                                  </h6>
+                                  <p
+                                    style="white-space: wrap"
+                                    class="mb-0 text-xs text-secondary"
+                                  >
+                                    <i class="fa fa-home me-1"></i>
+                                    {{ projectData.address }}
                                   </p>
                                 </div>
                               </div>
@@ -334,18 +355,39 @@
                   <td class="align-middle">
                     <div class="dropdown-container">
                       <a
+                        :style="{
+                          color: task.status == 'active' ? '#82d616' : '',
+                        }"
+                        @click="updateTaskStatus(task.id, 'active')"
                         href="javascript:;"
-                        class="text-secondary font-weight-bold text-xs"
+                        class="font-weight-bold text-xs"
                         data-toggle="tooltip"
                         data-original-title="Edit user"
                         >Active</a
                       >
                       |
                       <a
+                        @click="updateTaskStatus(task.id, 'pending')"
                         href="javascript:;"
-                        class="text-secondary font-weight-bold text-xs"
+                        :style="{
+                          color: task.status == 'pending' ? '#82d616' : '',
+                        }"
+                        class="font-weight-bold text-xs"
                         data-toggle="tooltip"
                         data-original-title="Edit user"
+                        >Pending</a
+                      >
+                      |
+
+                      <a
+                        href="javascript:;"
+                        :style="{
+                          color: task.status == 'completed' ? '#82d616' : '',
+                        }"
+                        class="font-weight-bold text-xs"
+                        data-toggle="tooltip"
+                        data-original-title="Edit user"
+                        @click="updateTaskStatus(task.id, 'completed')"
                         >Completed</a
                       >
                       |
@@ -608,7 +650,11 @@
         </SoftButtonVue>
       </template>
     </custom-modal>
-
+    <updateProject
+      :isOpen="isProjectFormOpen"
+      :closeModal="closeProjectForm"
+      :projectId="editProjectId"
+    />
     <update-task-vue
       :isOpen="isTaskFormOpen"
       :closeModal="closeTaskForm"
@@ -628,6 +674,7 @@ import sweetAlert from "./components/customAlert.vue";
 import CustomModal from "./components/CustomModal.vue";
 import { convertToFormData } from "@/supportElements/common.js";
 import updateTaskVue from "./SupportComponents/updateTask.vue";
+import updateProject from "./SupportComponents/updateProject.vue";
 
 import spaceImg from "@/assets/img/team-4.jpg";
 
@@ -638,8 +685,10 @@ export default {
     return {
       selectedManagers: [],
       preview: null,
+      isProjectFormOpen: false,
       isTaskFormOpen: false,
       editTaskId: null,
+      editProjectId: null,
       loading: false,
       Taskstatus: [
         { value: "active", name: "Active" },
@@ -668,6 +717,7 @@ export default {
         image: "",
         is_active: null,
         status: "",
+        address: "",
         total_tasks: 0,
 
         managers: [
@@ -710,6 +760,7 @@ export default {
   },
 
   components: {
+    updateProject,
     CustomModal,
     updateTaskVue,
     sweetAlert,
@@ -830,18 +881,48 @@ export default {
       }
     },
 
+    openProjectForm(projectId = null) {
+      this.isProjectFormOpen = true;
+      this.editProjectId = projectId;
+    },
+
+    closeProjectForm() {
+      this.getProjectTasks();
+      this.isProjectFormOpen = false;
+      this.editProjectId = null; // Reset the editTaskId after closing
+    },
+
     openTaskForm(taskId = null) {
       this.isTaskFormOpen = true;
       this.editTaskId = taskId;
     },
+
     closeTaskForm() {
       this.getProjectTasks();
       this.isTaskFormOpen = false;
       this.editTaskId = null; // Reset the editTaskId after closing
     },
+
+    async updateTaskStatus(taskId, taskStatus) {
+      try {
+        const resp = api.patch(`/api/task/${taskId}/`, {
+          status: taskStatus,
+        });
+        console.log(resp);
+        this.$notify({
+          type: "success",
+          title: "Task updated",
+          text: `Task set to ${taskStatus} succesfuly`,
+        });
+        this.getProjectTasks();
+      } catch (err) {
+        console.log(err);
+      }
+    },
   },
 
   mounted() {
+    this.projectId = this.$route.params.id;
     this.getProject(this.projectId);
     this.getWorkershandler();
     this.getProjectTasks();

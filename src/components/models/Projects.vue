@@ -25,6 +25,7 @@
           <button @click="filterProject('all')" class="active">All</button>
           <button @click="filterProject('active')">Active</button>
           <button @click="filterProject('pending')">Pending</button>
+          <button @click="filterProject('completed')">Completed</button>
           <!-- <button>Completed</button> -->
         </div>
       </div>
@@ -349,7 +350,7 @@ export default {
   name: "projects-card",
   data() {
     return {
-      filterProjects: "All",
+      filterProjects: "",
       isProjectCompleted: false,
       managerCount: 1,
       projectIdDeleteTobe: 0,
@@ -407,9 +408,13 @@ export default {
   computed: {
     ...mapState(["token"]),
     filteredProjects() {
-      return this.projects.filter(
-        (project) => project.status != this.filterProjects
-      );
+      if (!this.filterProjects || this.filterProjects == "all") {
+        return this.projects;
+      } else {
+        return this.projects.filter(
+          (project) => project.status == this.filterProjects
+        );
+      }
     },
   },
   methods: {
