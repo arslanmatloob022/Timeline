@@ -290,12 +290,10 @@
       <div class="col-lg-12 col-md-12 col-sm-12 mb-md-0 mb-4">
         <ManagersVue />
       </div>
-      <!-- <div class="col-12">
-        <CalenderView />
-      </div>
+
       <div class="col-12">
-        <AdminCalenderView />
-      </div> -->
+        <WorkerCalender />
+      </div>
     </div>
   </div>
 </template>
@@ -314,7 +312,7 @@ import useApi from "../supportElements/useAPI";
 import ProjectsVue from "../components/models/Projects.vue";
 import ManagersVue from "../components/models/Managers.vue";
 // import CalenderView from "../components/CalenderView.vue";
-// import AdminCalenderView from "../components/AdminCalenderView.vue";
+import WorkerCalender from "../components/WorkerCalender.vue";
 
 const api = useApi();
 import {
@@ -376,7 +374,8 @@ export default {
     ProjectsVue,
     ManagersVue,
     // CalenderView,
-    // AdminCalenderView
+    WorkerCalender
+    
   },
   methods: {
     async getManagershandler() {
