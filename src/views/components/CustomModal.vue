@@ -82,7 +82,8 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1px;
+  margin-bottom: 0;
+  padding: 8px 16px;
 }
 
 .close-btn {
@@ -95,7 +96,7 @@ export default {
 }
 
 .modal-body {
-  padding: 15px;
+  padding: 6px 18px;
   border-bottom: 1px solid #ccc;
 }
 

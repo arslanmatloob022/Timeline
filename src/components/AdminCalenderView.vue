@@ -10,9 +10,18 @@ export default {
   data() {
     return {
       fullWidthView: false,
+      activeFilter: "all",
+      colors: {
+        pending: "#fbcf33",
+        active: "#82d616",
+        completed: "#cb0c9f",
+        canceled: "#344767",
+      },
       query: "",
       tasks: [],
+      filteredResources: [],
       projects: [],
+
       calendarOptions: {
         plugins: [resourceTimelinePlugin],
         schedulerLicenseKey: "0965592368-fcs-1694657447",
@@ -60,7 +69,28 @@ export default {
       this.calendarOptions.resources = this.projects;
       this.calendarOptions.events = events;
     },
+    changeFilterHandler() {
+      console.log("func caleed", this.activeFilter);
 
+      if (this.activeFilter != "all") {
+        let data = this.projects.filter(
+          (project) => project.status == this.activeFilter
+        );
+        console.log("local data length", data.length);
+        this.filteredResources = data;
+      } else {
+        this.filteredResources = this.projects;
+      }
+      if (this.query) {
+        this.filteredResources = this.projects.filter((project) =>
+          project.title.toLowerCase().includes(this.query.toLowerCase())
+        );
+      }
+      this.calendarOptions.resources = this.filteredResources;
+      console.log(this.filteredResources);
+      console.log(this.filteredResources.length);
+      // this.setResources([])
+    },
     async getProjectHandler() {
       try {
         console.log("inside all projects fun");
@@ -109,8 +139,12 @@ export default {
 };
 </script>
 <template>
-  <div class="mb-6" :class="fullWidthView ? 'fullView' : ''">
-    <form id="manger-form" @submit.prevent="searchProjectHandler">
+  <div
+    id="fullCalendarView"
+    class="mb-6"
+    :class="fullWidthView ? 'fullView' : ''"
+  >
+    <form id="manger-form" @submit.prevent="changeFilterHandler">
       <div class="flex-between">
         <div>
           <label for="inputField">Search project</label>
@@ -128,6 +162,7 @@ export default {
             type="text"
             placeholder="search ..."
             v-model="query"
+            @input="changeFilterHandler()"
           />
         </div>
 

@@ -17,7 +17,6 @@
               required
               placeholder="Project title"
               v-model="projectData.title"
-              size="md"
             />
           </div>
           <div>
@@ -27,7 +26,6 @@
               type="date"
               placeholder="Start date"
               v-model="projectData.startDate"
-              size="md"
             />
           </div>
 
@@ -38,7 +36,6 @@
               type="date"
               placeholder="End date"
               v-model="projectData.endDate"
-              size="md"
             />
           </div>
         </div>
@@ -203,11 +200,15 @@ export default {
     },
   },
   methods: {
+    handleFileChange(event) {
+      this.projectData.image = event.target.files[0];
+    },
     async fetchProjectData(projectId) {
       try {
         this.loading = true;
         const response = await api.get(`/api/project/${projectId}`);
         this.projectData = response.data;
+        console.log("edit prjec", this.projectData);
       } catch (err) {
         console.log(err);
       } finally {

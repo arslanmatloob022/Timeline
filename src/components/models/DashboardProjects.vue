@@ -1,8 +1,8 @@
 <template>
   <div class="mb-6">
     <form id="manger-form" @submit.prevent="searchProjectHandler">
-      <div class="flex-between">
-        <div>
+      <div class="flex-between mb-1 px-1 py-2">
+        <!-- <div>
           <label for="inputField">Search project</label>
           <br />
           <input
@@ -18,11 +18,10 @@
             type="text"
             placeholder="search ..."
             v-model="query"
-            @input="filteredProjects()"
           />
-        </div>
+        </div> -->
 
-        <!-- <div class="tabs-container">
+        <div class="tabs-container">
           <button
             @click="filterProject('all')"
             :class="this.filterProjects == 'all' ? 'active' : ''"
@@ -47,7 +46,8 @@
           >
             Completed
           </button>
-        </div> -->
+          <!-- <button>Completed</button> -->
+        </div>
       </div>
     </form>
     <div class="card mb-4">
@@ -94,7 +94,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in projects" :key="item.id">
+              <tr v-for="item in filteredProjects" :key="item.id">
                 <td @click="this.$router.push(`/projectdetail/${item.id}`)">
                   <div style="cursor: pointer" class="d-flex px-2 py-1">
                     <div>
@@ -208,48 +208,37 @@
 
     <custom-modal ref="customModal" :title="modalTitle">
       <form id="project-form" @submit.prevent="addNewProject">
-        <div class="flex-between">
-          <div style="width: 60%; margin-right: 12px">
-            <label for="inputField">Title: *</label>
-            <input
-              class="inputField"
-              type="text"
-              required
-              placeholder="Project title"
-              v-model="project.title"
-              size="md"
-            />
-          </div>
-          <div>
-            <label for="inputField">Image</label>
-            <input
-              class="inputField"
-              id="avatarInput"
-              type="file"
-              placeholder=""
-              @change="handleFileChange"
-              size="md"
-            />
-          </div>
-        </div>
         <div>
-          <label for="inputField">Address: </label>
+          <label for="inputField">Title: *</label>
           <input
             class="inputField"
             type="text"
             required
-            placeholder="Site address"
-            v-model="project.address"
+            placeholder="Project title"
+            v-model="project.title"
             size="md"
           />
         </div>
+
         <div>
           <label for="inputField">Description: *</label>
-          <textarea
+          <input
             class="inputField"
-            type="textarea"
+            type="text"
             placeholder="Project description"
             v-model="project.description"
+            size="md"
+          />
+        </div>
+
+        <div>
+          <label for="inputField">Image</label>
+          <input
+            class="inputField"
+            id="avatarInput"
+            type="file"
+            placeholder=""
+            @change="handleFileChange"
             size="md"
           />
         </div>
@@ -277,7 +266,7 @@
             />
           </div>
         </div>
-        <!-- <div>
+        <div>
           <input
             style="width: 40px; width: 40px"
             class="custom-checkbox"
@@ -287,7 +276,7 @@
             v-model="project.is_active"
           />
           <label for="inputField">Set Project Active</label>
-        </div> -->
+        </div>
         <div>
           <label for="inputField">Managers : *</label>
           <select
@@ -424,7 +413,6 @@ export default {
         image: File | String,
         startDate: "",
         endDate: "",
-        address: "",
         is_active: false,
         managers: [],
       },
@@ -440,27 +428,17 @@ export default {
   },
   computed: {
     ...mapState(["token"]),
-    // filteredProjects() {
-    //   if (!this.filterProjects || this.filterProjects == "all") {
-    //     return this.projects.filter((project) => project.status != "completed");
-    //   } else {
-    //     return this.projects.filter(
-    //       (project) => project.status == this.filterProjects
-    //     );
-    //   }
-    // },
-  },
-  methods: {
     filteredProjects() {
-      if (this.query) {
-        this.projects = this.projects.filter((project) =>
-          project.title.toLowerCase().includes(this.query.toLowerCase())
-        );
+      if (!this.filterProjects || this.filterProjects == "all") {
+        return this.projects.filter((project) => project.status != "completed");
       } else {
-        this.getProjectHandler();
+        return this.projects.filter(
+          (project) => project.status == this.filterProjects
+        );
       }
     },
-
+  },
+  methods: {
     filterProject(filters) {
       this.filterProjects = filters;
     },
@@ -470,7 +448,6 @@ export default {
       this.project.image = null;
       this.project.startDate = "";
       this.project.endDate = "";
-      this.project.address = "";
       this.project.managers = [];
     },
 
@@ -567,13 +544,8 @@ export default {
           `/api/project/${this.projectIdDeleteTobe}/`
         );
         this.$refs.sweetAlert.closeModal();
-        console.log("deleted", response);
-        this.$notify({
-          type: "error",
-          title: "Project deleted",
-          text: "Selected project deleted successfuly!",
-        });
         this.getProjectHandler();
+        console.log("deleted", response);
       } catch (err) {
         console.log(err);
         console.log("not deleted");
@@ -592,11 +564,10 @@ export default {
 
         console.log(response);
         this.$notify({
-          type: "info",
+          type: "error",
           title: "Project completed",
           text: "Project marked as completed",
         });
-        this.$refs.sweetAlert.closeModal();
         this.getProjectHandler();
       } catch (err) {
         console.log(err);

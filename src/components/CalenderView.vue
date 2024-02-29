@@ -173,6 +173,7 @@ export default {
             type="text"
             placeholder="search ..."
             v-model="query"
+            @input="this.changeFilterHandler()"
           />
         </div>
 

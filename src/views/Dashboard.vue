@@ -237,7 +237,7 @@
 
     <div class="row">
       <div class="col-lg-12 col-md-12 col-sm-12 mb-md-0 mb-4">
-        <ProjectsVue />
+        <dashboard-projects />
       </div>
       <!-- <div class="col-lg-4 col-md-6">
         <timeline-list
@@ -309,10 +309,11 @@ import DE from "../assets/img/icons/flags/DE.png";
 import GB from "../assets/img/icons/flags/GB.png";
 import BR from "../assets/img/icons/flags/BR.png";
 import useApi from "../supportElements/useAPI";
-import ProjectsVue from "../components/models/Projects.vue";
+// import ProjectsVue from "../components/models/Projects.vue";
 import ManagersVue from "../components/models/Managers.vue";
 // import CalenderView from "../components/CalenderView.vue";
 import WorkerCalender from "../components/WorkerCalender.vue";
+import DashboardProjects from "../components/models/DashboardProjects.vue";
 
 const api = useApi();
 import {
@@ -371,11 +372,11 @@ export default {
     // TimelineList,
     // TimelineItem,
     // AuthorsTable,
-    ProjectsVue,
+    // ProjectsVue,
     ManagersVue,
     // CalenderView,
-    WorkerCalender
-    
+    WorkerCalender,
+    DashboardProjects,
   },
   methods: {
     async getManagershandler() {

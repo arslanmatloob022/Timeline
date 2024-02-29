@@ -770,6 +770,15 @@ export default {
     SoftButtonVue,
   },
   methods: {
+    closeTheModals() {
+      this.taskData.title = "";
+      this.taskData.description = "";
+      this.taskData.startDate = "";
+      this.taskData.endDate = "";
+      this.taskData.workers = [];
+      this.taskData.status = "";
+    },
+
     async getProject(projectId) {
       try {
         const resp = await api.get(`/api/project/${projectId}/`);
@@ -777,7 +786,7 @@ export default {
         this.preview = resp.data.image;
 
         console.log("project data ", this.projectData);
-        this.getProjectTasks()
+        this.getProjectTasks();
       } catch (err) {
         console.log(err);
       }
@@ -810,6 +819,7 @@ export default {
           title: "Task Added",
           text: "Task added succesfuly",
         });
+        this.closeTheModals();
         console.log("task data", resp);
       } catch (err) {
         this.$notify({
@@ -876,7 +886,7 @@ export default {
           title: "Project updated",
           text: "Project updated succesfuly",
         });
-        this.getProject(this.$route.params.id);
+        this.getProject(this.projectId);
       } catch (err) {
         console.log(err);
       }
