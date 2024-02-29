@@ -49,7 +49,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in managersData" :key="item.id">
+              <tr v-for="item in managersData" :key="item.id" class="">
                 <td>
                   <div class="d-flex px-2 py-1">
                     <div>
@@ -69,14 +69,14 @@
                     </div>
                   </div>
                 </td>
-                <td>
-                  <p class="text-xs font-weight-bold mb-0">
+                <td class="align-middle text-center">
+                  <p class="text-xs py-1 align-items-center font-weight-bold mb-0">
                     {{ item.phoneNumber ? item.phoneNumber : "---" }}
                   </p>
                 </td>
-                <td>
+                <td class="align-middle">
                   <p class="text-xs font-weight-bold mb-0">{{ item.role }}</p>
-                  <p class="text-xs text-secondary mb-0">Organization</p>
+                  <!-- <p class="text-xs text-secondary mb-0">Organization</p> -->
                 </td>
                 <td class="align-middle text-center text-sm">
                   <soft-badge color="success" variant="gradient" size="sm">{{

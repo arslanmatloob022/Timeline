@@ -777,6 +777,7 @@ export default {
         this.preview = resp.data.image;
 
         console.log("project data ", this.projectData);
+        this.getProjectTasks()
       } catch (err) {
         console.log(err);
       }
@@ -887,7 +888,7 @@ export default {
     },
 
     closeProjectForm() {
-      this.getProjectTasks();
+      this.getProject(this.projectId);
       this.isProjectFormOpen = false;
       this.editProjectId = null; // Reset the editTaskId after closing
     },
@@ -914,7 +915,7 @@ export default {
           title: "Task updated",
           text: `Task set to ${taskStatus} succesfuly`,
         });
-        this.getProjectTasks();
+        this.getProject(this.projectId);
       } catch (err) {
         console.log(err);
       }

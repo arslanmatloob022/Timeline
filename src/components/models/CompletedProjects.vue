@@ -12,7 +12,7 @@
       </div>
       <div class="card-body px-0 pb-2">
         <div class="table-responsive">
-          <table v-if="!loading" class="table align-items-center mb-0">
+          <table v-if="!loading" class="table  mb-0">
             <thead>
               <tr>
                 <th
@@ -64,7 +64,7 @@
                   </div>
                 </td>
                 <td>
-                  <div class="avatar-group mt-2">
+                  <div class="avatar-group align-items-center mt-2">
                     <a
                       v-for="manager in item.managers"
                       :key="manager.id"
