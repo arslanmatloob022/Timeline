@@ -1,118 +1,6 @@
 <template>
   <div class="container-fluid">
     <DashboardProjects></DashboardProjects>
-    <!-- <div class="row">
-      <div class="col-lg-12 col-md-6 mb-md-0 mb-4">
-        <div class="card mb-4">
-          <div
-            class="card-header pb-0"
-            style="display: flex; justify-content: space-between"
-          >
-            <h6>Projects</h6>
-            <add-button-vue @click="openCustomModal"
-              ><slot>Add Project</slot></add-button-vue
-            >
-          </div>
-          <div class="card-body px-0 pb-2">
-            <div class="table-responsive">
-              <table class="table align-items-center mb-0">
-                <thead>
-                  <tr>
-                    <th
-                      class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                    >
-                      Names
-                    </th>
-                    <th
-                      class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                    >
-                      Managers
-                    </th>
-                    <th
-                      class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                    >
-                      Added at
-                    </th>
-                    <th
-                      class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                    >
-                      Completion
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="item in projects" :key="item.id">
-                    <td>
-                      <div class="d-flex px-2 py-1">
-                        <div>
-                          <soft-avatar
-                            :img="item.image ? item.image : img9"
-                            size="sm"
-                            class="me-3"
-                            alt="xd"
-                          />
-                        </div>
-                        <div class="d-flex flex-column justify-content-center">
-                          <h6 class="mb-0 text-sm">{{ item.title }}</h6>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div
-                        class="avatar-group mt-2"
-                        v-for="manager in item.managers"
-                        :key="manager.id"
-                      >
-                        <a
-                          href="javascript:;"
-                          class="avatar avatar-xs rounded-circle"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="bottom"
-                          data-bs-original-title="Jessica Doe"
-                        >
-                          <img
-                            :src="manager.avatar ? manager.avatar : img5"
-                            rounded-circle
-                            alt="team4"
-                          />
-                        </a>
-                      </div>
-                    </td>
-                    <td class="align-middle text-center text-sm">
-                      <span class="text-xs font-weight-bold">{{
-                        item.created.slice(0, 10)
-                      }}</span>
-                    </td>
-                    <td class="align-middle">
-                      <div
-                        class="d-flex align-items-center justify-content-center"
-                      >
-                        <span class="text-xs font-weight-bold mx-2">60%</span>
-                        <div>
-                          <soft-progress
-                            color="info"
-                            class="mx-auto"
-                            variant="gradient"
-                            :percentage="60"
-                          />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
-
-    <Projects></Projects>
-
-    <!-- <div class="col-12">
-      <CalenderView />
-    </div> -->
-    <!-- <ProjectsCard /> -->
     <completed-projects></completed-projects>
     <custom-modal ref="customModal" :title="modalTitle">
       <form id="project-form" @submit.prevent="addNewProject">
@@ -244,7 +132,7 @@ import useApi from "../supportElements/useAPI";
 import CompletedProjects from "../components/models/CompletedProjects.vue";
 import CustomModal from "@/views/components/CustomModal.vue";
 import SoftButtonVue from "../components/SoftButton.vue";
-import Projects from "../components/models/Projects.vue";
+// import Projects from "../components/models/Projects.vue";
 const api = useApi();
 export default {
   name: "projects-card",
@@ -295,7 +183,7 @@ export default {
     // CalenderView,
 
     // DefaultProjectCard,
-    Projects,
+    // Projects,
 
     SoftButtonVue,
     CustomModal,
