@@ -1,5 +1,6 @@
 <template>
   <div class="container-fluid">
+
     <DashboardProjects></DashboardProjects>
     <!-- <div class="row">
       <div class="col-lg-12 col-md-6 mb-md-0 mb-4">
@@ -107,6 +108,9 @@
       </div>
     </div> -->
 
+    <Projects></Projects>
+
+
     <!-- <div class="col-12">
       <CalenderView />
     </div> -->
@@ -209,15 +213,14 @@
 
 <script>
 import { useAPI } from "@/supportElements/useAPI.js";
-// import SoftAvatar from "@/components/SoftAvatar.vue";
 import img1 from "@/assets/img/home-decor-1.jpg";
 import img2 from "@/assets/img/home-decor-2.jpg";
 import img3 from "@/assets/img/home-decor-3.jpg";
-// import DefaultProjectCard from "./components/DefaultProjectCard.vue";
-// import PlaceHolderCard from "@/examples/Cards/PlaceHolderCard.vue";
 import setTooltip from "@/assets/js/tooltip.js";
+
 import DashboardProjects from "../components/models/DashboardProjects.vue";
 // import SoftProgress from "@/components/SoftProgress.vue";
+
 import img4 from "@/assets/img/team-3.jpg";
 import img5 from "@/assets/img/team-4.jpg";
 import img6 from "@/assets/img/small-logos/logo-atlassian.svg";
@@ -243,8 +246,6 @@ import useApi from "../supportElements/useAPI";
 import CompletedProjects from "../components/models/CompletedProjects.vue";
 import CustomModal from "@/views/components/CustomModal.vue";
 import SoftButtonVue from "../components/SoftButton.vue";
-// import CalenderView from "../components/CalenderView.vue";
-// import ProjectsCard from "../components/models/ProjectsCard.vue";
 
 const api = useApi();
 export default {
@@ -293,13 +294,14 @@ export default {
     };
   },
   components: {
+
     // CalenderView,
 
     // DefaultProjectCard,
+    Projects,
+
     SoftButtonVue,
-    // PlaceHolderCard,
     CustomModal,
-    // ProjectsCard,
     CompletedProjects,
     DashboardProjects
   },
@@ -333,7 +335,6 @@ export default {
     async addNewProject() {
       try {
         this.loading = true;
-        // const formData = new FormData();
         let formData = convertToFormData(this.project, ["image"]);
         Object.keys(this.project).forEach((key) => {
           formData.append(key, this.project[key]);
@@ -380,7 +381,6 @@ export default {
     },
   },
   mounted() {
-    // this.getManagers();
     this.userToken = this.token;
     setTooltip();
     this.getProjectHandler();

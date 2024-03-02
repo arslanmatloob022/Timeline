@@ -1,0 +1,624 @@
+<template>
+  <div class="py-4 container-fluid">
+    <div class="row">
+      <div
+        style="margin-top: 24px"
+        class="mx-2 mt-0 mb-4 overflow-hidden card card-body blur shadow-blur"
+      >
+        <div class="row gx-4">
+          <div class="col-auto">
+            <div class="avatar avatar-xl position-relative">
+              <img
+                :src="workerData.avatar ? workerData.avatar : img4"
+                alt="profile_image"
+                class="shadow-sm w-100 border-radius-lg"
+              />
+            </div>
+          </div>
+          <div class="col-auto my-auto">
+            <div class="h-100">
+              <h5 class="mb-1">{{ workerData.username }}</h5>
+              <p class="mb-0 text-sm font-weight-bold">
+                {{ workerData.role }}
+              </p>
+            </div>
+          </div>
+          <div
+            class="mx-auto mt-3 col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0"
+          >
+            <div class="nav-wrapper position-relative end-0">
+              <ul
+                class="p-1 bg-transparent nav nav-pills nav-fill"
+                role="tablist"
+              >
+                <li class="nav-item">
+                  <a
+                    class="px-0 py-1 mb-0 nav-link"
+                    data-bs-toggle="tab"
+                    href="javascript:;"
+                    role="tab"
+                    aria-selected="false"
+                  >
+                    <svg
+                      class="text-dark"
+                      width="16px"
+                      height="16px"
+                      viewBox="0 0 40 44"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                    >
+                      <title>document</title>
+                      <g
+                        stroke="none"
+                        stroke-width="1"
+                        fill="none"
+                        fill-rule="evenodd"
+                      >
+                        <g
+                          transform="translate(-1870.000000, -591.000000)"
+                          fill="#FFFFFF"
+                          fill-rule="nonzero"
+                        >
+                          <g transform="translate(1716.000000, 291.000000)">
+                            <g transform="translate(154.000000, 300.000000)">
+                              <path
+                                class="color-background"
+                                d="M40,40 L36.3636364,40 L36.3636364,3.63636364 L5.45454545,3.63636364 L5.45454545,0 L38.1818182,0 C39.1854545,0 40,0.814545455 40,1.81818182 L40,40 Z"
+                                opacity="0.603585379"
+                              ></path>
+                              <path
+                                class="color-background"
+                                d="M30.9090909,7.27272727 L1.81818182,7.27272727 C0.814545455,7.27272727 0,8.08727273 0,9.09090909 L0,41.8181818 C0,42.8218182 0.814545455,43.6363636 1.81818182,43.6363636 L30.9090909,43.6363636 C31.9127273,43.6363636 32.7272727,42.8218182 32.7272727,41.8181818 L32.7272727,9.09090909 C32.7272727,8.08727273 31.9127273,7.27272727 30.9090909,7.27272727 Z M18.1818182,34.5454545 L7.27272727,34.5454545 L7.27272727,30.9090909 L18.1818182,30.9090909 L18.1818182,34.5454545 Z M25.4545455,27.2727273 L7.27272727,27.2727273 L7.27272727,23.6363636 L25.4545455,23.6363636 L25.4545455,27.2727273 Z M25.4545455,20 L7.27272727,20 L7.27272727,16.3636364 L25.4545455,16.3636364 L25.4545455,20 Z"
+                              ></path>
+                            </g>
+                          </g>
+                        </g>
+                      </g>
+                    </svg>
+                    <span class="ms-1">Change Password</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="px-0 py-1 mb-0 nav-link"
+                    data-bs-toggle="tab"
+                    href="javascript:;"
+                    role="tab"
+                    aria-selected="false"
+                  >
+                    <svg
+                      class="text-dark"
+                      width="16px"
+                      height="16px"
+                      viewBox="0 0 40 40"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                    >
+                      <title>settings</title>
+                      <g
+                        stroke="none"
+                        stroke-width="1"
+                        fill="none"
+                        fill-rule="evenodd"
+                      >
+                        <g
+                          transform="translate(-2020.000000, -442.000000)"
+                          fill="#FFFFFF"
+                          fill-rule="nonzero"
+                        >
+                          <g transform="translate(1716.000000, 291.000000)">
+                            <g transform="translate(304.000000, 151.000000)">
+                              <polygon
+                                class="color-background"
+                                opacity="0.596981957"
+                                points="18.0883333 15.7316667 11.1783333 8.82166667 13.3333333 6.66666667 6.66666667 0 0 6.66666667 6.66666667 13.3333333 8.82166667 11.1783333 15.315 17.6716667"
+                              ></polygon>
+                              <path
+                                class="color-background"
+                                d="M31.5666667,23.2333333 C31.0516667,23.2933333 30.53,23.3333333 30,23.3333333 C29.4916667,23.3333333 28.9866667,23.3033333 28.48,23.245 L22.4116667,30.7433333 L29.9416667,38.2733333 C32.2433333,40.575 35.9733333,40.575 38.275,38.2733333 L38.275,38.2733333 C40.5766667,35.9716667 40.5766667,32.2416667 38.275,29.94 L31.5666667,23.2333333 Z"
+                                opacity="0.596981957"
+                              ></path>
+                              <path
+                                class="color-background"
+                                d="M33.785,11.285 L28.715,6.215 L34.0616667,0.868333333 C32.82,0.315 31.4483333,0 30,0 C24.4766667,0 20,4.47666667 20,10 C20,10.99 20.1483333,11.9433333 20.4166667,12.8466667 L2.435,27.3966667 C0.95,28.7083333 0.0633333333,30.595 0.00333333333,32.5733333 C-0.0583333333,34.5533333 0.71,36.4916667 2.11,37.89 C3.47,39.2516667 5.27833333,40 7.20166667,40 C9.26666667,40 11.2366667,39.1133333 12.6033333,37.565 L27.1533333,19.5833333 C28.0566667,19.8516667 29.01,20 30,20 C35.5233333,20 40,15.5233333 40,10 C40,8.55166667 39.685,7.18 39.1316667,5.93666667 L33.785,11.285 Z"
+                              ></path>
+                            </g>
+                          </g>
+                        </g>
+                      </g>
+                    </svg>
+                    <span
+                      @click="
+                        () => {
+                          this.$refs.editProfileModal.openModal();
+                          this.editpreview = workerData.avatar;
+                        }
+                      "
+                      class="ms-1"
+                      >Edit Profile</span
+                    >
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mb-6">
+        <div
+          class="card-header p-3"
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <h6>Your Tasks</h6>
+          <p></p>
+        </div>
+
+        <div class="card-body px-0 pt-0 pb-2">
+          <div class="table-responsive p-0">
+            <table v-if="!loading" class="table mb-0">
+              <thead>
+                <tr>
+                  <th
+                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                  >
+                    Project
+                  </th>
+                  <th
+                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                  >
+                    Task
+                  </th>
+                  <th
+                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                  >
+                    Status
+                  </th>
+                  <th
+                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                  >
+                    Start Date
+                  </th>
+                  <th
+                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                  >
+                    End Date
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in tasks" :key="item.id">
+                  <td style="width: 23%; white-space: wrap">
+                    <div class="d-flex px-2 py-1">
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="mb-0 text-sm">{{ item.project.title }}</h6>
+                        <p class="text-xs text-secondary mb-0">
+                          <i class="fa fa-map-marker" aria-hidden="true"></i>
+                          {{ item.project.address }}
+                        </p>
+                      </div>
+                    </div>
+                  </td>
+                  <td style="width: 30%; white-space: wrap">
+                    <h6 class="text-xs font-weight-bold mb-0">
+                      {{ item.title ? item.title : "No title added" }}
+                    </h6>
+                    <p class="text-xs font-weight-bold mb-0">
+                      {{
+                        item.description
+                          ? item.description
+                          : "No Description added"
+                      }}
+                    </p>
+                  </td>
+                  <td class="align-middle text-center text-sm">
+                    <soft-badge
+                      :color="item.status == 'active' ? 'success' : 'warning'"
+                      variant="gradient"
+                      size="sm"
+                      >{{ item.status }}</soft-badge
+                    >
+                  </td>
+
+                  <td class="align-middle text-center">
+                    <span class="text-xs font-weight-bold mb-0">
+                      {{ item.startDate.slice(0, 10) }}
+                    </span>
+                  </td>
+                  <td class="align-middle text-center">
+                    <span class="text-secondary text-xs font-weight-bold">{{
+                      item.endDate.slice(0, 10)
+                    }}</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div
+              v-else
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+              "
+            >
+              <img src="/loading.gif" alt="" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="mb-6" :class="fullWidthView ? 'fullView' : ''">
+          <form id="manger-form" @submit.prevent="changeFilterHandler">
+            <div class="flex-between">
+              <div>
+                <p>Total Tasks: {{ filteredEvents.length }}</p>
+              </div>
+
+              <div class="tabs-container">
+                <button
+                  @click="
+                    () => {
+                      activeFilter = 'all';
+                      changeFilterHandler();
+                    }
+                  "
+                  :class="activeFilter == 'all' && 'active'"
+                >
+                  All
+                </button>
+                <button
+                  @click="
+                    () => {
+                      activeFilter = 'active';
+                      changeFilterHandler();
+                    }
+                  "
+                  :class="activeFilter == 'active' && 'active'"
+                >
+                  Active
+                </button>
+                <button
+                  @click="
+                    () => {
+                      activeFilter = 'pending';
+                      changeFilterHandler();
+                    }
+                  "
+                  :class="activeFilter == 'pending' && 'active'"
+                >
+                  Pending
+                </button>
+                <button
+                  @click="
+                    () => {
+                      activeFilter = 'completed';
+                      changeFilterHandler();
+                    }
+                  "
+                  :class="activeFilter == 'completed' && 'active'"
+                >
+                  Completed
+                </button>
+              </div>
+              <button class="view-button" @click="showFullView()">
+                <i
+                  :class="fullWidthView ? 'fa fa-compress' : 'fa fa-expand'"
+                ></i>
+              </button>
+            </div>
+          </form>
+
+          <FullCalendar :options="calendarOptions">
+            <template v-slot:eventContent="arg">
+              <div
+                style="
+                  display: flex;
+                  flex-wrap: wrap;
+                  align-items: center;
+                  justify-content: space-between;
+                "
+              >
+                <p
+                  style="
+                    font-weight: 600;
+                    margin-bottom: 0px;
+                    padding-left: 10px;
+                  "
+                >
+                  {{ arg.event.title }}
+                </p>
+                <div>
+                  <p style="margin-top: 8px; padding-right: 10px">
+                    {{ new Date(arg.event.start).toDateString() }} to
+                    {{ new Date(arg.event.end).toDateString() }}
+                  </p>
+                </div>
+              </div>
+              <!-- <p>{{ arg.event.extendedProps.description }}</p> -->
+            </template>
+          </FullCalendar>
+          <div
+            v-if="filteredResources.length == 0"
+            style="display: flex; align-items: center; justify-content: center"
+          >
+            <h4 class="mt-5 mb-5" style="color: darkgray">No project found</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+    <custom-modal ref="editProfileModal" :title="modalTitle">
+      <!-- Custom content for the modal -->
+      <form id="manger-form" @submit.prevent="editselfProfile">
+        <div>
+          <label for="inputField">Full name</label>
+          <input
+            class="inputField"
+            type="text"
+            placeholder="First name"
+            v-model="workerData.username"
+            required
+          />
+        </div>
+
+        <div class="row">
+          <div class="col-6">
+            <label for="inputField">Email</label>
+            <input
+              autocomplete="username"
+              class="inputField"
+              v-model="workerData.email"
+              type="email"
+              required
+              placeholder="Email"
+            />
+          </div>
+          <div class="col-6">
+            <label for="inputField">Phone No</label>
+            <input
+              class="inputField"
+              v-model="workerData.phoneNumber"
+              type="tel"
+              required
+              placeholder="Phone number"
+            />
+          </div>
+        </div>
+        <div>
+          <label for="inputField">Password</label>
+          <input
+            required
+            class="inputField"
+            type="password"
+            placeholder="Password"
+            v-model="workerData.password"
+          />
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <label for="inputField">Image</label>
+            <input
+              class="inputField"
+              type="file"
+              accept="image/*"
+              @change="handleFileChange"
+              size="md"
+            />
+          </div>
+          <div class="col-6">
+            <img
+              style="width: 200px; border-radius: 100px; margin-top: 20px"
+              :src="editpreview ? editpreview : '/preview.jpeg'"
+              alt="asdas"
+            />
+          </div>
+        </div>
+      </form>
+      <template v-slot:actions>
+        <soft-button-vue
+          @click="editselfProfile()"
+          :loading="loading"
+          form="manger-form"
+          type="submit"
+        >
+          Save changes
+        </soft-button-vue>
+      </template>
+    </custom-modal>
+  </div>
+</template>
+<script>
+import FullCalendar from "@fullcalendar/vue3";
+import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
+import useApi from "../supportElements/useAPI";
+import SoftBadge from "../components/SoftBadge.vue";
+import CustomModal from "./components/CustomModal.vue";
+import { convertToFormData } from "../supportElements/common";
+import SoftButtonVue from "../components/SoftButton.vue";
+const api = useApi();
+export default {
+  components: {
+    FullCalendar,
+    SoftBadge,
+    SoftButtonVue,
+    CustomModal,
+  },
+  data() {
+    return {
+      editpreview: null,
+      workerData: {},
+      fullWidthView: false,
+      activeFilter: "all",
+      colors: {
+        pending: "#fbcf33",
+        active: "#82d616",
+        completed: "#cb0c9f",
+        canceled: "#344767",
+      },
+      query: "",
+      tasks: [],
+      filteredResources: [],
+      filteredEvents: [],
+      projects: [],
+      events: [],
+      calendarOptions: {
+        plugins: [resourceTimelinePlugin],
+        schedulerLicenseKey: "0965592368-fcs-1694657447",
+        initialView: "resourceTimelineMonth",
+        height: "auto",
+        resourceAreaWidth: "20%",
+        selectable: true,
+        headerToolbar: {
+          left: "today prev,next",
+          center: "title",
+          right:
+            "resourceTimelineWeek,resourceTimelineMonth,resourceTimelineYear",
+        },
+        editable: true,
+        views: {
+          resourceTimelineWeek: {
+            slotDuration: { days: 1, hours: 1 }, // Each slot represents 1 hour
+            slotLabelFormat: {
+              weekday: "short",
+              month: "numeric",
+              day: "numeric",
+              year: "numeric",
+            }, // Custom slot label format
+          },
+        },
+        resourceAreaHeaderContent: "Projects",
+        resources: this.filteredResources,
+      },
+    };
+  },
+  methods: {
+    renderCalender() {
+      console.log("calende render");
+      console.log(this.tasks);
+      this.events = this.tasks.map((task) => ({
+        id: task.id,
+        resourceId: task.project.id,
+        start: task.startDate,
+        end: task.endDate,
+        title: task.title,
+        color: task.color,
+        description: task.description,
+        workers: task.workers,
+        borderColor: this.colors[task.status],
+        status: task.status,
+      }));
+      this.projects = this.tasks.map((task) => ({
+        id: task.project.id,
+        start: task.project.startDate,
+        end: task.project.endDate,
+        title: task.project.title,
+        address: task.project.address,
+        status: task.project.status,
+        color: this.colors[task.project.status],
+      }));
+      this.filteredResources = this.projects;
+      this.filteredEvents = this.events;
+      this.calendarOptions.resources = this.projects;
+      this.calendarOptions.events = this.events;
+    },
+    changeFilterHandler() {
+      console.log("func caleed", this.activeFilter);
+
+      if (this.activeFilter != "all") {
+        console.log(this.events);
+        let data = this.events.filter(
+          (event) => event.status == this.activeFilter
+        );
+        console.log("local data length", data.length);
+        this.filteredEvents = data;
+      } else {
+        this.filteredEvents = this.events;
+      }
+
+      this.calendarOptions.events = this.filteredEvents;
+
+      // this.setResources([])
+    },
+
+    async gettasksHandler() {
+      try {
+        const response = await api.get(
+          `/api/task/${this.$route.params.id}/worker-tasks/`,
+          {}
+        );
+        this.tasks = response.data;
+        console.log("worker tasks", this.tasks);
+      } catch (err) {
+        this.tasks = [];
+      }
+    },
+
+    async getWorkerHandler() {
+      try {
+        const response = await api.get(`/api/users/${this.$route.params.id}`);
+        this.workerData = response.data;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    showFullView() {
+      this.fullWidthView = !this.fullWidthView;
+    },
+    async editselfProfile() {
+      try {
+        this.loading = true;
+        let formData = convertToFormData(this.workerData, ["avatar"]);
+        const resp = await api.patch(
+          `/api/users/${this.workerData.id}/`,
+          formData
+        );
+        this.$store.commit("setUser", resp.data);
+        this.workerData = resp.data;
+        this.$notify({
+          type: "success",
+          title: "Profile updated",
+          text: "Entered information of your profile has beed updated",
+        });
+        // this.userData = this.$store.state.user;
+        this.$refs.editProfileModal.closeModal();
+      } catch (err) {
+        console.log(err);
+        this.$notify({
+          type: "error",
+          title: "Something went wrong !",
+          text: "Something wrong has happened please try again.",
+        });
+      } finally {
+        this.loading = false;
+      }
+    },
+    handleFileChange(event) {
+      this.userData.avatar = event.target.files[0];
+      this.adminFormData.avatar = event.target.files[0];
+      var input = event.target;
+      if (input.files) {
+        var reader = new FileReader();
+        reader.onload = (e) => {
+          this.preview = e.target.result;
+          this.editpreview = e.target.result;
+        };
+        this.image = input.files[0];
+        reader.readAsDataURL(input.files[0]);
+      }
+    },
+  },
+
+  async mounted() {
+    await this.gettasksHandler();
+    this.renderCalender();
+    this.getWorkerHandler();
+  },
+};
+</script>
