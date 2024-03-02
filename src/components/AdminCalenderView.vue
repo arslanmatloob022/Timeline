@@ -2,13 +2,18 @@
 import FullCalendar from "@fullcalendar/vue3";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import useApi from "../supportElements/useAPI";
+import updateProject from "../views/SupportComponents/updateProject.vue";
 const api = useApi();
+
 export default {
   components: {
     FullCalendar,
+    updateProject
   },
   data() {
     return {
+      isProjectFormOpen:false,
+      editProjectId:0,
       fullWidthView: false,
       activeFilter: "all",
       colors: {
@@ -49,6 +54,11 @@ export default {
         },
         resourceAreaHeaderContent: "Projects",
         resources: [],
+        eventClick: (info) => { // Using arrow function
+        console.log("clicked")
+        this.isProjectFormOpen = true;
+        this.editProjectId = info.event.id;
+      }
       },
     };
   },
@@ -65,6 +75,7 @@ export default {
         description: project.description,
         total_tasks: project.total_tasks,
         managers: project.managers,
+        borderColor: this.colors[project.status],
       }));
       this.calendarOptions.resources = this.projects;
       this.calendarOptions.events = events;
@@ -131,6 +142,18 @@ export default {
         }
       }
     },
+
+    openProjectForm(projectId = null) {
+      this.isProjectFormOpen = true;
+      this.editProjectId = projectId;
+    },
+
+   async closeProjectForm() {
+      this.isProjectFormOpen = false;
+      this.editProjectId = null; 
+      await this.getProjectHandler()
+      this.renderCalender();
+    },
   },
   async mounted() {
     await Promise.all([this.getProjectHandler()]);
@@ -190,7 +213,8 @@ export default {
         >
           <div>
             <span
-              style="font-weight: 600; margin-bottom: 0px; padding-left: 10px"
+            @click="()=>{}"
+              style="font-weight: 500; margin-bottom: 0px; padding-left: 10px"
               >{{ arg.event.title }}
             </span>
             <span> -- tasks ({{ arg.event.extendedProps.total_tasks }})</span>
@@ -223,11 +247,19 @@ export default {
         <!-- <p>{{ arg.event.extendedProps.description }}</p> -->
       </template>
     </FullCalendar>
+
+    <updateProject
+    :isOpen="isProjectFormOpen"
+      :closeModal="closeProjectForm"
+      :projectId="editProjectId"/>
   </div>
 </template>
 <style scss>
+
 .fc-h-event {
-  border-radius: 10px !important;
+  border-width: thick !important;
+  border-radius: 2px !important;
+  margin-bottom: 10px !important;
 }
 
 .avatars {
@@ -239,29 +271,30 @@ export default {
 }
 
 .avatars:hover .avatars__item {
-  margin-right: 30px;
+  margin-right: 10px;
 }
 
 .avatars__item {
   background-color: #596376;
-  border: 2px solid white;
+  border: 1px solid white;
   border-radius: 100%;
   color: #ffffff;
   display: block;
   font-family: sans-serif;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 100;
-  height: 35px;
-  width: 35px;
-  line-height: 35px;
+  height: 20px;
+  width: 20px;
+  line-height: 20px;
   text-align: center;
   transition: margin 0.1s ease-in-out;
   overflow: hidden;
-  margin-left: -20px;
+  margin-left: -10px;
   transition: all 0.4s ease-in-out;
 }
 
 .avatars__item > img {
   width: 100%;
 }
+
 </style>
