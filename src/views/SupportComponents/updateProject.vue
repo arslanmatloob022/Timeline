@@ -15,7 +15,7 @@
               class="inputField"
               type="text"
               required
-              placeholder="Project title"
+              :placeholder="loading ? 'Loading...' : 'Project title'"
               v-model="projectData.title"
             />
           </div>
@@ -48,7 +48,7 @@
               border-radius: 50%;
               margin-top: 10px;
             "
-            :src="preview ? preview : '/preview.jpeg'"
+            :src="preview ? preview : '/home-placeload.png'"
             alt="asdas"
           />
           <input
@@ -59,7 +59,7 @@
           />
         </div>
       </div>
-      <div>
+      <!-- <div>
         <label for="inputField">Description: *</label>
         <input
           class="inputField"
@@ -68,59 +68,44 @@
           v-model="projectData.description"
           size="md"
         />
-      </div>
+      </div> -->
       <div>
         <label for="inputField">Address</label>
         <input
           class="inputField"
           type="text"
-          placeholder="Project address"
+          :placeholder="loading ? 'Loading...' : 'Project address'"
           v-model="projectData.address"
           size="md"
         />
       </div>
 
       <div style="width: 100%" class="flex-between">
-        <div style="width: 45%">
+        <div style="width: 46%">
           <div class="flex-between">
             <label for="inputField">Managers : </label>
-            <i
-              style="color: #249c56; font-size: 14px"
-              @click="this.getManagersershandler()"
-              class="fa fa-plus"
-              aria-hidden="true"
-              >Add More Manager(s)</i
-            >
           </div>
           <select class="inputField" v-model="selectedManagers" multiple="true">
             <option
               class="dropdownOptions"
-              v-for="manager in projectData.managers"
+              v-for="manager in allManagers"
               :key="manager.id"
               :value="manager.id"
             >
               {{ manager.username }}
             </option>
           </select>
+          <span>Press ctrl to selecte multiple</span>
         </div>
-        <div style="width: 45%">
-          <div>
-            <label for="inputField">Status : </label>
-          </div>
-          <select
+        <div style="width: 46%">
+          <label for="inputField">Description: *</label>
+          <textarea
+            rows="3"
             class="inputField"
-            v-model="projectData.status"
-            multiple="true"
-          >
-            <option
-              class="dropdownOptions"
-              v-for="manager in projectStatus"
-              :key="manager.value"
-              :value="manager.value"
-            >
-              {{ manager.name }}
-            </option>
-          </select>
+            type="text"
+            placeholder="Project description"
+            v-model="projectData.description"
+          />
         </div>
       </div>
 
@@ -162,14 +147,16 @@ export default {
   },
   data() {
     return {
+      allManagers: [],
+      preview: null,
       selectedManagers: [],
       loading: false,
-      projectStatus: [
-        { value: "active", name: "Active" },
-        { value: "pending", name: "Pending" },
-        { value: "completed", name: "Completed" },
-        { value: "cancelled", name: "cancelled" },
-      ],
+      // projectStatus: [
+      //   { value: "active", name: "Active" },
+      //   { value: "pending", name: "Pending" },
+      //   { value: "completed", name: "Completed" },
+      //   { value: "cancelled", name: "cancelled" },
+      // ],
       projectData: {
         title: "",
         description: "",
@@ -196,6 +183,7 @@ export default {
     isOpen(newVal) {
       if (newVal && this.projectId) {
         this.fetchProjectData(this.projectId);
+        this.getManagersershandler();
       }
     },
   },
@@ -203,12 +191,19 @@ export default {
     handleFileChange(event) {
       this.projectData.image = event.target.files[0];
     },
-    async fetchProjectData(projectId) {
+    async fetchProjectData() {
       try {
         this.loading = true;
-        const response = await api.get(`/api/project/${projectId}`);
+        const response = await api.get(`/api/project/${this.projectId}`);
         this.projectData = response.data;
+        this.preview = response.data.image;
+        let seeManagers = [];
+        response.data.managers.forEach((item) => {
+          seeManagers.push(item.id);
+        });
+        this.selectedManagers = seeManagers;
         console.log("edit prjec", this.projectData);
+        console.log("edit manages", this.selectedManagers);
       } catch (err) {
         console.log(err);
       } finally {
@@ -257,8 +252,8 @@ export default {
     async getManagersershandler() {
       try {
         this.loading = true;
-        const response = await api.get("/api/users/by-role/mangers/", {});
-        this.projectData.managers = response.data;
+        const response = await api.get("/api/users/by-role/manager/", {});
+        this.allManagers = response.data;
       } catch (err) {
         console.log(err);
       } finally {

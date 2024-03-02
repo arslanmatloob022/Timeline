@@ -13,7 +13,7 @@ import Profile from "@/views/Profile.vue";
 import Rtl from "@/views/Rtl.vue";
 import SignIn from "@/views/SignIn.vue";
 import SignUp from "@/views/SignUp.vue";
-
+import WorkerDetail from "@/views/WorkerDetail.vue";
 const routes = [
   {
     path: "/",
@@ -49,6 +49,11 @@ const routes = [
     path: "/projectdetail/:id",
     name: "Projectdetail",
     component: Projectdetail,
+  },
+  {
+    path: "/workerdetail/:id",
+    name: "WorkerDetail",
+    component: WorkerDetail,
   },
   {
     path: "/virtual-reality",

@@ -65,34 +65,12 @@
       </div>
 
       <div style="display: flex; justify-content: space-between">
-        <div style="width: 45%">
-          <label for="inputField">Set status</label>
-          <select class="inputField" v-model="taskData.status" multiple="false">
-            <option
-              class="dropdownOptions"
-              v-for="task in Taskstatus"
-              :key="task.value"
-              :value="task.value"
-            >
-              {{ task.name }}
-            </option>
-          </select>
-        </div>
-        <div style="width: 45%">
-          <label for="inputField"
-            >Workers : *
-            <i
-              style="margin-left: 26px; paddind: 4px 2px; color: #249c56"
-              @click="getWorkershandler()"
-              class="fa fa-plus"
-              aria-hidden="true"
-              >Add More worker(s)</i
-            ></label
-          >
+        <div style="width: 100%">
+          <label for="inputField">Workers : * </label>
           <select class="inputField" v-model="selectedWorkers" multiple="true">
             <option
               class="dropdownOptions"
-              v-for="worker in taskData.workers"
+              v-for="worker in allWorkers"
               :key="worker.id"
               :value="worker.id"
             >
@@ -140,7 +118,9 @@ export default {
   },
   data() {
     return {
+      allWorkers: [],
       loading: false,
+      selectedWorkers: [],
       Taskstatus: [
         { value: "active", name: "Active" },
         { value: "pending", name: "Pending" },
@@ -157,7 +137,6 @@ export default {
         project: "", // Populate this as needed
         workers: [],
       },
-      selectedWorkers: [],
     };
   },
   components: {
@@ -173,6 +152,7 @@ export default {
       if (newVal && this.taskId) {
         // Fetch task data when the modal is opened and taskId is available
         this.fetchTaskData();
+        this.getWorkershandler();
       }
     },
   },
@@ -182,6 +162,11 @@ export default {
         this.loading = true;
         const response = await api.get(`/api/task/${this.taskId}`);
         this.taskData = response.data;
+        let Seworkers = [];
+        response.data.workers.forEach((item) => {
+          Seworkers.push(item.id);
+        });
+        this.selectedWorkers = Seworkers;
       } catch (err) {
         console.log(err);
       } finally {
@@ -231,7 +216,7 @@ export default {
       try {
         this.loading = true;
         const response = await api.get("/api/users/by-role/worker/", {});
-        this.taskData.workers = response.data;
+        this.allWorkers = response.data;
       } catch (err) {
         console.log(err);
       } finally {

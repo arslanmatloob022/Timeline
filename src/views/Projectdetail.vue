@@ -13,28 +13,69 @@
                   aria-hidden="true"
                 ></i>
               </div>
-              <div class="p-3 card-body">
+              <div class="card-body">
                 <div class="row">
-                  <default-project-card
-                    class="mb-4 col-xl-3 col-md-6 mb-xl-0"
-                    :title="
-                      projectData.title ? projectData.title : 'Project Title'
-                    "
-                    :image="projectData.image ? projectData.image : img1"
-                    :description="
-                      projectData.description
-                        ? projectData.description
-                        : 'Here you can see the description of your project that will briefly describe your project.'
-                    "
-                    :action="{
-                      color: 'danger',
-                      label: 'Delete Project',
-                    }"
-                  />
-                  <div class="mb-4 ml-3 col-xl-3 col-md-6 mb-xl-0">
+                  <div class="mb-4 col-xl-4 col-md-6 mb-xl-0">
                     <div class="card card-blog card-plain">
+                      <div class="position-relative">
+                        <a class="shadow-xl d-block border-radius-xl">
+                          <img
+                            :src="projectData.image ? projectData.image : img2"
+                            alt="img-blur-shadow"
+                            class="shadow img-fluid border-radius-xl"
+                          />
+                        </a>
+                      </div>
                       <div class="px-1 pb-0 card-body">
-                        <!-- <h5>Information</h5> -->
+                        <a href="javascript:;">
+                          <h5>{{ projectData.title }}</h5>
+                        </a>
+                        <p class="mb-4 text-sm">
+                          {{ projectData.description }}
+                        </p>
+                        <div
+                          class="d-flex align-items-center justify-content-between"
+                        ></div>
+                      </div>
+                      <div class="project-button">
+                        <button
+                          @click="updateProjectStatus(projectData.id, 'active')"
+                          :class="
+                            projectData.status == 'active' ? 'active' : ''
+                          "
+                        >
+                          Active
+                        </button>
+                        <button
+                          @click="
+                            updateProjectStatus(projectData.id, 'pending')
+                          "
+                          class="project-button"
+                          :class="
+                            projectData.status == 'pending' ? 'active' : ''
+                          "
+                        >
+                          Pending
+                        </button>
+                        <button
+                          @click="
+                            updateProjectStatus(projectData.id, 'completed')
+                          "
+                          class="project-button"
+                          :class="
+                            projectData.status == 'completed' ? 'active' : ''
+                          "
+                        >
+                          Completed
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mb-4 ml-4 col-xl-4 col-md-6 mb-xl-0">
+                    <div class="card card-blog card-plain">
+                      <h5>Informations</h5>
+                      <div class="px-2 pb-0 card-body">
                         <div
                           class="show dropdown-menu-end me-sm-n4"
                           aria-labelledby="dropdownMenuButton"
@@ -123,12 +164,13 @@
                                 >
                                   <h6 class="mb-1 text-sm font-weight-normal">
                                     <span class="font-weight-bold"
-                                      >Complate Tasks</span
+                                      >Active Tasks</span
                                     >
                                   </h6>
                                   <p class="mb-0 text-xs text-secondary">
                                     <i class="fa fa-list me-1"></i>
-                                    1
+                                    {{ this.activeTasks }}
+                                    Tasks
                                   </p>
                                 </div>
                               </div>
@@ -166,11 +208,11 @@
 
                   <div
                     class="mb-4 ml-3 col-xl-3 col-md-6 mb-xl-0"
-                    style="border-left: 1px solid #898989"
+                    style="border-left: 1px solid #8989893b"
                   >
                     <div class="card card-blog card-plain">
+                      <h5>Managers</h5>
                       <div class="px-1 pb-0 card-body">
-                        <h5>Managers</h5>
                         <div
                           class="show dropdown-menu-end me-sm-n4"
                           aria-labelledby="dropdownMenuButton"
@@ -228,7 +270,7 @@
                                 >
                                   <h6 class="mb-1 text-sm font-weight-normal">
                                     <span class="font-weight-bold"
-                                      >Manager Name</span
+                                      >No Manager Added</span
                                     >
                                   </h6>
                                   <p class="mb-0 text-xs text-secondary">
@@ -249,7 +291,6 @@
           </div>
         </div>
       </div>
-      <div class="managers-info"></div>
     </div>
 
     <div class="tasks-info">
@@ -417,7 +458,6 @@
         </div>
       </div>
     </div>
-    <div class="project-timeline">Project Timeline</div>
 
     <sweetAlert ref="sweetAlert" :alertData="alertData">
       <template v-slot:actions>
@@ -461,18 +501,6 @@
           />
         </div>
 
-        <!-- <div>
-          <label for="inputField">Image</label>
-          <input
-            class="inputField"
-            id="avatarInput"
-            type="file"
-            placeholder=""
-            @change="handleFileChange"
-            size="md"
-          />
-        </div> -->
-
         <div style="display: flex; justify-content: space-between">
           <div>
             <label for="inputField">Start Date</label>
@@ -496,42 +524,47 @@
             />
           </div>
         </div>
-        <div>
-          <label for="inputField">Set status</label>
-          <select
-            required
-            class="inputField"
-            v-model="taskData.status"
-            multiple="false"
-          >
-            <option
-              class="dropdownOptions"
-              v-for="task in Taskstatus"
-              :key="task.value"
-              :value="task.value"
+        <div class="flex-between">
+          <div style="width: 45%">
+            <label for="inputField">Set status</label>
+            <select
+              required
+              class="inputField"
+              v-model="taskData.status"
+              multiple="false"
             >
-              {{ task.name }}
-            </option>
-          </select>
+              <option
+                class="dropdownOptions"
+                v-for="task in Taskstatus"
+                :key="task.value"
+                :value="task.value"
+              >
+                {{ task.name }}
+              </option>
+            </select>
+          </div>
+          <div style="width: 45%">
+            <label for="inputField">Workers : *</label>
+            <select
+              required
+              class="inputField"
+              v-model="taskData.workers"
+              multiple="true"
+            >
+              <option
+                class="dropdownOptions"
+                v-for="(worker, index) in workersData"
+                :key="worker.id"
+                :value="worker.id"
+              >
+                <p>{{ index + 1 }}).</p>
+                {{ worker.username }}
+              </option>
+            </select>
+          </div>
         </div>
-        <div>
-          <label for="inputField">Workers : *</label>
-          <select
-            required
-            class="inputField"
-            v-model="taskData.workers"
-            multiple="true"
-          >
-            <option
-              class="dropdownOptions"
-              v-for="(worker, index) in workersData"
-              :key="worker.id"
-              :value="worker.id"
-            >
-              <p>{{ index + 1 }}).</p>
-              {{ worker.username }}
-            </option>
-          </select>
+        <div class="flex-between">
+          <p></p>
           <span>Press ctrl to selecte multiple</span>
         </div>
       </form>
@@ -663,7 +696,7 @@
   </div>
 </template>
 <script>
-import DefaultProjectCard from "./components/DefaultProjectCard.vue";
+// import DefaultProjectCard from "./components/DefaultProjectCard.vue";
 import img1 from "@/assets/img/home-decor-1.jpg";
 // import SoftAvatar from "../components/SoftAvatar.vue";
 import SoftButtonVue from "../components/SoftButton.vue";
@@ -683,6 +716,7 @@ export default {
   name: "ProjectsDetail",
   data() {
     return {
+      activeTasks: 0,
       selectedManagers: [],
       preview: null,
       isProjectFormOpen: false,
@@ -764,12 +798,18 @@ export default {
     CustomModal,
     updateTaskVue,
     sweetAlert,
-    DefaultProjectCard,
+    // DefaultProjectCard,
     // SoftAvatar,
     SoftBadge,
     SoftButtonVue,
   },
   methods: {
+    getActiveTasks() {
+      this.activeTasks = this.projectTasks.filter(
+        (tasks) => tasks.status == "active"
+      );
+      this.activeTasks = this.activeTasks.length;
+    },
     closeTheModals() {
       this.taskData.title = "";
       this.taskData.description = "";
@@ -840,6 +880,7 @@ export default {
         );
         this.projectTasks = resp.data;
         console.log(resp.data);
+        this.getActiveTasks();
       } catch (err) {
         console.log(err);
       }
@@ -924,6 +965,23 @@ export default {
           type: "success",
           title: "Task updated",
           text: `Task set to ${taskStatus} succesfuly`,
+        });
+        this.getProject(this.projectId);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    async updateProjectStatus(projectID, projectStatus) {
+      try {
+        const resp = api.patch(`/api/project/${projectID}/`, {
+          status: projectStatus,
+        });
+        console.log(resp);
+        this.$notify({
+          type: "success",
+          title: "Task updated",
+          text: `Task set to ${projectStatus} succesfuly`,
         });
         this.getProject(this.projectId);
       } catch (err) {

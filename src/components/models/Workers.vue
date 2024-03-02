@@ -50,7 +50,10 @@
             </thead>
             <tbody>
               <tr v-for="item in managersData" :key="item.id">
-                <td>
+                <td
+                  @click="this.$router.push(`/workerdetail/${item.id}`)"
+                  class="pointer"
+                >
                   <div class="d-flex px-2 py-1">
                     <div>
                       <soft-avatar
