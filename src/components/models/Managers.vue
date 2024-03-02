@@ -70,7 +70,9 @@
                   </div>
                 </td>
                 <td class="align-middle text-center">
-                  <p class="text-xs py-1 align-items-center font-weight-bold mb-0">
+                  <p
+                    class="text-xs py-1 align-items-center font-weight-bold mb-0"
+                  >
                     {{ item.phoneNumber ? item.phoneNumber : "---" }}
                   </p>
                 </td>
@@ -143,7 +145,7 @@
           />
         </div>
 
-        <div class="row">
+        <div class="row d-flex">
           <div class="col-6">
             <label for="inputFitaskDataeld">Email</label>
             <input
@@ -166,16 +168,32 @@
             />
           </div>
         </div>
-        <div>
-          <label for="inputField">Password</label>
-          <input
-            required
-            class="inputField"
-            type="password"
-            placeholder="Password"
-            v-model="userData.password"
-          />
+
+        <div v-if="!editModeId" class="row">
+          <div class="col-12">
+            <label for="inputField">Password</label>
+            <input
+              required
+              class="inputField"
+              :type="showPassword ? 'text' : 'password'"
+              placeholder="Password"
+              v-model="userData.password"
+            />
+          </div>
+          <div
+            class="col-6"
+            style="display: flex; gap: 12px; margin: 6px; align-items: center"
+          >
+            <i
+              @click="togglePasswordVisibility()"
+              :class="showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'"
+              class="pointer"
+              aria-hidden="true"
+            ></i>
+            Show Password
+          </div>
         </div>
+
         <div class="row">
           <div class="col-6">
             <label for="inputField">Image</label>
@@ -238,6 +256,7 @@ export default {
   name: "authors-table",
   data() {
     return {
+      showPassword: false,
       alertData: {
         icon: "fa fa-warning",
         alertTitle: "Alert",
@@ -247,14 +266,13 @@ export default {
       selectedUserId: null,
       showDropDown: false,
       loading: false,
-      modalTitle: "Add Manager",
+      modalTitle: "Add New Manager",
 
       managersData: [],
       userData: {
         username: "",
         email: "",
-        password: "",
-        status: "",
+        status: "active",
         role: "manager",
         phoneNumber: "",
         avatar: File | null | String,
@@ -273,6 +291,9 @@ export default {
     SoftButtonVue,
   },
   methods: {
+    togglePasswordVisibility() {
+      this.showPassword = !this.showPassword;
+    },
     // openDeleteModal(item.id);
     openAlert(id) {
       this.$refs.sweetAlert.openModal();
@@ -281,7 +302,6 @@ export default {
     closeUserModalHandler() {
       (this.userData.username = ""),
         (this.userData.email = ""),
-        (this.userData.password = ""),
         (this.userData.status = ""),
         (this.preview = null);
       this.phoneNumber = "";
@@ -321,7 +341,6 @@ export default {
         this.modalTitle = "Edit Manager";
         this.userData.username = manager.username;
         this.userData.email = manager.email;
-        this.userData.password = manager.password;
         this.userData.avatar = manager.avatar;
         this.preview = manager.avatar;
         this.userData.phoneNumber = manager.phoneNumber;
@@ -365,9 +384,10 @@ export default {
     async addNewManger() {
       try {
         this.loading = true;
-
         let formData = convertToFormData(this.userData, ["avatar"]);
-
+        if (!this.editModeId && this.userData.password) {
+          formData.append("password", this.userData.password);
+        }
         const response = this.editModeId
           ? await api.patch(`/api/users/${this.editModeId}/`, formData)
           : await api.post("/api/users/", formData);

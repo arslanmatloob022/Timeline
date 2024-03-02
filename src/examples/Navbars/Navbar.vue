@@ -47,14 +47,17 @@
               class="px-0 nav-link font-weight-bold"
               :class="textWhite ? textWhite : 'text-body'"
             >
-              <i
-                class="fa fa-user"
+              <img
+                style="width: 30px; height: 30px; border-radius: 50%"
+                :src="this.$store.state.user.avatar"
                 :class="this.$store.state.isRTL ? 'ms-sm-2' : 'me-sm-1'"
-              ></i>
+              />
               <span v-if="this.$store.state.isRTL" class="d-sm-inline d-none"
                 >يسجل دخول</span
               >
-              <span v-else class="d-sm-inline d-none">Sign In </span>
+              <span v-else class="d-sm-inline d-none">{{
+                this.$store.state.user.username
+              }}</span>
             </router-link>
           </li>
           <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
@@ -80,7 +83,7 @@
               <i class="cursor-pointer fa fa-cog fixed-plugin-button-nav"></i>
             </a>
           </li>
-          <li
+          <!-- <li
             class="nav-item dropdown d-flex align-items-center"
             :class="this.$store.state.isRTL ? 'ps-2' : 'pe-2'"
           >
@@ -205,7 +208,7 @@
                 </a>
               </li>
             </ul>
-          </li>
+          </li> -->
         </ul>
       </div>
     </div>

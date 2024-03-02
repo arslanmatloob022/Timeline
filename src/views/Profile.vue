@@ -16,7 +16,7 @@
           <div class="col-auto">
             <div class="avatar avatar-xl position-relative">
               <img
-                :src="this.userData.avatar ? this.userData.avatar : img4"
+                :src="this.userData.avatar ? this.userData.avatar : team1"
                 alt="profile_image"
                 class="shadow-sm w-100 border-radius-lg"
               />
@@ -87,57 +87,18 @@
                         </g>
                       </g>
                     </svg>
-                    <span class="ms-1">App</span>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a
-                    class="px-0 py-1 mb-0 nav-link"
-                    data-bs-toggle="tab"
-                    href="javascript:;"
-                    role="tab"
-                    aria-selected="false"
-                  >
-                    <svg
-                      class="text-dark"
-                      width="16px"
-                      height="16px"
-                      viewBox="0 0 40 44"
-                      version="1.1"
-                      xmlns="http://www.w3.org/2000/svg"
-                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                    <span
+                      @click="
+                        () => {
+                          this.$refs.editPasswordModal.openModal();
+                        }
+                      "
+                      class="ms-1"
+                      >Change password</span
                     >
-                      <title>document</title>
-                      <g
-                        stroke="none"
-                        stroke-width="1"
-                        fill="none"
-                        fill-rule="evenodd"
-                      >
-                        <g
-                          transform="translate(-1870.000000, -591.000000)"
-                          fill="#FFFFFF"
-                          fill-rule="nonzero"
-                        >
-                          <g transform="translate(1716.000000, 291.000000)">
-                            <g transform="translate(154.000000, 300.000000)">
-                              <path
-                                class="color-background"
-                                d="M40,40 L36.3636364,40 L36.3636364,3.63636364 L5.45454545,3.63636364 L5.45454545,0 L38.1818182,0 C39.1854545,0 40,0.814545455 40,1.81818182 L40,40 Z"
-                                opacity="0.603585379"
-                              ></path>
-                              <path
-                                class="color-background"
-                                d="M30.9090909,7.27272727 L1.81818182,7.27272727 C0.814545455,7.27272727 0,8.08727273 0,9.09090909 L0,41.8181818 C0,42.8218182 0.814545455,43.6363636 1.81818182,43.6363636 L30.9090909,43.6363636 C31.9127273,43.6363636 32.7272727,42.8218182 32.7272727,41.8181818 L32.7272727,9.09090909 C32.7272727,8.08727273 31.9127273,7.27272727 30.9090909,7.27272727 Z M18.1818182,34.5454545 L7.27272727,34.5454545 L7.27272727,30.9090909 L18.1818182,30.9090909 L18.1818182,34.5454545 Z M25.4545455,27.2727273 L7.27272727,27.2727273 L7.27272727,23.6363636 L25.4545455,23.6363636 L25.4545455,27.2727273 Z M25.4545455,20 L7.27272727,20 L7.27272727,16.3636364 L25.4545455,16.3636364 L25.4545455,20 Z"
-                              ></path>
-                            </g>
-                          </g>
-                        </g>
-                      </g>
-                    </svg>
-                    <span class="ms-1">Messages</span>
                   </a>
                 </li>
+
                 <li class="nav-item">
                   <a
                     class="px-0 py-1 mb-0 nav-link"
@@ -290,27 +251,14 @@
         <div class="mt-4 col-12 col-md-6 col-xl-4 mt-md-0">
           <profile-info-card
             title="Profile Information"
-            description="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
+            :description="`Hi ${this.userData.username}! Your journey starts here. Celebrate achievements, set new goals, and track progress. Every effort counts, no matter how small. Stay focused, and know that we're here to support you.`"
             :info="{
               fullName: this.userData.username,
               mobile: this.userData.phoneNumber,
               email: this.userData.email,
               location: 'USA',
             }"
-            :social="[
-              {
-                link: 'https://www.facebook.com/CreativeTim/',
-                icon: faFacebook,
-              },
-              {
-                link: 'https://twitter.com/creativetim',
-                icon: faTwitter,
-              },
-              {
-                link: 'https://www.instagram.com/creativetimofficial/',
-                icon: faInstagram,
-              },
-            ]"
+            :social="[]"
             :action="{
               tooltip: 'Edit Profile',
             }"
@@ -577,8 +525,7 @@
       </template>
     </custom-modal>
 
-    <custom-modal ref="editProfileModal" :title="modalTitle">
-      <!-- Custom content for the modal -->
+    <custom-modal ref="editProfileModal" :title="editmodalTitle">
       <form id="manger-form" @submit.prevent="editselfProfile">
         <div>
           <label for="inputField">Full name</label>
@@ -614,16 +561,6 @@
             />
           </div>
         </div>
-        <div>
-          <label for="inputField">Password</label>
-          <input
-            required
-            class="inputField"
-            type="password"
-            placeholder="Password"
-            v-model="userData.password"
-          />
-        </div>
         <div class="row">
           <div class="col-6">
             <label for="inputField">Image</label>
@@ -647,6 +584,54 @@
       <template v-slot:actions>
         <soft-button-vue :loading="loading" form="manger-form" type="submit">
           Save changes
+        </soft-button-vue>
+      </template>
+    </custom-modal>
+
+    <custom-modal
+      ref="editPasswordModal"
+      size="small"
+      :title="passwordmodalTitle"
+    >
+      <form id="password-form" @submit.prevent="changePassword">
+        <div class="row">
+          <div class="col-12">
+            <label for="inputField">Password</label>
+            <input
+              autocomplete="username"
+              class="inputField"
+              v-model="Password.newPassword"
+              :type="showPassword ? 'text' : 'password'"
+              required
+              placeholder="New Password"
+            />
+          </div>
+          <div class="col-12">
+            <label for="inputField">Confirm Password</label>
+            <input
+              class="inputField"
+              v-model="Password.confirmPassword"
+              :type="showPassword ? 'text' : 'password'"
+              required
+              placeholder="Confirm Password"
+            />
+          </div>
+          <div
+            style="display: flex; gap: 12px; margin: 6px; align-items: center"
+          >
+            <i
+              @click="togglePasswordVisibility()"
+              :class="showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'"
+              class="pointer"
+              aria-hidden="true"
+            ></i>
+            Show Password
+          </div>
+        </div>
+      </form>
+      <template v-slot:actions>
+        <soft-button-vue :loading="loading" form="password-form" type="submit">
+          Save Password
         </soft-button-vue>
       </template>
     </custom-modal>
@@ -700,8 +685,11 @@ export default {
   },
   data() {
     return {
+      showPassword: false,
       loading: false,
       preview: null,
+      editmodalTitle: "Edit Profile",
+      passwordmodalTitle: "Change Password",
       editpreview: null,
       selectedIdToDelete: 0,
       alertData: {
@@ -732,8 +720,7 @@ export default {
         id: 0,
         username: "",
         email: "",
-        password: "",
-        status: "",
+        is_active: true,
         phoneNumber: "",
         avatar: File | null | String,
       },
@@ -745,6 +732,10 @@ export default {
         role: "admin",
         phoneNumber: "",
         avatar: File | null | String,
+      },
+      Password: {
+        newPassword: "",
+        confirmPassword: "",
       },
     };
   },
@@ -863,6 +854,34 @@ export default {
       } finally {
         this.loading = false;
       }
+    },
+
+    async changePassword() {
+      try {
+        if (this.Password.newPassword == this.Password.confirmPassword) {
+          const response = api.post(``, {
+            password: this.Password.confirmPassword,
+          });
+          this.$notify({
+            type: "success",
+            title: "Password changed",
+            text: "Your password changed successfuly.",
+          });
+          console.log(response);
+        } else {
+          this.$notify({
+            type: "error",
+            title: "Passwords mismatches",
+            text: "New password and confirm password are not same.",
+          });
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    togglePasswordVisibility() {
+      this.showPassword = !this.showPassword;
     },
   },
   mounted() {

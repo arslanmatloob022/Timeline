@@ -2,7 +2,11 @@
   <div class="py-4 container-fluid">
     <div class="row">
       <div
-        style="margin-top: 24px"
+        style="
+          margin-top: 24px;
+          color: #fff;
+          background: linear-gradient(to right, #17ad37, #98ec2d);
+        "
         class="mx-2 mt-0 mb-4 overflow-hidden card card-body blur shadow-blur"
       >
         <div class="row gx-4">
@@ -17,7 +21,9 @@
           </div>
           <div class="col-auto my-auto">
             <div class="h-100">
-              <h5 class="mb-1">{{ workerData.username }}</h5>
+              <h5 style="color: #fff" class="mb-1">
+                {{ workerData.username }}
+              </h5>
               <p class="mb-0 text-sm font-weight-bold">
                 {{ workerData.role }}
               </p>

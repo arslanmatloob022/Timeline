@@ -39,7 +39,7 @@
                       </div>
                       <div class="project-button">
                         <button
-                          @click="updateProjectStatus(projectData.id, 'active')"
+                          @click="updateProjectStatus('active')"
                           :class="
                             projectData.status == 'active' ? 'active' : ''
                           "
@@ -47,9 +47,7 @@
                           Active
                         </button>
                         <button
-                          @click="
-                            updateProjectStatus(projectData.id, 'pending')
-                          "
+                          @click="updateProjectStatus('pending')"
                           class="project-button"
                           :class="
                             projectData.status == 'pending' ? 'active' : ''
@@ -58,9 +56,7 @@
                           Pending
                         </button>
                         <button
-                          @click="
-                            updateProjectStatus(projectData.id, 'completed')
-                          "
+                          @click="updateProjectStatus('completed')"
                           class="project-button"
                           :class="
                             projectData.status == 'completed' ? 'active' : ''
@@ -798,8 +794,6 @@ export default {
     CustomModal,
     updateTaskVue,
     sweetAlert,
-    // DefaultProjectCard,
-    // SoftAvatar,
     SoftBadge,
     SoftButtonVue,
   },
@@ -972,18 +966,19 @@ export default {
       }
     },
 
-    async updateProjectStatus(projectID, projectStatus) {
+    async updateProjectStatus(projectStatus) {
       try {
-        const resp = api.patch(`/api/project/${projectID}/`, {
+        const resp = api.patch(`/api/project/${this.$route.params.id}/`, {
           status: projectStatus,
         });
         console.log(resp);
+        this.projectData.status = projectStatus;
         this.$notify({
           type: "success",
           title: "Task updated",
           text: `Task set to ${projectStatus} succesfuly`,
         });
-        this.getProject(this.projectId);
+        this.getProject();
       } catch (err) {
         console.log(err);
       }

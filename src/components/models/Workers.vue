@@ -167,15 +167,29 @@
             />
           </div>
         </div>
-        <div>
-          <label for="inputField">Password</label>
-          <input
-            required
-            class="inputField"
-            type="password"
-            placeholder="Password"
-            v-model="userData.password"
-          />
+        <div v-if="!editModeId" class="row">
+          <div class="col-12">
+            <label for="inputField">Password</label>
+            <input
+              required
+              class="inputField"
+              :type="showPassword ? 'text' : 'password'"
+              placeholder="Password"
+              v-model="userData.password"
+            />
+          </div>
+          <div
+            class="col-6"
+            style="display: flex; gap: 12px; margin: 6px; align-items: center"
+          >
+            <i
+              @click="togglePasswordVisibility()"
+              :class="showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'"
+              class="pointer"
+              aria-hidden="true"
+            ></i>
+            Show Password
+          </div>
         </div>
         <div class="row">
           <div class="col-6">
@@ -239,6 +253,7 @@ export default {
   name: "authors-table",
   data() {
     return {
+      showPassword: false,
       alertData: {
         icon: "fa fa-warning",
         alertTitle: "Alert",
@@ -272,6 +287,9 @@ export default {
     SoftButtonVue,
   },
   methods: {
+    togglePasswordVisibility() {
+      this.showPassword = !this.showPassword;
+    },
     closeUserModalHandler() {
       (this.userData.username = ""),
         (this.userData.email = ""),
@@ -362,6 +380,9 @@ export default {
 
         let formData = convertToFormData(this.userData, ["avatar"]);
 
+        if (!this.editModeId && this.userData.password) {
+          formData.append("password", this.userData.password);
+        }
         const response = this.editModeId
           ? await api.patch(`/api/users/${this.editModeId}/`, formData)
           : await api.post("/api/users/", formData);
