@@ -1,6 +1,5 @@
 <template>
   <div class="container-fluid">
-
     <DashboardProjects></DashboardProjects>
     <!-- <div class="row">
       <div class="col-lg-12 col-md-6 mb-md-0 mb-4">
@@ -109,7 +108,6 @@
     </div> -->
 
     <Projects></Projects>
-
 
     <!-- <div class="col-12">
       <CalenderView />
@@ -246,7 +244,7 @@ import useApi from "../supportElements/useAPI";
 import CompletedProjects from "../components/models/CompletedProjects.vue";
 import CustomModal from "@/views/components/CustomModal.vue";
 import SoftButtonVue from "../components/SoftButton.vue";
-
+import Projects from "../components/models/Projects.vue";
 const api = useApi();
 export default {
   name: "projects-card",
@@ -294,7 +292,6 @@ export default {
     };
   },
   components: {
-
     // CalenderView,
 
     // DefaultProjectCard,
@@ -303,7 +300,7 @@ export default {
     SoftButtonVue,
     CustomModal,
     CompletedProjects,
-    DashboardProjects
+    DashboardProjects,
   },
   computed: {
     ...mapState(["token"]),

@@ -121,8 +121,6 @@ export default {
       allWorkers: [],
       loading: false,
 
-      allWorkers:[],
-
       selectedWorkers: [],
 
       Taskstatus: [
@@ -156,8 +154,7 @@ export default {
       if (newVal && this.taskId) {
         // Fetch task data when the modal is opened and taskId is available
         this.fetchTaskData();
-        this.getWorkershandler()
-
+        this.getWorkershandler();
       }
     },
   },
@@ -168,12 +165,11 @@ export default {
         const response = await api.get(`/api/task/${this.taskId}`);
         this.taskData = response.data;
 
-        let Seworkers = []
-        response.data.workers.forEach((item)=>{
-          Seworkers.push(item.id)
-        })
-        this.selectedWorkers = Seworkers
-
+        let Seworkers = [];
+        response.data.workers.forEach((item) => {
+          Seworkers.push(item.id);
+        });
+        this.selectedWorkers = Seworkers;
       } catch (err) {
         console.log(err);
       } finally {
