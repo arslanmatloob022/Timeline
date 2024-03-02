@@ -5,7 +5,7 @@
       <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
         <mini-statistics-card
           title="All Projects"
-          value="530"
+          :value="dashboardStats.all_project"
           :percentage="{
             value: '+505%',
             color: 'text-success',
@@ -19,8 +19,8 @@
       </div>
       <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
         <mini-statistics-card
-          title="Completed Projects"
-          value="2,30"
+          title="Active Projects"
+          :value="dashboardStats.active_projects"
           :percentage="{
             value: '+3%',
             color: 'text-success',
@@ -34,8 +34,8 @@
       </div>
       <div class="col-xl-3 col-sm-6 mb-xl-0">
         <mini-statistics-card
-          title="Projects in progress"
-          value="430"
+          title="Managers"
+          :value="dashboardStats.managers"
           :percentage="{
             value: '+5%',
             color: 'text-success',
@@ -49,8 +49,8 @@
       </div>
       <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
         <mini-statistics-card
-          title="Total Managers"
-          value="46"
+          title="Workers"
+          :value="dashboardStats.workers"
           :percentage="{
             value: '-2%',
             color: 'text-danger',
@@ -327,6 +327,12 @@ export default {
   data() {
     return {
       loading: false,
+      dashboardStats:{
+        all_project: 0,
+        active_projects: 0,
+        workers: 0,
+        managers: 0
+      },
       usersData: [],
       iconBackground: "bg-gradient-success",
       faCreditCard,
@@ -390,9 +396,21 @@ export default {
         this.loading = false;
       }
     },
+    async getDashboeardStats() {
+      try {
+        const response = await api.get("/api/project/dashboard/", {});
+        this.dashboardStats = response.data;
+        console.log("data", this.usersData);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        this.loading = false;
+      }
+    },
   },
   mounted() {
     this.getManagershandler();
+    this.getDashboeardStats()
   },
 };
 </script>

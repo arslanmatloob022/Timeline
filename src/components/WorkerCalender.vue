@@ -69,9 +69,9 @@ export default {
         borderColor:this.colors[task.status],
         status:task.status
       }));
+
       this.projects = this.tasks.map((task) => ({
         id: task.project.id,
-
         start: task.project.startDate,
         end: task.project.endDate,
         title: task.project.title,
