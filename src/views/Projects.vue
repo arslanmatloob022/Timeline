@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid">
-    <Projects></Projects>
+    <DashboardProjects></DashboardProjects>
     <!-- <div class="row">
       <div class="col-lg-12 col-md-6 mb-md-0 mb-4">
         <div class="card mb-4">
@@ -216,6 +216,7 @@ import img3 from "@/assets/img/home-decor-3.jpg";
 // import DefaultProjectCard from "./components/DefaultProjectCard.vue";
 // import PlaceHolderCard from "@/examples/Cards/PlaceHolderCard.vue";
 import setTooltip from "@/assets/js/tooltip.js";
+import DashboardProjects from "../components/models/DashboardProjects.vue";
 // import SoftProgress from "@/components/SoftProgress.vue";
 import img4 from "@/assets/img/team-3.jpg";
 import img5 from "@/assets/img/team-4.jpg";
@@ -238,7 +239,7 @@ import img21 from "@/assets/img/team-4.jpg";
 import { mapState } from "vuex";
 import { convertToFormData } from "../supportElements/common";
 import useApi from "../supportElements/useAPI";
-import Projects from "../components/models/Projects.vue";
+
 import CompletedProjects from "../components/models/CompletedProjects.vue";
 import CustomModal from "@/views/components/CustomModal.vue";
 import SoftButtonVue from "../components/SoftButton.vue";
@@ -293,13 +294,14 @@ export default {
   },
   components: {
     // CalenderView,
-    Projects,
+
     // DefaultProjectCard,
     SoftButtonVue,
     // PlaceHolderCard,
     CustomModal,
     // ProjectsCard,
     CompletedProjects,
+    DashboardProjects
   },
   computed: {
     ...mapState(["token"]),

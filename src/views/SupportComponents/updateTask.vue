@@ -92,7 +92,7 @@
           <select class="inputField" v-model="selectedWorkers" multiple="true">
             <option
               class="dropdownOptions"
-              v-for="worker in taskData.workers"
+              v-for="worker in allWorkers"
               :key="worker.id"
               :value="worker.id"
             >
@@ -141,6 +141,7 @@ export default {
   data() {
     return {
       loading: false,
+      allWorkers:[],
       Taskstatus: [
         { value: "active", name: "Active" },
         { value: "pending", name: "Pending" },
@@ -173,6 +174,7 @@ export default {
       if (newVal && this.taskId) {
         // Fetch task data when the modal is opened and taskId is available
         this.fetchTaskData();
+        this.getWorkershandler()
       }
     },
   },
@@ -182,6 +184,11 @@ export default {
         this.loading = true;
         const response = await api.get(`/api/task/${this.taskId}`);
         this.taskData = response.data;
+        let Seworkers = []
+        response.data.workers.forEach((item)=>{
+          Seworkers.push(item.id)
+        })
+        this.selectedWorkers = Seworkers
       } catch (err) {
         console.log(err);
       } finally {
@@ -231,7 +238,7 @@ export default {
       try {
         this.loading = true;
         const response = await api.get("/api/users/by-role/worker/", {});
-        this.taskData.workers = response.data;
+        this.allWorkers = response.data;
       } catch (err) {
         console.log(err);
       } finally {
