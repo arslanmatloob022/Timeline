@@ -974,9 +974,11 @@ export default {
 
     async updateProjectStatus(projectID, projectStatus) {
       try {
+        
         const resp = api.patch(`/api/project/${projectID}/`, {
           status: projectStatus,
         });
+        this.projectData.status  = projectStatus
         console.log(resp);
         this.$notify({
           type: "success",

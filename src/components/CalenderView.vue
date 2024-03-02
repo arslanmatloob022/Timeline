@@ -2,13 +2,17 @@
 import FullCalendar from "@fullcalendar/vue3";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import useApi from "../supportElements/useAPI";
+import updateTaskVue from "../views/SupportComponents/updateTask.vue";
 const api = useApi();
 export default {
   components: {
     FullCalendar,
+    updateTaskVue
   },
   data() {
     return {
+      isTaskFormOpen:false,
+      editTaskId:0,
       fullWidthView: false,
       activeFilter: "all",
       colors: {
@@ -48,6 +52,13 @@ export default {
         },
         resourceAreaHeaderContent: "Projects",
         resources: this.filteredResources,
+        eventClick: (info) => { // Using arrow function
+        console.log("clicked")
+        this.isTaskFormOpen = true;
+        this.editTaskId = info.event.id;
+      }
+
+       
       },
     };
   },
@@ -141,6 +152,14 @@ export default {
         }
       }
     },
+    async closeTaskForm() {
+  
+      this.isTaskFormOpen = false;
+      this.editTaskId = null; 
+      await Promise.all([this.getProjectHandler(), this.gettasksHandler()]);
+        this.renderCalender();
+        },
+  
   },
 
   async mounted() {
@@ -239,7 +258,7 @@ export default {
             justify-content: space-between;
           "
         >
-          <p style="font-weight: 600; margin-bottom: 0px; padding-left: 10px">
+          <p style="font-weight: 500; margin-bottom: 0px; padding-left: 10px">
             {{ arg.event.title }}
           </p>
           <div class="avatars">
@@ -276,12 +295,19 @@ export default {
     >
       <h4 class="mt-5 mb-5" style="color: darkgray">No project found</h4>
     </div>
+
+    <update-task-vue
+      :isOpen="isTaskFormOpen"
+      :closeModal="closeTaskForm"
+      :taskId="editTaskId"
+    />
   </div>
 </template>
 <style scss>
 .fc-h-event {
   border-width: thick !important;
-  border-radius: 10px !important;
+  border-radius: 2px !important;
+  margin-bottom: 10px !important;
 }
 
 .avatars {
@@ -293,25 +319,25 @@ export default {
 }
 
 .avatars:hover .avatars__item {
-  margin-right: 30px;
+  margin-right: 10px;
 }
 
 .avatars__item {
   background-color: #596376;
-  border: 2px solid white;
+  border: 1px solid white;
   border-radius: 100%;
   color: #ffffff;
   display: block;
   font-family: sans-serif;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 100;
-  height: 35px;
-  width: 35px;
-  line-height: 35px;
+  height: 20px;
+  width: 20px;
+  line-height: 20px;
   text-align: center;
   transition: margin 0.1s ease-in-out;
   overflow: hidden;
-  margin-left: -20px;
+  margin-left: -10px;
   transition: all 0.4s ease-in-out;
 }
 
