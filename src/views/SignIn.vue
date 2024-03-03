@@ -173,13 +173,21 @@ export default {
         console.log("new", response.data.token);
         this.$store.commit("setToken", token);
         this.$store.commit("setUser", user);
+        this.$store.dispatch("login", { isAuthenticated: true });
         this.loading = false;
         this.$notify({
           type: "success",
-          title: "Important message",
+          title: "Welcome Back.",
           text: `Hello ${response.data.user.username} !`,
         });
-        this.$router.push("/dashboard");
+
+        if (this.$store.state.user.role == "admin") {
+          this.$router.push("/dashboard");
+        } else if (this.$store.state.user.role == "manager") {
+          this.$router.push("/timeline");
+        } else {
+          this.$router.push("/workerdetail");
+        }
         console.error("Login success");
       } catch (error) {
         this.$notify({

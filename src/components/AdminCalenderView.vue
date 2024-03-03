@@ -3,17 +3,19 @@ import FullCalendar from "@fullcalendar/vue3";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import useApi from "../supportElements/useAPI";
 import updateProject from "../views/SupportComponents/updateProject.vue";
+import SoftButtonVue from "./SoftButton.vue";
 const api = useApi();
 
 export default {
   components: {
     FullCalendar,
-    updateProject
+    SoftButtonVue,
+    updateProject,
   },
   data() {
     return {
-      isProjectFormOpen:false,
-      editProjectId:0,
+      isProjectFormOpen: false,
+      editProjectId: 0,
       fullWidthView: false,
       activeFilter: "all",
       colors: {
@@ -54,11 +56,12 @@ export default {
         },
         resourceAreaHeaderContent: "Projects",
         resources: [],
-        eventClick: (info) => { // Using arrow function
-        console.log("clicked")
-        this.isProjectFormOpen = true;
-        this.editProjectId = info.event.id;
-      }
+        eventClick: (info) => {
+          // Using arrow function
+          console.log("clicked");
+          this.isProjectFormOpen = true;
+          this.editProjectId = info.event.id;
+        },
       },
     };
   },
@@ -148,10 +151,10 @@ export default {
       this.editProjectId = projectId;
     },
 
-   async closeProjectForm() {
+    async closeProjectForm() {
       this.isProjectFormOpen = false;
-      this.editProjectId = null; 
-      await this.getProjectHandler()
+      this.editProjectId = null;
+      await this.getProjectHandler();
       this.renderCalender();
     },
   },
@@ -162,11 +165,7 @@ export default {
 };
 </script>
 <template>
-  <div
-    id="fullCalendarView"
-    class="mb-6"
-    :class="fullWidthView ? 'fullView' : ''"
-  >
+  <div id="fullCalendarView" class="mb-6">
     <form id="manger-form" @submit.prevent="changeFilterHandler">
       <div class="flex-between">
         <div>
@@ -189,11 +188,58 @@ export default {
           />
         </div>
 
-        <div class="tabs-container">
-          <button class="active">All</button>
-          <button>Active</button>
-          <button>Pending</button>
-          <button>Completed</button>
+        <div class="filter-tabs">
+          <SoftButtonVue
+            @click="
+              () => {
+                this.activeFilter = 'all';
+              }
+            "
+            :class="this.activeFilter == 'all' ? 'active-btn' : ''"
+            color="info"
+            variant="gradient"
+            size="sm"
+            >All</SoftButtonVue
+          >
+
+          <SoftButtonVue
+            @click="
+              () => {
+                this.activeFilter = 'active';
+              }
+            "
+            :class="this.activeFilter == 'active' ? 'active-btn' : ''"
+            color="warning"
+            variant="gradient"
+            size="sm"
+            >Active</SoftButtonVue
+          >
+
+          <SoftButtonVue
+            @click="
+              () => {
+                this.activeFilter = 'pending';
+              }
+            "
+            :class="this.activeFilter == 'pending' ? 'active-btn' : ''"
+            color="secondary"
+            variant="gradient"
+            size="sm"
+            >Pending</SoftButtonVue
+          >
+
+          <SoftButtonVue
+            @click="
+              () => {
+                this.activeFilter = 'completed';
+              }
+            "
+            :class="this.activeFilter == 'completed' ? 'active-btn' : ''"
+            color="success"
+            variant="gradient"
+            size="sm"
+            >Completed</SoftButtonVue
+          >
         </div>
         <button class="view-button" @click="toggleFullScreen()">
           <i :class="fullWidthView ? 'fa fa-compress' : 'fa fa-expand'"></i>
@@ -213,7 +259,7 @@ export default {
         >
           <div>
             <span
-            @click="()=>{}"
+              @click="() => {}"
               style="font-weight: 500; margin-bottom: 0px; padding-left: 10px"
               >{{ arg.event.title }}
             </span>
@@ -249,13 +295,20 @@ export default {
     </FullCalendar>
 
     <updateProject
-    :isOpen="isProjectFormOpen"
+      :isOpen="isProjectFormOpen"
       :closeModal="closeProjectForm"
-      :projectId="editProjectId"/>
+      :projectId="editProjectId"
+    />
   </div>
 </template>
-<style scss>
-
+<style lang="scss" scoped>
+.filter-tabs {
+  height: 60px;
+}
+.filter-tabs > button {
+  margin-right: 20px;
+  border: 5px solid transparent;
+}
 .fc-h-event {
   border-width: thick !important;
   border-radius: 2px !important;
@@ -296,5 +349,4 @@ export default {
 .avatars__item > img {
   width: 100%;
 }
-
 </style>

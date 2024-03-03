@@ -1,7 +1,7 @@
 <template>
   <div class="mb-6">
     <div class="flex-between mb-1 px-1 py-2">
-        <form id="manger-form" @submit.prevent="filterProject(null)">
+      <form id="manger-form" @submit.prevent="filterProject(null)">
         <div>
           <label for="inputField">Search project</label>
           <br />
@@ -22,21 +22,44 @@
         </div>
       </form>
 
-        <div class="filter-tabs">
-          <SoftButtonVue @click="filterProject('all')"  :class="this.activeFilter == 'all' ? 'active-btn' : ''"  color="info" variant="gradient" size="sm"
-          >All</SoftButtonVue>
+      <div class="filter-tabs">
+        <SoftButtonVue
+          @click="filterProject('all')"
+          :class="this.activeFilter == 'all' ? 'active-btn' : ''"
+          color="info"
+          variant="gradient"
+          size="sm"
+          >All</SoftButtonVue
+        >
 
-          <SoftButtonVue @click="filterProject('active')"  :class="this.activeFilter == 'active' ? 'active-btn' : ''"  color="warning" variant="gradient" size="sm"
-          >Active</SoftButtonVue>
-          
-          <SoftButtonVue @click="filterProject('pending')"  :class="this.activeFilter == 'pending' ? 'active-btn' : ''"  color="secondary" variant="gradient" size="sm"
-          >Pending</SoftButtonVue>
+        <SoftButtonVue
+          @click="filterProject('active')"
+          :class="this.activeFilter == 'active' ? 'active-btn' : ''"
+          color="warning"
+          variant="gradient"
+          size="sm"
+          >Active</SoftButtonVue
+        >
 
-          <SoftButtonVue @click="filterProject('completed')"  :class="this.activeFilter == 'completed' ? 'active-btn' : ''"  color="success" variant="gradient" size="sm"
-          >Completed</SoftButtonVue>
- 
+        <SoftButtonVue
+          @click="filterProject('pending')"
+          :class="this.activeFilter == 'pending' ? 'active-btn' : ''"
+          color="secondary"
+          variant="gradient"
+          size="sm"
+          >Pending</SoftButtonVue
+        >
+
+        <SoftButtonVue
+          @click="filterProject('completed')"
+          :class="this.activeFilter == 'completed' ? 'active-btn' : ''"
+          color="success"
+          variant="gradient"
+          size="sm"
+          >Completed</SoftButtonVue
+        >
       </div>
-      </div>
+    </div>
 
     <div class="card mb-4">
       <div
@@ -127,14 +150,20 @@
                 </td>
                 <td class="align-middle text-center text-sm">
                   <span class="text-xs font-weight-bold">
-                    <soft-badge :color="ProjectStatuscolor[item.status]" variant="gradient" size="sm">{{
-                 item.status
-               }}</soft-badge>
-                   -- Total tasks {{ item.total_tasks }}</span>
+                    <soft-badge
+                      :color="ProjectStatuscolor[item.status]"
+                      variant="gradient"
+                      size="sm"
+                      >{{ item.status }}</soft-badge
+                    >
+                    -- Total tasks {{ item.total_tasks }}</span
+                  >
                 </td>
                 <td class="align-middle">
                   <div class="d-flex align-items-center justify-content-center">
-                    <span class="text-xs font-weight-bold mx-2">{{item.percentage.toFixed(2)}}%</span>
+                    <span class="text-xs font-weight-bold mx-2"
+                      >{{ item.percentage.toFixed(2) }}%</span
+                    >
                     <div>
                       <soft-progress
                         color="info"
@@ -192,8 +221,11 @@
           >
             <img src="/loading.gif" alt="" />
           </div>
-          <div v-if="!loading && filteredProjects.length==0" style="display: flex; align-items: center;">
-              <h3 class="mt-5 mb-5" style="margin: auto;" >No project found</h3>
+          <div
+            v-if="!loading && filteredProjects.length == 0"
+            style="display: flex; align-items: center"
+          >
+            <h3 class="mt-5 mb-5" style="margin: auto">No project found</h3>
           </div>
         </div>
       </div>
@@ -364,13 +396,13 @@ export default {
   name: "projects-card",
   data() {
     return {
-      ProjectStatuscolor:{
-        pending:'secondary',
-        active:'warning',
-        completed:'success'
+      ProjectStatuscolor: {
+        pending: "secondary",
+        active: "warning",
+        completed: "success",
       },
       query: "",
-      filteredProjects:[],
+      filteredProjects: [],
       activeFilter: "all",
       isProjectCompleted: false,
       managerCount: 1,
@@ -425,28 +457,27 @@ export default {
     CustomModal,
     SoftButtonVue,
     SweetAlert,
-    SoftBadge
+    SoftBadge,
   },
 
   methods: {
     filterProject(filterType) {
-      console.log(this.query)
-      if (this.query && filterType==null) {
-        this.activeFilter = 'all'
+      console.log(this.query);
+      if (this.query && filterType == null) {
+        this.activeFilter = "all";
         this.filteredProjects = this.projects.filter((project) =>
           project.title.toLowerCase().includes(this.query.toLowerCase())
         );
-        return
+        return;
+      } else if (!this.query && filterType == null) {
+        console.log("inside empty wuery");
+        this.filteredProjects = this.projects;
+        return;
+      } else {
+        this.query = "";
+        console.log("else");
       }
-      else if(!this.query && filterType==null){
-        console.log("inside empty wuery")
-        this.filteredProjects =this.projects
-        return
-      }else{
-        this.query = ""
-        console.log("else")
-      }
-     this.activeFilter = filterType
+      this.activeFilter = filterType;
       if (this.activeFilter != "all") {
         let data = this.projects.filter(
           (project) => project.status == this.activeFilter
@@ -455,8 +486,6 @@ export default {
       } else {
         this.filteredProjects = this.projects;
       }
-      
-
     },
     closeProjectModalHandler() {
       this.project.title = "";
@@ -471,8 +500,6 @@ export default {
       this.$refs.sweetAlert.openModal();
       this.projectIdDeleteTobe = id;
     },
-
-  
 
     openCustomModal() {
       this.closeProjectModalHandler();
@@ -518,9 +545,12 @@ export default {
     async getProjectHandler() {
       try {
         this.loading = true;
-        const response = await api.get("/api/project/my-projects-or-admin/", {});
+        const response = await api.get(
+          "/api/project/my-projects-or-admin/",
+          {}
+        );
         this.projects = response.data;
-        this.filteredProjects = response.data
+        this.filteredProjects = response.data;
         console.log(this.projects);
         this.loading = false;
       } catch (err) {
@@ -592,14 +622,14 @@ export default {
 };
 </script>
 <style scoped>
-.filter-tabs{
+.filter-tabs {
   height: 60px;
 }
-.filter-tabs > button{
+.filter-tabs > button {
   margin-right: 20px;
   border: 5px solid transparent;
 }
-.active-btn{
+.active-btn {
   border-bottom: 5px solid rgb(5, 34, 250) !important;
   border-top: 5px solid rgb(5, 34, 250) !important;
 }

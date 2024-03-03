@@ -954,6 +954,7 @@ export default {
         const resp = api.patch(`/api/task/${taskId}/`, {
           status: taskStatus,
         });
+        this.taskData.status = taskStatus;
         console.log(resp);
         this.$notify({
           type: "success",

@@ -2,17 +2,20 @@
 import FullCalendar from "@fullcalendar/vue3";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import useApi from "../supportElements/useAPI";
+import SoftButtonVue from "./SoftButton.vue";
+
 import updateTaskVue from "../views/SupportComponents/updateTask.vue";
 const api = useApi();
 export default {
   components: {
     FullCalendar,
-    updateTaskVue
+    SoftButtonVue,
+    updateTaskVue,
   },
   data() {
     return {
-      isTaskFormOpen:false,
-      editTaskId:0,
+      isTaskFormOpen: false,
+      editTaskId: 0,
       fullWidthView: false,
       activeFilter: "all",
       colors: {
@@ -52,13 +55,12 @@ export default {
         },
         resourceAreaHeaderContent: "Projects",
         resources: this.filteredResources,
-        eventClick: (info) => { // Using arrow function
-        console.log("clicked")
-        this.isTaskFormOpen = true;
-        this.editTaskId = info.event.id;
-      }
-
-       
+        eventClick: (info) => {
+          // Using arrow function
+          console.log("clicked");
+          this.isTaskFormOpen = true;
+          this.editTaskId = info.event.id;
+        },
       },
     };
   },
@@ -153,13 +155,11 @@ export default {
       }
     },
     async closeTaskForm() {
-  
       this.isTaskFormOpen = false;
-      this.editTaskId = null; 
+      this.editTaskId = null;
       await Promise.all([this.getProjectHandler(), this.gettasksHandler()]);
-        this.renderCalender();
-        },
-  
+      this.renderCalender();
+    },
   },
 
   async mounted() {
@@ -196,51 +196,65 @@ export default {
           />
         </div>
 
-        <div class="tabs-container">
-          <button
+        <div class="filter-tabs">
+          <SoftButtonVue
             @click="
               () => {
-                activeFilter = 'all';
-                changeFilterHandler();
+                this.changeFilterHandler();
+                this.activeFilter = 'all';
               }
             "
-            :class="activeFilter == 'all' && 'active'"
+            :class="this.activeFilter == 'all' ? 'active-btn' : ''"
+            color="info"
+            variant="gradient"
+            size="sm"
+            >All</SoftButtonVue
           >
-            All
-          </button>
-          <button
+
+          <SoftButtonVue
             @click="
               () => {
-                activeFilter = 'active';
-                changeFilterHandler();
+                this.changeFilterHandler();
+
+                this.activeFilter = 'active';
               }
             "
-            :class="activeFilter == 'active' && 'active'"
+            :class="this.activeFilter == 'active' ? 'active-btn' : ''"
+            color="warning"
+            variant="gradient"
+            size="sm"
+            >Active</SoftButtonVue
           >
-            Active
-          </button>
-          <button
+
+          <SoftButtonVue
             @click="
               () => {
-                activeFilter = 'pending';
-                changeFilterHandler();
+                this.changeFilterHandler();
+
+                this.activeFilter = 'pending';
               }
             "
-            :class="activeFilter == 'pending' && 'active'"
+            :class="this.activeFilter == 'pending' ? 'active-btn' : ''"
+            color="secondary"
+            variant="gradient"
+            size="sm"
+            >Pending</SoftButtonVue
           >
-            Pending
-          </button>
-          <button
+
+          <SoftButtonVue
             @click="
               () => {
-                activeFilter = 'completed';
-                changeFilterHandler();
+                this.changeFilterHandler();
+
+                this.activeFilter = 'completed';
               }
             "
-            :class="activeFilter == 'completed' && 'active'"
+            :class="this.activeFilter == 'completed' ? 'active-btn' : ''"
+            color="success"
+            variant="gradient"
+            size="sm"
+            >Completed</SoftButtonVue
           >
-            Completed
-          </button>
         </div>
         <button class="view-button" @click="toggleFullScreen()">
           <i :class="fullWidthView ? 'fa fa-compress' : 'fa fa-expand'"></i>
@@ -303,7 +317,14 @@ export default {
     />
   </div>
 </template>
-<style scss>
+<style lang="scss" scoped>
+.filter-tabs {
+  height: 60px;
+}
+.filter-tabs > button {
+  margin-right: 20px;
+  border: 5px solid transparent;
+}
 .fc-h-event {
   border-width: thick !important;
   border-radius: 2px !important;

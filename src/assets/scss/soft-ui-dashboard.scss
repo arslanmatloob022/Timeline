@@ -29,6 +29,18 @@
 // Custom Variables
 @import "soft-ui-dashboard/custom/styles";
 
+.filter-tabs {
+  height: 60px;
+}
+.filter-tabs > button {
+  margin-right: 20px;
+  border: 5px solid transparent;
+}
+.active-btn {
+  border-bottom: 5px solid rgb(5, 34, 250) !important;
+  border-top: 5px solid rgb(5, 34, 250) !important;
+}
+
 .flex-between {
   display: flex;
   align-items: center;
@@ -68,24 +80,40 @@
     border-radius: 6px;
     background-color: #fff;
     border: 1px solid #89898991;
-    box-shadow: 0 0 4px 0px #82d616;
+    transition: all 0.3s ease-in-out;
 
-    &.active {
-      background-color: #ffffff;
+    &:hover {
+      transform: scale(1.06);
+
       &:nth-child(1) {
-        box-shadow: 0 0 6px 1px #82d616;
-        border: 1px solid #82d616;
-        color: #82d616;
+        box-shadow: 0 0 6px 0px #82d616;
+        border: 2px solid #82d616;
       }
       &:nth-child(2) {
-        box-shadow: 0 0 6px 1px #fbcf33;
-        border: 1px solid #fbcf3391;
-        color: #fbcf33;
+        box-shadow: 0 0 6px 0px #fbcf33;
+        border: 2px solid #fbcf33;
       }
       &:nth-child(3) {
-        box-shadow: 0 0 6px 1px #cb0c9f;
+        box-shadow: 0 0 6px 0px #cb0c9f;
+        border: 2px solid #cb0c9f;
+      }
+    }
+    &.active {
+      color: #ffffff;
+      &:nth-child(1) {
+        background-color: #82d616;
+        box-shadow: 0 0 6px 0px #82d616;
+        border: 1px solid #82d616;
+      }
+      &:nth-child(2) {
+        background-color: #fbcf33;
+        box-shadow: 0 0 6px 0px #fbcf33;
+        border: 1px solid #fbcf3391;
+      }
+      &:nth-child(3) {
+        background-color: #cb0c9f;
+        box-shadow: 0 0 6px 0px #cb0c9f;
         border: 1px solid #cb0c9f;
-        color: #cb0c9f;
       }
     }
   }
@@ -142,14 +170,6 @@
       }
     }
   }
-}
-
-.fullView {
-  background-color: #ffffff;
-  padding: 20px;
-  position: fixed;
-  top: 0;
-  z-index: 99999;
 }
 
 .view-button {
