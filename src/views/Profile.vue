@@ -275,6 +275,7 @@
             >
               <h6 class="mb-0">Admins</h6>
               <i
+                v-if="this.$store.state.user.role == 'admin'"
                 class="fa fa-user-plus"
                 @click="
                   () => {
@@ -305,6 +306,7 @@
                     <p class="mb-0 text-xs">{{ admin.email }}</p>
                   </div>
                   <a
+                    v-if="this.$store.state.user.role == 'admin'"
                     class="mb-0 btn btn-link pe-3 ps-0 ms-auto"
                     href="javascript:;"
                     @click="this.opendelteAlert(admin.id)"
@@ -746,6 +748,10 @@ export default {
     },
   },
   methods: {
+    closePasswordModal() {
+      this.Password.newPassword = "";
+      this.Password.confirmPassword = "";
+    },
     async getManagershandler() {
       try {
         this.loading = true;
@@ -859,7 +865,7 @@ export default {
     async changePassword() {
       try {
         if (this.Password.newPassword == this.Password.confirmPassword) {
-          const response = api.post(``, {
+          const response = api.patch(`/api/users/${this.userData.id}/`, {
             password: this.Password.confirmPassword,
           });
           this.$notify({
@@ -868,6 +874,8 @@ export default {
             text: "Your password changed successfuly.",
           });
           console.log(response);
+          this.$refs.editPasswordModal.closeModal();
+          this.closePasswordModal();
         } else {
           this.$notify({
             type: "error",

@@ -66,16 +66,19 @@
 
     <div class="row">
       <div class="col-lg-12 col-md-12 col-sm-12 mb-md-0 mb-4">
+        <AdminCalenderView></AdminCalenderView>
+      </div>
+
+      <div class="col-lg-12 col-md-12 col-sm-12 mb-md-0 mb-4">
         <dashboard-projects />
       </div>
-      <AdminCalenderView></AdminCalenderView>
     </div>
 
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-lg-12 col-md-12 col-sm-12 mb-md-0 mb-4">
         <ManagersVue />
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
@@ -83,7 +86,7 @@ import MiniStatisticsCard from "@/examples/Cards/MiniStatisticsCard.vue";
 
 import useApi from "../supportElements/useAPI";
 // import ProjectsVue from "../components/models/Projects.vue";
-import ManagersVue from "../components/models/Managers.vue";
+// import ManagersVue from "../components/models/Managers.vue";
 import AdminCalenderView from "../components/AdminCalenderView.vue";
 // import WorkerCalender from "../components/WorkerCalender.vue";
 import DashboardProjects from "../components/models/DashboardProjects.vue";
@@ -122,7 +125,7 @@ export default {
     // TimelineItem,
     // AuthorsTable,
     // ProjectsVue,
-    ManagersVue,
+    // ManagersVue,
     AdminCalenderView,
     // WorkerCalender,
     DashboardProjects,

@@ -186,13 +186,13 @@ export default {
         } else if (this.$store.state.user.role == "manager") {
           this.$router.push("/timeline");
         } else {
-          this.$router.push("/workerdetail");
+          this.$router.push(`/workertasks`);
         }
         console.error("Login success");
       } catch (error) {
         this.$notify({
           group: "auth",
-          type:"error",
+          type: "error",
           text: "Wrong credentials, please try again",
         });
       } finally {

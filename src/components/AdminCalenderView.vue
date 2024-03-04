@@ -147,8 +147,19 @@ export default {
     },
 
     openProjectForm(projectId = null) {
-      this.isProjectFormOpen = true;
-      this.editProjectId = projectId;
+      if (this.$store.state.user.role == "admin") {
+        this.isProjectFormOpen = true;
+        // condtion to set the manager role to update the project,
+        // so that manager can update only those project thar are assigned to him
+      } else if (this.$store.state.user.role == "admin") {
+        this.editProjectId = projectId;
+      } else {
+        this.$notify({
+          type: "error",
+          title: "Not allowed",
+          text: "You are not allowed to perform this action",
+        });
+      }
     },
 
     async closeProjectForm() {

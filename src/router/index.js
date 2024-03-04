@@ -14,6 +14,8 @@ import Rtl from "@/views/Rtl.vue";
 import SignIn from "@/views/SignIn.vue";
 import SignUp from "@/views/SignUp.vue";
 import WorkerDetail from "@/views/WorkerDetail.vue";
+import WorkerTasks from "@/views/WorkerTasks.vue";
+
 const routes = [
   {
     path: "/",
@@ -49,6 +51,11 @@ const routes = [
     path: "/projectdetail/:id",
     name: "Projectdetail",
     component: Projectdetail,
+  },
+  {
+    path: "/workertasks",
+    name: "WorkerTasks",
+    component: WorkerTasks,
   },
   {
     path: "/workerdetail/:id",

@@ -1,7 +1,9 @@
 <template>
   <div class="container-fluid">
     <DashboardProjects></DashboardProjects>
-    <completed-projects></completed-projects>
+    <div class="col-12">
+      <CalenderView />
+    </div>
     <custom-modal ref="customModal" :title="modalTitle">
       <form id="project-form" @submit.prevent="addNewProject">
         <div>
@@ -105,8 +107,6 @@ import img3 from "@/assets/img/home-decor-3.jpg";
 import setTooltip from "@/assets/js/tooltip.js";
 
 import DashboardProjects from "../components/models/DashboardProjects.vue";
-// import SoftProgress from "@/components/SoftProgress.vue";
-
 import img4 from "@/assets/img/team-3.jpg";
 import img5 from "@/assets/img/team-4.jpg";
 import img6 from "@/assets/img/small-logos/logo-atlassian.svg";
@@ -128,11 +128,9 @@ import img21 from "@/assets/img/team-4.jpg";
 import { mapState } from "vuex";
 import { convertToFormData } from "../supportElements/common";
 import useApi from "../supportElements/useAPI";
-
-import CompletedProjects from "../components/models/CompletedProjects.vue";
 import CustomModal from "@/views/components/CustomModal.vue";
 import SoftButtonVue from "../components/SoftButton.vue";
-// import Projects from "../components/models/Projects.vue";
+import CalenderView from "../components/CalenderView.vue";
 const api = useApi();
 export default {
   name: "projects-card",
@@ -180,15 +178,10 @@ export default {
     };
   },
   components: {
-    // CalenderView,
-
-    // DefaultProjectCard,
-    // Projects,
-
     SoftButtonVue,
     CustomModal,
-    CompletedProjects,
     DashboardProjects,
+    CalenderView,
   },
   computed: {
     ...mapState(["token"]),
@@ -293,8 +286,8 @@ export default {
   border: 1px solid #cccccc;
 }
 .inputField:focus {
-  border: 2px solid #82d616; /* Change the border color when in focus */
-  outline: none; /* Remove the default focus outline */
+  border: 2px solid #82d616;
+  outline: none;
   box-shadow: 0 0 5px #82d61670;
 }
 .inputField:active {
