@@ -192,6 +192,7 @@ export default {
       } catch (error) {
         this.$notify({
           group: "auth",
+          type:"error",
           text: "Wrong credentials, please try again",
         });
       } finally {
