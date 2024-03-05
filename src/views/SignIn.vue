@@ -44,9 +44,33 @@
                       <input
                         class="inputField mb-3"
                         v-model="password"
-                        type="password"
+                        :type="showPassword ? 'text' : 'password'"
                         placeholder="Password"
                       />
+                    </div>
+
+                    <div class="flex-between">
+                      <div
+                        style="
+                          display: flex;
+                          gap: 12px;
+                          margin: 6px;
+                          align-items: center;
+                        "
+                      >
+                        <i
+                          @click="togglePasswordVisibility()"
+                          :class="
+                            showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'
+                          "
+                          class="pointer"
+                          aria-hidden="true"
+                        ></i>
+                        Show Password
+                      </div>
+                      <soft-switch id="rememberMe" name="rememberMe" checked>
+                        Remember me
+                      </soft-switch>
                     </div>
                     <!-- <label>Email</label>
                     <soft-input
@@ -64,9 +88,7 @@
                       placeholder="Password"
                       name="password"
                     /> -->
-                    <soft-switch id="rememberMe" name="rememberMe" checked>
-                      Remember me
-                    </soft-switch>
+
                     <div class="text-center">
                       <soft-button
                         :loading="loading"
@@ -132,6 +154,7 @@ export default {
   name: "SignIn",
   data() {
     return {
+      showPassword: false,
       showAlert: false,
       username: "",
       password: "",
@@ -184,7 +207,7 @@ export default {
         if (this.$store.state.user.role == "admin") {
           this.$router.push("/dashboard");
         } else if (this.$store.state.user.role == "manager") {
-          this.$router.push("/timeline");
+          this.$router.push("/projects");
         } else {
           this.$router.push(`/workertasks`);
         }
@@ -198,6 +221,9 @@ export default {
       } finally {
         this.loading = false;
       }
+    },
+    togglePasswordVisibility() {
+      this.showPassword = !this.showPassword;
     },
   },
 };
