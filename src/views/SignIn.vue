@@ -102,7 +102,7 @@
                     </div>
                   </form>
                 </div>
-                <div class="px-1 pt-0 text-center card-footer px-lg-2">
+                <!-- <div class="px-1 pt-0 text-center card-footer px-lg-2">
                   <p class="mx-auto mb-4 text-sm">
                     Don't have an account?
                     <router-link
@@ -111,7 +111,7 @@
                       >Sign up</router-link
                     >
                   </p>
-                </div>
+                </div> -->
               </div>
             </div>
             <div class="col-xl-8 col-lg-5 col-md-6">
