@@ -46,6 +46,8 @@
                         v-model="password"
                         type="password"
                         placeholder="Password"
+                        maxlength="12"
+                        minlength="5"
                       />
                     </div>
                     <!-- <label>Email</label>
@@ -80,16 +82,7 @@
                     </div>
                   </form>
                 </div>
-                <div class="px-1 pt-0 text-center card-footer px-lg-2">
-                  <p class="mx-auto mb-4 text-sm">
-                    Don't have an account?
-                    <router-link
-                      :to="{ name: 'Sign Up' }"
-                      class="text-success text-gradient font-weight-bold"
-                      >Sign up</router-link
-                    >
-                  </p>
-                </div>
+               
               </div>
             </div>
             <div class="col-xl-8 col-lg-5 col-md-6">
