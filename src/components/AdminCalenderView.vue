@@ -57,8 +57,16 @@ export default {
         resourceAreaHeaderContent: "Projects",
         resources: [],
         eventClick: (info) => {
-          // Using arrow function
-          console.log("clicked");
+          if(this.$store.state.user.role==='manager'){
+              if(!info.event.extendedProps.managers.some(item => item.id ===this.$store.state.user.id )){
+                this.$notify({
+                  type: "error",
+                  title: "Not allowed.",
+                  text: `You can edit the projects only on wich you are assigned`,
+                });
+                return
+              }
+            }
           this.isProjectFormOpen = true;
           this.editProjectId = info.event.id;
         },
@@ -66,6 +74,7 @@ export default {
     };
   },
   methods: {
+    
     renderCalender() {
       console.log("calende render");
       console.log(this.projects);

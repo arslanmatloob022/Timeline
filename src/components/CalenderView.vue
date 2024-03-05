@@ -56,8 +56,17 @@ export default {
         resourceAreaHeaderContent: "Projects",
         resources: this.filteredResources,
         eventClick: (info) => {
-          // Using arrow function
-          console.log("clicked");
+          console.log(info.event)
+          if(this.$store.state.user.role==='manager'){
+              if(!info.event.extendedProps.managers.includes(this.$store.state.user.id )){
+                this.$notify({
+                  type: "error",
+                  title: "Not allowed.",
+                  text: `You can modify the task only for the projects for which you are a manager.`,
+                });
+                return
+              }
+            }
           this.isTaskFormOpen = true;
           this.editTaskId = info.event.id;
         },
@@ -65,6 +74,14 @@ export default {
     };
   },
   methods: {
+    getManagersById(id) {
+    const project = this.projects.find(project => project.id === id);
+    if (project) {
+        return project.managers;
+    } else {
+        return []
+    }
+},
     renderCalender() {
       console.log("calende render");
       console.log(this.tasks);
@@ -78,6 +95,7 @@ export default {
         description: task.description,
         workers: task.workers,
         borderColor: this.colors[task.status],
+        managers : this.getManagersById(task.project)
       }));
       this.calendarOptions.resources = this.projects;
       this.calendarOptions.events = events;
