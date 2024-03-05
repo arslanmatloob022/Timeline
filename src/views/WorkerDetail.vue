@@ -37,7 +37,7 @@
                 class="p-1 bg-transparent nav nav-pills nav-fill"
                 role="tablist"
               >
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                   <a
                     class="px-0 py-1 mb-0 nav-link"
                     data-bs-toggle="tab"
@@ -84,7 +84,7 @@
                     </svg>
                     <span class="ms-1">Change Password</span>
                   </a>
-                </li>
+                </li> -->
                 <li class="nav-item">
                   <a
                     class="px-0 py-1 mb-0 nav-link"
@@ -397,7 +397,7 @@
             />
           </div>
         </div>
-        <div>
+        <!-- <div>
           <label for="inputField">Password</label>
           <input
             required
@@ -406,7 +406,7 @@
             placeholder="Password"
             v-model="workerData.password"
           />
-        </div>
+        </div> -->
         <div class="row">
           <div class="col-6">
             <label for="inputField">Image</label>

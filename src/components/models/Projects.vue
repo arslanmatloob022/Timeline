@@ -95,7 +95,10 @@
             </thead>
             <tbody>
               <tr v-for="item in projects" :key="item.id">
-                <td @click="this.$router.push(`/projectdetail/${item.id}`)">
+                <td
+                  style="width: 23%; white-space: wrap"
+                  @click="this.$router.push(`/projectdetail/${item.id}`)"
+                >
                   <div style="cursor: pointer" class="d-flex px-2 py-1">
                     <div>
                       <soft-avatar
@@ -109,6 +112,10 @@
                       <h6 class="mb-0 text-sm">{{ item.title }}</h6>
                       <p class="mb-0 text-sm">
                         {{ item.description.slice(0, 40) }}...
+                      </p>
+                      <p class="text-xs text-secondary mb-0">
+                        <i class="fa fa-map-marker" aria-hidden="true"></i>
+                        {{ item.address }}
                       </p>
                     </div>
                   </div>

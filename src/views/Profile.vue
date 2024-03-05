@@ -259,9 +259,7 @@
               location: 'USA',
             }"
             :social="[]"
-            :action="{
-              tooltip: 'Edit Profile',
-            }"
+            :action="{}"
           />
         </div>
         <div
@@ -318,7 +316,7 @@
           </div>
         </div>
       </div>
-      <div class="mt-4 row">
+      <!-- <div class="mt-4 row">
         <div class="col-12">
           <div class="mb-4 card">
             <div class="p-3 pb-0 card-header">
@@ -426,7 +424,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
 
     <SweetAlert ref="sweetAlert" :alertData="alertData">
@@ -495,10 +493,19 @@
           <input
             required
             class="inputField"
-            type="password"
+            :type="showPassword ? 'text' : 'password'"
             placeholder="Password"
             v-model="adminFormData.password"
           />
+        </div>
+        <div style="display: flex; gap: 12px; margin: 6px; align-items: center">
+          <i
+            @click="togglePasswordVisibility()"
+            :class="showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'"
+            class="pointer"
+            aria-hidden="true"
+          ></i>
+          Show Password
         </div>
         <div class="row">
           <div class="col-6">
@@ -664,8 +671,8 @@ import {
   faTwitter,
   faInstagram,
 } from "@fortawesome/free-brands-svg-icons";
-import DefaultProjectCard from "./components/DefaultProjectCard.vue";
-import PlaceHolderCard from "@/examples/Cards/PlaceHolderCard.vue";
+// import DefaultProjectCard from "./components/DefaultProjectCard.vue";
+// import PlaceHolderCard from "@/examples/Cards/PlaceHolderCard.vue";
 import setNavPills from "@/assets/js/nav-pills.js";
 import setTooltip from "@/assets/js/tooltip.js";
 import useApi from "../supportElements/useAPI";
@@ -681,8 +688,8 @@ export default {
     SoftSwitch,
     ProfileInfoCard,
     SoftAvatar,
-    DefaultProjectCard,
-    PlaceHolderCard,
+    // DefaultProjectCard,
+    // PlaceHolderCard,
     SweetAlert,
   },
   data() {
@@ -748,6 +755,13 @@ export default {
     },
   },
   methods: {
+    closeAdminModal() {
+      this.adminFormData.username = "";
+      this.adminFormData.email = "";
+      this.adminFormData.password = "";
+      this.adminFormData.phoneNumber = "";
+      this.adminFormData.avatar = null;
+    },
     closePasswordModal() {
       this.Password.newPassword = "";
       this.Password.confirmPassword = "";
@@ -820,6 +834,7 @@ export default {
         this.$refs.customAdminModal.closeModal();
         this.getManagershandler();
         console.log(response);
+        this.closeAdminModal();
       } catch (err) {
         console.log(err);
         this.$notify({

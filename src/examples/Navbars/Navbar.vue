@@ -43,7 +43,7 @@
         <ul class="navbar-nav justify-content-end">
           <li class="nav-item d-flex align-items-center">
             <router-link
-              :to="{ name: 'Sign In' }"
+              :to="{ name: 'Profile' }"
               class="px-0 nav-link font-weight-bold"
               :class="textWhite ? textWhite : 'text-body'"
             >

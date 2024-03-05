@@ -121,6 +121,10 @@
                       <p class="mb-0 text-sm">
                         {{ item.description.slice(0, 40) }}...
                       </p>
+                      <p class="text-xs text-secondary mb-0">
+                        <i class="fa fa-map-marker" aria-hidden="true"></i>
+                        {{ item.address ? item.address : "No address added" }}
+                      </p>
                     </div>
                   </div>
                 </td>

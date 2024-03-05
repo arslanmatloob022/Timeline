@@ -26,13 +26,7 @@
           </sidenav-collapse>
         </li>
 
-        <li
-          class="nav-item"
-          v-if="
-            this.$store.state.user.role == 'admin' ||
-            this.$store.state.user.role == 'manager'
-          "
-        >
+        <li class="nav-item" v-if="this.$store.state.user.role == 'admin'">
           <sidenav-collapse
             navText="Projects Timeline"
             :to="{ name: 'Timeline' }"

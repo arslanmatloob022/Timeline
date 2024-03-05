@@ -175,6 +175,8 @@
               class="inputField"
               :type="showPassword ? 'text' : 'password'"
               placeholder="Password"
+              maxlength="12"
+              minlength="5"
               v-model="userData.password"
             />
           </div>
