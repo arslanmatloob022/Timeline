@@ -190,7 +190,7 @@ export default {
   <div
     class="mb-6"
     id="fullCalendarView"
-    :class="fullWidthView ? 'fullView' : ''"
+    style=" background-color: white; padding:12px 20px"
   >
     <form id="manger-form" @submit.prevent="changeFilterHandler">
       <div class="flex-between">

@@ -1,18 +1,15 @@
 <template>
   <div>
     <div class="card mb-4">
-      <div
-        class="card-header p-3"
-        style="
+      <div class="card-header p-3" style="
           display: flex;
           justify-content: space-between;
           align-items: center;
-        "
-      >
+        ">
         <h6>Managers</h6>
-        <soft-button-vue @click="openCustomModal()"
-          ><slot>Add Manager</slot></soft-button-vue
-        >
+        <soft-button-vue @click="openCustomModal()">
+          <slot>Add Manager</slot>
+        </soft-button-vue>
       </div>
 
       <div class="card-body px-0 pt-0 pb-2">
@@ -20,29 +17,19 @@
           <table v-if="!loading" class="table mb-0">
             <thead>
               <tr>
-                <th
-                  class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                >
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                   Name
                 </th>
-                <th
-                  class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                >
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                   Phone no
                 </th>
-                <th
-                  class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                >
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                   Function
                 </th>
-                <th
-                  class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                >
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                   Status
                 </th>
-                <th
-                  class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                >
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                   Joined from
                 </th>
                 <th class="text-secondary opacity-7">Actions</th>
@@ -53,13 +40,8 @@
                 <td>
                   <div class="d-flex px-2 py-1">
                     <div>
-                      <soft-avatar
-                        :img="item.avatar ? item.avatar : '/preview.jpeg'"
-                        size="sm"
-                        border-radius="lg"
-                        class="me-3"
-                        alt="user1"
-                      />
+                      <soft-avatar :img="item.avatar ? item.avatar : '/preview.jpeg'" size="sm" border-radius="lg"
+                        class="me-3" alt="user1" />
                     </div>
                     <div class="d-flex flex-column justify-content-center">
                       <h6 class="mb-0 text-sm">{{ item.username }}</h6>
@@ -70,9 +52,7 @@
                   </div>
                 </td>
                 <td class="align-middle text-center">
-                  <p
-                    class="text-xs py-1 align-items-center font-weight-bold mb-0"
-                  >
+                  <p class="text-xs py-1 align-items-center font-weight-bold mb-0">
                     {{ item.phoneNumber ? item.phoneNumber : "---" }}
                   </p>
                 </td>
@@ -82,49 +62,39 @@
                 </td>
                 <td class="align-middle text-center text-sm">
                   <soft-badge color="success" variant="gradient" size="sm">{{
-                    item.is_active ? "Active" : "In-Active"
-                  }}</soft-badge>
+          item.is_active ? "Active" : "In-Active"
+        }}</soft-badge>
                 </td>
                 <td class="align-middle text-center">
                   <span class="text-secondary text-xs font-weight-bold">{{
-                    item.date_joined.slice(0, 10)
-                  }}</span>
+            item.date_joined.slice(0, 10)
+          }}</span>
                 </td>
                 <td class="align-middle">
                   <div class="dropdown-container">
-                    <a
-                      @click="openCustomModal(true, item)"
-                      href="javascript:;"
-                      class="text-secondary font-weight-bold text-xs"
-                      data-toggle="tooltip"
-                      data-original-title="Edit user"
-                      >Edit</a
-                    >
-
+                   
+                    <a @click="openCustomModal(true, item)" href="javascript:;"
+                      class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
+                      data-original-title="Edit user">Edit</a>
+                    / 
+                    <a @click="openStatusAlert(item.id)" href="javascript:;"
+                    class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" :tooltip="action"
+                    data-original-title="Edit user">{{ item.is_active ? "In-Activate" : "Activate" }}</a>
                     /
-
-                    <a
-                      @click="this.openAlert(item.id)"
-                      href="javascript:;"
-                      class="text-secondary font-weight-bold text-xs"
-                      data-toggle="tooltip"
-                      data-original-title="Edit user"
-                      >Delete</a
-                    >
+                    <a @click="this.openAlert(item.id)" href="javascript:;"
+                      class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
+                      data-original-title="Edit user">Delete</a>
                   </div>
                 </td>
               </tr>
             </tbody>
           </table>
-          <div
-            v-else
-            style="
+          <div v-else style="
               display: flex;
               align-items: center;
               justify-content: center;
               width: 100%;
-            "
-          >
+            ">
             <img src="/loading.gif" alt="" />
           </div>
         </div>
@@ -136,60 +106,30 @@
       <form id="manger-form" @submit.prevent="addNewManger">
         <div>
           <label for="inputField">Full name</label>
-          <input
-            class="inputField"
-            type="text"
-            placeholder="First name"
-            v-model="userData.username"
-            required
-          />
+          <input class="inputField" type="text" placeholder="First name" v-model="userData.username" required />
         </div>
 
         <div class="row d-flex">
           <div class="col-6">
             <label for="inputFitaskDataeld">Email</label>
-            <input
-              autocomplete="username"
-              class="inputField"
-              v-model="userData.email"
-              type="email"
-              required
-              placeholder="Email"
-            />
+            <input autocomplete="username" class="inputField" v-model="userData.email" type="email" required
+              placeholder="Email" />
           </div>
           <div class="col-6">
             <label for="inputField">Phone No</label>
-            <input
-              class="inputField"
-              v-model="userData.phoneNumber"
-              type="tel"
-              required
-              placeholder="Phone number"
-            />
+            <input class="inputField" v-model="userData.phoneNumber" type="tel" required placeholder="Phone number" />
           </div>
         </div>
 
         <div v-if="!editModeId" class="row">
           <div class="col-12">
             <label for="inputField">Password</label>
-            <input
-              required
-              class="inputField"
-              :type="showPassword ? 'text' : 'password'"
-              placeholder="Password"
-              v-model="userData.password"
-            />
+            <input required class="inputField" :type="showPassword ? 'text' : 'password'" placeholder="Password"
+              v-model="userData.password" />
           </div>
-          <div
-            class="col-6"
-            style="display: flex; gap: 12px; margin: 6px; align-items: center"
-          >
-            <i
-              @click="togglePasswordVisibility()"
-              :class="showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'"
-              class="pointer"
-              aria-hidden="true"
-            ></i>
+          <div class="col-6" style="display: flex; gap: 12px; margin: 6px; align-items: center">
+            <i @click="togglePasswordVisibility()" :class="showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'"
+              class="pointer" aria-hidden="true"></i>
             Show Password
           </div>
         </div>
@@ -197,20 +137,11 @@
         <div class="row">
           <div class="col-6">
             <label for="inputField">Image</label>
-            <input
-              class="inputField"
-              type="file"
-              accept="image/*"
-              @change="handleFileChange"
-              size="md"
-            />
+            <input class="inputField" type="file" accept="image/*" @change="handleFileChange" size="md" />
           </div>
           <div class="col-6">
-            <img
-              style="width: 200px; border-radius: 100px; margin-top: 20px"
-              :src="preview ? preview : '/preview.jpeg'"
-              alt="asdas"
-            />
+            <img style="width: 200px; border-radius: 100px; margin-top: 20px" :src="preview ? preview : '/preview.jpeg'"
+              alt="asdas" />
           </div>
         </div>
       </form>
@@ -222,16 +153,26 @@
     </custom-modal>
 
     <SweetAlert ref="sweetAlert" :alertData="alertData">
+
       <template v-slot:actions>
-        <soft-button-vue
-          color="danger"
-          size="md"
-          @click="
-            () => {
-              this.$refs.sweetAlert.closeModal();
-            }
-          "
-        >
+        <soft-button-vue color="danger" size="md" @click="() => {
+            this.$refs.sweetAlert.closeModal();
+          }
+          ">
+          Cancel
+        </soft-button-vue>
+        <soft-button-vue size="md" @click="this.deletUser()" :loading="loading">
+          Confirm
+        </soft-button-vue>
+      </template>
+    </SweetAlert>
+    <SweetAlert ref="statusSweetAlert" :alertData="statusAlertData">
+
+      <template v-slot:actions>
+        <soft-button-vue color="danger" size="md" @click="() => {
+            this.$refs.statusSweetAlert.closeModal();
+          }
+          ">
           Cancel
         </soft-button-vue>
         <soft-button-vue size="md" @click="this.deletUser()" :loading="loading">
@@ -256,12 +197,20 @@ export default {
   name: "authors-table",
   data() {
     return {
+      selectedIdToChangeStatus:null,
       showPassword: false,
       alertData: {
         icon: "fa fa-warning",
         alertTitle: "Alert",
         alertDescription:
           "After deleting this Manager, you will not be able to recover it.",
+      },
+      statusAlertData:{
+        icon: "fa fa-warning",
+        alertTitle: "Change user status",
+        alertDescription:
+          "As you set the user to In-Active then user will not be able to sign-in in system and perform any action",
+      
       },
       selectedUserId: null,
       showDropDown: false,
@@ -298,6 +247,11 @@ export default {
     openAlert(id) {
       this.$refs.sweetAlert.openModal();
       this.selectedIdToDelete = id;
+    },
+
+    openStatusAlert(id) {
+      this.$refs.statusSweetAlert.openModal();
+      this.selectedIdToChangeStatus = id;
     },
     closeUserModalHandler() {
       (this.userData.username = ""),
@@ -419,6 +373,7 @@ export default {
   computed: {},
 };
 </script>
+
 <style scoped>
 .action-btn {
   background-color: #82d616;
@@ -435,14 +390,19 @@ export default {
   border-radius: 8px;
   border: 1px solid #cccccc;
 }
+
 .inputField:focus {
-  border: 2px solid #82d616; /* Change the border color when in focus */
-  outline: none; /* Remove the default focus outline */
+  border: 2px solid #82d616;
+  /* Change the border color when in focus */
+  outline: none;
+  /* Remove the default focus outline */
   box-shadow: 0 0 5px #82d61670;
 }
+
 .inputField:active {
   background-color: #f8f9fa;
 }
+
 .dropdownOptions {
   border-radius: 8px;
 }
@@ -455,7 +415,8 @@ export default {
 
 .dropdown-card {
   position: absolute;
-  left: -150px; /* Adjust as needed */
+  left: -150px;
+  /* Adjust as needed */
   top: 0;
   background-color: #fff;
   border: 1px solid #ccc;

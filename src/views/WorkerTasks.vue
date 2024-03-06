@@ -458,6 +458,7 @@ export default {
   },
   data() {
     return {
+      modalTitle:"Edit Profile",
       editpreview: null,
       workerData: {},
       fullWidthView: false,
