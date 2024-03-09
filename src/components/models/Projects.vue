@@ -57,7 +57,7 @@
       >
         <h6>Projects</h6>
         <SoftButtonVue @click="openCustomModal"
-          ><slot>Add Project 12</slot></SoftButtonVue
+          ><slot>Add Project</slot></SoftButtonVue
         >
       </div>
       <div class="card-body px-0 pb-2">

@@ -250,17 +250,6 @@
         </div>
 
         <div>
-          <label for="inputField">Description: *</label>
-          <input
-            class="inputField"
-            type="text"
-            placeholder="Project description"
-            v-model="project.description"
-            size="md"
-          />
-        </div>
-
-        <div>
           <label for="inputField">Image</label>
           <input
             class="inputField"
@@ -295,7 +284,7 @@
             />
           </div>
         </div>
-        <div>
+        <!-- <div>
           <input
             style="width: 40px; width: 40px"
             class="custom-checkbox"
@@ -305,7 +294,19 @@
             v-model="project.is_active"
           />
           <label for="inputField">Set Project Active</label>
+        </div> -->
+        <div>
+          <label for="inputField">Description: *</label>
+          <textarea
+            rows="3"
+            class="inputField"
+            type="text"
+            placeholder="Project description"
+            v-model="project.description"
+            size="md"
+          />
         </div>
+
         <div>
           <label for="inputField">Managers : *</label>
           <select

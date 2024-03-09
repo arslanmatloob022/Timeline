@@ -5,13 +5,20 @@
         <div class="mt-4 row">
           <div class="col-12">
             <div class="mb-4 card">
-              <div class="p-3 pb-0 card-header d-flex align-items-center">
-                <h6 class="mb-1">Project information</h6>
-                <i
-                  class="fa fa-pencil-square pointer"
-                  @click="this.openProjectForm(this.projectId)"
-                  aria-hidden="true"
-                ></i>
+              <div class="p-3 pb-0 card-header d-flex flex-between">
+                <div class="align-items-center">
+                  <h6 class="mb-1">Project information</h6>
+                  <i
+                    class="fa fa-pencil-square pointer"
+                    @click="this.openProjectForm(this.projectId)"
+                    aria-hidden="true"
+                  ></i>
+                </div>
+                <soft-button-vue
+                  @click="this.openDeleteAlert(this.projectId)"
+                  color="danger"
+                  >Delete Project</soft-button-vue
+                >
               </div>
               <div class="card-body">
                 <div class="row">
@@ -442,7 +449,7 @@
                         class="text-secondary font-weight-bold text-xs"
                         data-toggle="tooltip"
                         data-original-title="Edit user"
-                        @click="this.openAlert()"
+                        @click="this.openAlert(task.id)"
                         >Delete</a
                       >
                     </div>
@@ -468,66 +475,52 @@
         >
           Cancel
         </soft-button-vue>
-        <soft-button-vue :loading="loading"> Confirm </soft-button-vue>
+        <soft-button-vue @click="this.deleteTask()" :loading="loading">
+          Delete Task
+        </soft-button-vue>
+      </template>
+    </sweetAlert>
+
+    <sweetAlert ref="deleteSweetAlert" :alertData="delteAlertData">
+      <template v-slot:actions>
+        <soft-button-vue
+          color="danger"
+          :loading="loading"
+          @click="
+            () => {
+              this.$refs.deleteSweetAlert.closeModal();
+            }
+          "
+        >
+          Cancel
+        </soft-button-vue>
+        <soft-button-vue @click="this.deleteProject()" :loading="loading">
+          Delete Project
+        </soft-button-vue>
       </template>
     </sweetAlert>
 
     <custom-modal ref="customModal" :title="modalTitle">
       <form id="project-form" @submit.prevent="addTaskHandler">
-        <div>
-          <label for="inputField">Title: *</label>
-          <input
-            class="inputField"
-            type="text"
-            required
-            placeholder="Task title"
-            v-model="taskData.title"
-            size="md"
-          />
-        </div>
-
-        <div>
-          <label for="inputField">Description: *</label>
-          <input
-            class="inputField"
-            type="text"
-            placeholder="Task description"
-            v-model="taskData.description"
-            size="md"
-          />
-        </div>
-
-        <div style="display: flex; justify-content: space-between">
-          <div>
-            <label for="inputField">Start Date</label>
-            <input
-              class="inputField"
-              type="date"
-              placeholder="Start date"
-              v-model="taskData.startDate"
-              size="md"
-            />
-          </div>
-
-          <div>
-            <label for="inputField">End Date</label>
-            <input
-              class="inputField"
-              type="date"
-              placeholder="End date"
-              v-model="taskData.endDate"
-              size="md"
-            />
-          </div>
-        </div>
         <div class="flex-between">
+          <div style="width: 45%">
+            <label for="inputField">Title: *</label>
+            <input
+              class="inputField"
+              type="text"
+              required
+              placeholder="Task title"
+              v-model="taskData.title"
+              size="md"
+            />
+          </div>
           <div style="width: 45%">
             <label for="inputField">Set status</label>
             <select
+              style="padding: 6px 8px"
               required
               class="inputField"
               v-model="taskData.status"
-              multiple="false"
             >
               <option
                 class="dropdownOptions"
@@ -539,7 +532,44 @@
               </option>
             </select>
           </div>
+        </div>
+        <div>
+          <label for="inputField">Description: *</label>
+          <textarea
+            rows="4"
+            class="inputField"
+            type="text"
+            placeholder="Task description"
+            v-model="taskData.description"
+            size="md"
+          />
+        </div>
+
+        <div style="display: flex; justify-content: space-between">
           <div style="width: 45%">
+            <label for="inputField">Start Date</label>
+            <input
+              class="inputField"
+              type="date"
+              placeholder="Start date"
+              v-model="taskData.startDate"
+              size="md"
+            />
+          </div>
+
+          <div style="width: 45%">
+            <label for="inputField">End Date</label>
+            <input
+              class="inputField"
+              type="date"
+              placeholder="End date"
+              v-model="taskData.endDate"
+              size="md"
+            />
+          </div>
+        </div>
+        <div class="flex-between">
+          <div style="width: 100%">
             <label for="inputField">Workers : *</label>
             <select
               required
@@ -560,12 +590,16 @@
           </div>
         </div>
         <div class="flex-between">
-          <p></p>
           <span>Press ctrl to selecte multiple</span>
         </div>
       </form>
       <template v-slot:actions>
-        <SoftButtonVue form="project-form" type="submit" :loading="loading">
+        <SoftButtonVue
+          color="success"
+          form="project-form"
+          type="submit"
+          :loading="loading"
+        >
           Add Task
         </SoftButtonVue>
       </template>
@@ -712,6 +746,7 @@ export default {
   name: "ProjectsDetail",
   data() {
     return {
+      deleteTaskId: 0,
       activeTasks: 0,
       selectedManagers: [],
       preview: null,
@@ -720,6 +755,7 @@ export default {
       editTaskId: null,
       editProjectId: null,
       loading: false,
+      assignToMore: false,
       Taskstatus: [
         { value: "active", name: "Active" },
         { value: "pending", name: "Pending" },
@@ -733,6 +769,12 @@ export default {
         alertTitle: "Delete Task ?",
         alertDescription:
           "After deleting this task you will not be able to recover it",
+      },
+      delteAlertData: {
+        icon: "fa fa-warning",
+        alertTitle: "Delete Project Permanently?",
+        alertDescription:
+          "After deleting this Project you will not be able to recover it",
       },
       workersData: [{ id: 0, username: "", email: "", phoneNumber: "" }],
 
@@ -798,6 +840,31 @@ export default {
     SoftButtonVue,
   },
   methods: {
+    openDeleteAlert(id) {
+      this.$refs.deleteSweetAlert.openModal();
+      this.projectIdDeleteTobe = id;
+    },
+    async deleteProject() {
+      try {
+        this.loading = true;
+        const response = api.delete(
+          `/api/project/${this.projectIdDeleteTobe}/`
+        );
+        this.$refs.deleteSweetAlert.closeModal();
+        console.log("deleted", response);
+        this.$notify({
+          type: "error",
+          title: "Project deleted",
+          text: "Selected project deleted successfuly!",
+        });
+        this.$router.push("/projects");
+      } catch (err) {
+        console.log(err);
+        console.log("not deleted");
+      } finally {
+        this.loading = false;
+      }
+    },
     getActiveTasks() {
       this.activeTasks = this.projectTasks.filter(
         (tasks) => tasks.status == "active"
@@ -825,8 +892,9 @@ export default {
         console.log(err);
       }
     },
-    openAlert() {
+    openAlert(id) {
       this.$refs.sweetAlert.openModal();
+      this.deleteTaskId = id;
     },
     async getWorkershandler() {
       try {
@@ -845,6 +913,7 @@ export default {
         this.loading = true;
         let formData = convertToFormData(this.taskData, []);
         const resp = await api.post("/api/task/", formData);
+        this.closeTheModals();
         this.$refs.customModal.closeModal();
         this.getProject(this.projectId);
         this.getProjectTasks();
@@ -853,7 +922,6 @@ export default {
           title: "Task Added",
           text: "Task added succesfuly",
         });
-        this.closeTheModals();
         console.log("task data", resp);
       } catch (err) {
         this.$notify({
@@ -964,6 +1032,26 @@ export default {
         this.getProject(this.projectId);
       } catch (err) {
         console.log(err);
+      }
+    },
+
+    async deleteTask() {
+      try {
+        this.loading = true;
+        const response = await api.delete(`/api/task/${this.deleteTaskId}/`);
+        console.log(response);
+        this.$refs.sweetAlert.closeModal();
+        this.$notify({
+          type: "error",
+          title: "Task Deleted",
+          text: `Task deleted succesfuly`,
+        });
+        this.getProjectTasks();
+        this.loading = false;
+      } catch (err) {
+        console.log(err);
+      } finally {
+        this.loading = false;
       }
     },
 

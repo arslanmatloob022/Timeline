@@ -82,9 +82,12 @@
                   <p class="text-xs text-secondary mb-0">Organization</p>
                 </td>
                 <td class="align-middle text-center text-sm">
-                  <soft-badge color="success" variant="gradient" size="sm">{{
-                    item.is_active ? "Active" : "In-Active"
-                  }}</soft-badge>
+                  <soft-badge
+                    :color="item.is_active ? 'success' : 'warning'"
+                    variant="gradient"
+                    size="sm"
+                    >{{ item.is_active ? "Active" : "In-Active" }}</soft-badge
+                  >
                 </td>
                 <td class="align-middle text-center">
                   <span class="text-secondary text-xs font-weight-bold">{{
@@ -100,6 +103,16 @@
                       data-toggle="tooltip"
                       data-original-title="Edit user"
                       >Edit</a
+                    >
+                    /
+                    <a
+                      @click="openStatusAlert(item)"
+                      href="javascript:;"
+                      class="text-secondary font-weight-bold text-xs"
+                      data-toggle="tooltip"
+                      :tooltip="action"
+                      data-original-title="Edit user"
+                      >{{ item.is_active ? "In-Activate" : "Activate" }}</a
                     >
                     /
                     <a
@@ -195,14 +208,26 @@
         </div>
         <div class="row">
           <div class="col-6">
-            <label for="inputField">Image</label>
-            <input
-              class="inputField"
-              type="file"
-              accept="image/*"
-              @change="handleFileChange"
-              size="md"
-            />
+            <div>
+              <label for="inputField">Image</label>
+              <input
+                class="inputField"
+                type="file"
+                accept="image/*"
+                @change="handleFileChange"
+                size="md"
+              />
+            </div>
+            <div class="mt-4">
+              <soft-switch
+                id="flexSwitchCheckDefault1"
+                v-model="userData.is_sentMail"
+                name="Email"
+                label-class="mb-0 text-body ms-3 text-truncate w-80"
+                class="ps-0 ms-auto"
+                >Send task's notify email
+              </soft-switch>
+            </div>
           </div>
           <div class="col-6">
             <img
@@ -215,7 +240,7 @@
       </form>
       <template v-slot:actions>
         <soft-button-vue :loading="loading" form="manger-form" type="submit">
-          {{ editModeId ? "Save Worker" : "Add Worker" }}
+          {{ editModeId ? "Save Worker" : "Add New Worker" }}
         </soft-button-vue>
       </template>
     </custom-modal>
@@ -237,6 +262,28 @@
         </soft-button-vue>
       </template>
     </SweetAlert>
+    <SweetAlert ref="statusSweetAlert" :alertData="statusAlertData">
+      <template v-slot:actions>
+        <soft-button-vue
+          color="danger"
+          size="md"
+          @click="
+            () => {
+              this.$refs.statusSweetAlert.closeModal();
+            }
+          "
+        >
+          Cancel
+        </soft-button-vue>
+        <soft-button-vue
+          size="md"
+          @click="this.changeUserStatus()"
+          :loading="loading"
+        >
+          Confirm
+        </soft-button-vue>
+      </template>
+    </SweetAlert>
   </div>
 </template>
 
@@ -249,6 +296,7 @@ import useApi from "../../supportElements/useAPI";
 import SoftButtonVue from "../SoftButton.vue";
 import { convertToFormData } from "../../supportElements/common";
 import SweetAlert from "@/views/components/customAlert.vue";
+import SoftSwitch from "@/components/SoftSwitch.vue";
 
 const api = useApi();
 export default {
@@ -256,21 +304,29 @@ export default {
   data() {
     return {
       showPassword: false,
+      selectedStatus: null,
       alertData: {
         icon: "fa fa-warning",
         alertTitle: "Alert",
         alertDescription: "After delete, you will not be able to recover it.",
       },
+      statusAlertData: {
+        icon: "fa fa-warning",
+        alertTitle: "",
+        alertDescription: "",
+      },
       selectedUserId: null,
       showDropDown: false,
       loading: false,
       modalTitle: "Add Worker",
+      selectedIdToChangeStatus: 0,
 
       managersData: [],
       userData: {
         username: "",
         email: "",
         password: "",
+        is_sentMail: false,
         status: "",
         role: "worker",
         phoneNumber: "",
@@ -286,12 +342,27 @@ export default {
     SoftAvatar,
     SoftBadge,
     CustomModal,
+    SoftSwitch,
     SoftButtonVue,
   },
   methods: {
     togglePasswordVisibility() {
       this.showPassword = !this.showPassword;
     },
+
+    openStatusAlert(user) {
+      this.$refs.statusSweetAlert.openModal();
+      this.selectedIdToChangeStatus = user.id;
+      this.selectedStatus = user.is_active;
+      this.statusAlertData = {
+        icon: "fa fa-warning",
+        alertTitle: "Change Status",
+        alertDescription: !this.selectedStatus
+          ? "From now this user will be able to login and perform all activities"
+          : "After this User will not be able to login into the system",
+      };
+    },
+
     closeUserModalHandler() {
       (this.userData.username = ""),
         (this.userData.email = ""),
@@ -407,6 +478,30 @@ export default {
         });
       } finally {
         this.loading = false;
+      }
+    },
+
+    async changeUserStatus() {
+      try {
+        const resp = await api.patch(
+          `/api/users/${this.selectedIdToChangeStatus}/`,
+          {
+            is_active: !this.selectedStatus,
+          }
+        );
+        this.getManagershandler();
+        this.$notify({
+          type: !this.selectedStatus ? "success" : "error",
+          title: "Worker",
+          text: !this.selectedStatus
+            ? "Worker set active successfully"
+            : "Worker set Inactive successfully",
+        });
+
+        console.log(resp);
+        this.$refs.statusSweetAlert.closeModal();
+      } catch (err) {
+        console.log(err);
       }
     },
   },

@@ -14,6 +14,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       isProjectFormOpen: false,
       editProjectId: 0,
       fullWidthView: false,
@@ -57,16 +58,20 @@ export default {
         resourceAreaHeaderContent: "Projects",
         resources: [],
         eventClick: (info) => {
-          if(this.$store.state.user.role==='manager'){
-              if(!info.event.extendedProps.managers.some(item => item.id ===this.$store.state.user.id )){
-                this.$notify({
-                  type: "error",
-                  title: "Not allowed.",
-                  text: `You can edit the projects only on wich you are assigned`,
-                });
-                return
-              }
+          if (this.$store.state.user.role === "manager") {
+            if (
+              !info.event.extendedProps.managers.some(
+                (item) => item.id === this.$store.state.user.id
+              )
+            ) {
+              this.$notify({
+                type: "error",
+                title: "Not allowed.",
+                text: `You can edit the projects only on wich you are assigned`,
+              });
+              return;
             }
+          }
           this.isProjectFormOpen = true;
           this.editProjectId = info.event.id;
         },
@@ -74,7 +79,6 @@ export default {
     };
   },
   methods: {
-    
     renderCalender() {
       console.log("calende render");
       console.log(this.projects);
@@ -116,10 +120,12 @@ export default {
     },
     async getProjectHandler() {
       try {
+        this.loading = true;
         console.log("inside all projects fun");
         const response = await api.get("/api/project/", {});
         this.projects = response.data;
         console.log(this.projects);
+        this.loading = false;
       } catch (err) {
         this.projects = [];
       }
@@ -186,6 +192,7 @@ export default {
 </script>
 <template>
   <div id="fullCalendarView" class="mb-6">
+    <div v-if="this.loading" class="calendar-loader"></div>
     <form id="manger-form" @submit.prevent="changeFilterHandler">
       <div class="flex-between">
         <div>
@@ -321,7 +328,7 @@ export default {
     />
   </div>
 </template>
-<style lang="scss" scoped>
+<style lang="scss">
 .filter-tabs {
   height: 60px;
 }

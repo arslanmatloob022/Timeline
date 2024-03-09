@@ -3,17 +3,21 @@ import FullCalendar from "@fullcalendar/vue3";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import useApi from "../supportElements/useAPI";
 import SoftButtonVue from "./SoftButton.vue";
-
 import updateTaskVue from "../views/SupportComponents/updateTask.vue";
+import WorkerCalendarVue from "./WorkerCalendar.vue";
 const api = useApi();
 export default {
   components: {
     FullCalendar,
     SoftButtonVue,
     updateTaskVue,
+    WorkerCalendarVue,
   },
   data() {
     return {
+      selectedWorkerId: 0,
+      showworkerchart: true,
+      loading: false,
       isTaskFormOpen: false,
       editTaskId: 0,
       fullWidthView: false,
@@ -56,17 +60,21 @@ export default {
         resourceAreaHeaderContent: "Projects",
         resources: this.filteredResources,
         eventClick: (info) => {
-          console.log(info.event)
-          if(this.$store.state.user.role==='manager'){
-              if(!info.event.extendedProps.managers.includes(this.$store.state.user.id )){
-                this.$notify({
-                  type: "error",
-                  title: "Not allowed.",
-                  text: `You can modify the task only for the projects for which you are a manager.`,
-                });
-                return
-              }
+          console.log(info.event);
+          if (this.$store.state.user.role === "manager") {
+            if (
+              !info.event.extendedProps.managers.includes(
+                this.$store.state.user.id
+              )
+            ) {
+              this.$notify({
+                type: "error",
+                title: "Not allowed.",
+                text: `You can modify the task only for the projects for which you are a manager.`,
+              });
+              return;
             }
+          }
           this.isTaskFormOpen = true;
           this.editTaskId = info.event.id;
         },
@@ -75,13 +83,13 @@ export default {
   },
   methods: {
     getManagersById(id) {
-    const project = this.projects.find(project => project.id === id);
-    if (project) {
+      const project = this.projects.find((project) => project.id === id);
+      if (project) {
         return project.managers;
-    } else {
-        return []
-    }
-},
+      } else {
+        return [];
+      }
+    },
     renderCalender() {
       console.log("calende render");
       console.log(this.tasks);
@@ -95,7 +103,7 @@ export default {
         description: task.description,
         workers: task.workers,
         borderColor: this.colors[task.status],
-        managers : this.getManagersById(task.project)
+        managers: this.getManagersById(task.project),
       }));
       this.calendarOptions.resources = this.projects;
       this.calendarOptions.events = events;
@@ -124,15 +132,18 @@ export default {
     },
     async getProjectHandler() {
       try {
+        this.loading = true;
         console.log("inside all projects fun");
         const response = await api.get("/api/project/projects", {});
         this.projects = response.data;
         this.filteredResources = response.data;
         console.log(this.projects);
+        this.loading = false;
       } catch (err) {
         this.projects = [];
       }
     },
+
     async gettasksHandler() {
       try {
         const response = await api.get("/api/task", {});
@@ -172,6 +183,7 @@ export default {
         }
       }
     },
+
     async closeTaskForm() {
       this.isTaskFormOpen = false;
       this.editTaskId = null;
@@ -183,6 +195,7 @@ export default {
   async mounted() {
     await Promise.all([this.getProjectHandler(), this.gettasksHandler()]);
     this.renderCalender();
+    this.showworkerchart = true;
   },
 };
 </script>
@@ -190,8 +203,9 @@ export default {
   <div
     class="mb-6"
     id="fullCalendarView"
-    style=" background-color: white; padding:12px 20px"
+    style="background-color: white; padding: 12px 20px"
   >
+    <div v-if="this.loading" class="calendar-loader"></div>
     <form id="manger-form" @submit.prevent="changeFilterHandler">
       <div class="flex-between">
         <div>
@@ -327,6 +341,8 @@ export default {
     >
       <h4 class="mt-5 mb-5" style="color: darkgray">No project found</h4>
     </div>
+
+    <WorkerCalendarVue class="mt-6" :id="this.selectedWorkerId" />
 
     <update-task-vue
       :isOpen="isTaskFormOpen"

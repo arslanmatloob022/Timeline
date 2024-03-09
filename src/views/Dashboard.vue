@@ -2,7 +2,7 @@
   <div class="py-4 container-fluid">
     <!-- states -->
     <div class="row">
-      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+      <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
         <mini-statistics-card
           title="All Projects"
           :value="dashboardStats.all_project"
@@ -17,7 +17,7 @@
           direction-reverse
         />
       </div>
-      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+      <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
         <mini-statistics-card
           title="Active Projects"
           :value="dashboardStats.active_projects"
@@ -32,7 +32,37 @@
           direction-reverse
         />
       </div>
-      <div class="col-xl-3 col-sm-6 mb-xl-0">
+      <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+        <mini-statistics-card
+          title="Pending Projects"
+          :value="dashboardStats.pending_projects"
+          :percentage="{
+            value: '+505%',
+            color: 'text-success',
+          }"
+          :icon="{
+            component: 'ni ni-building',
+            background: iconBackground,
+          }"
+          direction-reverse
+        />
+      </div>
+      <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+        <mini-statistics-card
+          title="Completed Projects"
+          :value="dashboardStats.completed_projects"
+          :percentage="{
+            value: '+505%',
+            color: 'text-success',
+          }"
+          :icon="{
+            component: 'ni ni-building',
+            background: iconBackground,
+          }"
+          direction-reverse
+        />
+      </div>
+      <div class="col-xl-4 col-sm-6 mb-xl-0">
         <mini-statistics-card
           title="Managers"
           :value="dashboardStats.managers"
@@ -47,8 +77,10 @@
           direction-reverse
         />
       </div>
-      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+      <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
         <mini-statistics-card
+          class="pointer"
+          @click="this.$router.push('/workers')"
           title="Workers"
           :value="dashboardStats.workers"
           :percentage="{
@@ -106,6 +138,8 @@ export default {
       dashboardStats: {
         all_project: 0,
         active_projects: 0,
+        pending_projects: 0,
+        completed_projects: 0,
         workers: 0,
         managers: 0,
       },

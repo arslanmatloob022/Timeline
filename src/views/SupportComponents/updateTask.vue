@@ -21,7 +21,8 @@
 
       <div>
         <label for="inputField">Description: *</label>
-        <input
+        <textarea
+          rows="4"
           class="inputField"
           type="text"
           :placeholder="loading ? 'Loading...' : 'Description'"

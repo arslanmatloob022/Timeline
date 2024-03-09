@@ -57,12 +57,12 @@
                         ></i>
                         Show Password
                       </div>
-                      <soft-switch id="rememberMe" name="rememberMe" checked>
+                      <!-- <soft-switch id="rememberMe" name="rememberMe" checked>
                         Remember me
-                      </soft-switch>
+                      </soft-switch> -->
                     </div>
 
-                    <!-- <div class="text-center">
+                    <div class="text-center">
                       <soft-button
                         :loading="loading"
                         class="my-4 mb-2"
@@ -72,25 +72,13 @@
                         full-width
                         >Sign in
                       </soft-button>
-                    </div> -->
+                    </div>
                   </form>
                 </div>
               </div>
             </div>
-            <div class="col-xl-8 col-lg-5 col-md-6">
-              <div
-                class="top-0 oblique position-absolute h-100 d-md-block d-none me-n8"
-              >
-                <div
-                  class="bg-cover oblique-image position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6"
-                  :style="{
-                    backgroundImage:
-                      'url(' +
-                      require('@/assets/img/curved-images/curved9.jpg') +
-                      ')',
-                  }"
-                ></div>
-              </div>
+            <div class="col-xl-8 col-lg-5 col-md-6 mt-n10">
+              <img style="width: 100%; height: auto" src="@/assets/Ibex1.png" />
             </div>
           </div>
         </div>
@@ -100,10 +88,11 @@
 </template>
 
 <script>
-import SoftSwitch from "@/components/SoftSwitch.vue";
+// import SoftSwitch from "@/components/SoftSwitch.vue";
 const body = document.getElementsByTagName("body")[0];
 import { mapMutations } from "vuex";
 import axios from "axios";
+import SoftButton from "../components/SoftButton.vue";
 
 export default {
   name: "SignIn",
@@ -119,8 +108,8 @@ export default {
   components: {
     // Navbar,
     // AppFooter,
-    SoftSwitch,
-    // SoftButton,
+    // SoftSwitch,
+    SoftButton,
   },
   created() {
     this.toggleEveryDisplay();
@@ -184,6 +173,9 @@ export default {
 };
 </script>
 <style scoped>
+.ibex-img {
+  background-image: url("/@assets/Ibex1.png");
+}
 .inputField {
   width: 100%;
   padding: 4px 14px;

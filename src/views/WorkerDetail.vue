@@ -114,8 +114,12 @@
             align-items: center;
           "
         >
-          <h6>Your Tasks</h6>
-          <p></p>
+          <h6>Worker's Tasks</h6>
+          <p>
+            <SoftButtonVue color="primary" variant="gradient" size="sm"
+              >Send Mail</SoftButtonVue
+            >
+          </p>
         </div>
 
         <div class="card-body px-0 pt-0 pb-2">
@@ -221,51 +225,64 @@
               </div>
 
               <div class="tabs-container">
-                <button
+                <SoftButtonVue
                   @click="
                     () => {
                       activeFilter = 'all';
                       changeFilterHandler();
                     }
                   "
-                  :class="activeFilter == 'all' && 'active'"
+                  :class="this.activeFilter == 'all' ? 'active-btn' : ''"
+                  color="info"
+                  variant="gradient"
+                  size="sm"
                 >
                   All
-                </button>
-                <button
+                </SoftButtonVue>
+                <SoftButtonVue
                   @click="
                     () => {
                       activeFilter = 'active';
                       changeFilterHandler();
                     }
                   "
-                  :class="activeFilter == 'active' && 'active'"
+                  :class="this.activeFilter == 'active' ? 'active-btn' : ''"
+                  color="warning"
+                  variant="gradient"
+                  size="sm"
                 >
                   Active
-                </button>
-                <button
+                </SoftButtonVue>
+                <SoftButtonVue
                   @click="
                     () => {
                       activeFilter = 'pending';
                       changeFilterHandler();
                     }
                   "
-                  :class="activeFilter == 'pending' && 'active'"
+                  :class="this.activeFilter == 'pending' ? 'active-btn' : ''"
+                  color="secondary"
+                  variant="gradient"
+                  size="sm"
                 >
                   Pending
-                </button>
-                <button
+                </SoftButtonVue>
+                <SoftButtonVue
                   @click="
                     () => {
                       activeFilter = 'completed';
                       changeFilterHandler();
                     }
                   "
-                  :class="activeFilter == 'completed' && 'active'"
+                  :class="this.activeFilter == 'completed' ? 'active-btn' : ''"
+                  color="success"
+                  variant="gradient"
+                  size="sm"
                 >
                   Completed
-                </button>
+                </SoftButtonVue>
               </div>
+
               <button class="view-button" @click="showFullView()">
                 <i
                   :class="fullWidthView ? 'fa fa-compress' : 'fa fa-expand'"
@@ -311,8 +328,8 @@
         </div>
       </div>
     </div>
+
     <custom-modal ref="editProfileModal" :title="modalTitle">
-      <!-- Custom content for the modal -->
       <form id="manger-form" @submit.prevent="editselfProfile">
         <div>
           <label for="inputField">Full name</label>
@@ -399,7 +416,7 @@ export default {
   },
   data() {
     return {
-      modalTitle:"Edit Worker Profile",
+      modalTitle: "Edit Worker Profile",
       editpreview: null,
       workerData: {},
       fullWidthView: false,

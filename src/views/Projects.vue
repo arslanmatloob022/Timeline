@@ -4,6 +4,9 @@
     <div class="col-12">
       <CalenderView />
     </div>
+    <div class="col-12">
+      <!-- <CalenderView /> -->
+    </div>
     <custom-modal ref="customModal" :title="modalTitle">
       <form id="project-form" @submit.prevent="addNewProject">
         <div>
@@ -131,6 +134,7 @@ import useApi from "../supportElements/useAPI";
 import CustomModal from "@/views/components/CustomModal.vue";
 import SoftButtonVue from "../components/SoftButton.vue";
 import CalenderView from "../components/CalenderView.vue";
+// import WorkerCalendarVue from "../components/WorkerCalendar.vue";
 const api = useApi();
 export default {
   name: "projects-card",
@@ -182,6 +186,7 @@ export default {
     CustomModal,
     DashboardProjects,
     CalenderView,
+    // WorkerCalendarVue,
   },
   computed: {
     ...mapState(["token"]),

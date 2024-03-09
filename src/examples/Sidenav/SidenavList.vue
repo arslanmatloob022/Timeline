@@ -51,7 +51,13 @@
           </sidenav-collapse>
         </li>
 
-        <li class="nav-item" v-if="this.$store.state.user.role == 'admin'">
+        <li
+          class="nav-item"
+          v-if="
+            this.$store.state.user.role == 'admin' ||
+            this.$store.state.user.role == 'manager'
+          "
+        >
           <sidenav-collapse navText="Workers" :to="{ name: 'Workers' }">
             <template #icon>
               <customer-support />

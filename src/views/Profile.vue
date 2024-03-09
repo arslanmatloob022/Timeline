@@ -169,7 +169,7 @@
     </div>
     <div class="py-4 container-fluid">
       <div class="mt-3 row">
-        <div class="col-12 col-md-6 col-xl-4">
+        <!-- <div class="col-12 col-md-6 col-xl-6">
           <div class="card h-100">
             <div class="p-3 pb-0 card-header">
               <h6 class="mb-0">Platform Settings</h6>
@@ -247,8 +247,8 @@
               </ul>
             </div>
           </div>
-        </div>
-        <div class="mt-4 col-12 col-md-6 col-xl-4 mt-md-0">
+        </div> -->
+        <div class="mt-4 col-12 col-md-6 col-xl-6 mt-md-0">
           <profile-info-card
             title="Profile Information"
             :description="`Hi ${this.userData.username}! Your journey starts here. Celebrate achievements, set new goals, and track progress. Every effort counts, no matter how small. Stay focused, and know that we're here to support you.`"
@@ -263,8 +263,8 @@
           />
         </div>
         <div
-          style="height: 420px; overflow-y: auto"
-          class="mt-4 col-12 col-xl-4 h-40 mt-xl-0"
+          style="max-height: 420px; overflow-y: auto"
+          class="mt-4 col-12 col-xl-6 h-40 mt-xl-0"
         >
           <div class="card">
             <div
@@ -651,7 +651,7 @@
 import { mapGetters } from "vuex";
 import CustomModal from "@/views/components/CustomModal.vue";
 import SoftButtonVue from "@/components/SoftButton.vue";
-import SoftSwitch from "@/components/SoftSwitch.vue";
+// import SoftSwitch from "@/components/SoftSwitch.vue";
 import ProfileInfoCard from "./components/ProfileInfoCard.vue";
 import SoftAvatar from "@/components/SoftAvatar.vue";
 import sophie from "@/assets/img/kal-visuals-square.jpg";
@@ -685,7 +685,7 @@ export default {
   components: {
     CustomModal,
     SoftButtonVue,
-    SoftSwitch,
+    // SoftSwitch,
     ProfileInfoCard,
     SoftAvatar,
     // DefaultProjectCard,
