@@ -1,15 +1,4 @@
 <template>
-  <!-- <div class="container top-0 position-sticky z-index-sticky">
-    <div class="row">
-      <div class="col-12">
-        <navbar
-          is-blur="blur blur-rounded my-3 py-2 start-0 end-0 mx-4 shadow"
-          btn-background="bg-gradient-success"
-          :dark-mode="true"
-        />
-      </div>
-    </div>
-  </div> -->
   <main class="mt-0 main-content main-content-bg">
     <section>
       <div class="page-header min-vh-75">
@@ -72,24 +61,8 @@
                         Remember me
                       </soft-switch>
                     </div>
-                    <!-- <label>Email</label>
-                    <soft-input
-                      v-model="username"
-                      id="email"
-                      type="email"
-                      placeholder="Email"
-                      name="email"
-                    />
-                    <label>Password</label>
-                    <soft-input
-                      v-model="password"
-                      id="password"
-                      type="password"
-                      placeholder="Password"
-                      name="password"
-                    /> -->
 
-                    <div class="text-center">
+                    <!-- <div class="text-center">
                       <soft-button
                         :loading="loading"
                         class="my-4 mb-2"
@@ -99,19 +72,9 @@
                         full-width
                         >Sign in
                       </soft-button>
-                    </div>
+                    </div> -->
                   </form>
                 </div>
-                <!-- <div class="px-1 pt-0 text-center card-footer px-lg-2">
-                  <p class="mx-auto mb-4 text-sm">
-                    Don't have an account?
-                    <router-link
-                      :to="{ name: 'Sign Up' }"
-                      class="text-success text-gradient font-weight-bold"
-                      >Sign up</router-link
-                    >
-                  </p>
-                </div> -->
               </div>
             </div>
             <div class="col-xl-8 col-lg-5 col-md-6">
@@ -134,21 +97,13 @@
       </div>
     </section>
   </main>
-  <!-- eslint-disable-next-line vue/no-multiple-template-root -->
-  <!-- <app-footer /> -->
 </template>
 
 <script>
-// import Navbar from "@/examples/PageLayout/Navbar.vue";
-// import AppFooter from "@/examples/PageLayout/Footer.vue";
-// import SoftInput from "@/components/SoftInput.vue";
 import SoftSwitch from "@/components/SoftSwitch.vue";
-import SoftButton from "@/components/SoftButton.vue";
 const body = document.getElementsByTagName("body")[0];
 import { mapMutations } from "vuex";
 import axios from "axios";
-// import useApi from "../supportElements/useAPI";
-// const api = useApi();
 
 export default {
   name: "SignIn",
@@ -165,7 +120,7 @@ export default {
     // Navbar,
     // AppFooter,
     SoftSwitch,
-    SoftButton,
+    // SoftButton,
   },
   created() {
     this.toggleEveryDisplay();
