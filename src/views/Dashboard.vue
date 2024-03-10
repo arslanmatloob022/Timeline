@@ -1,10 +1,12 @@
 <template>
   <div class="py-4 container-fluid">
     <!-- states -->
-    <div class="row">
+    <div class="row mb-4">
       <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
         <mini-statistics-card
           title="All Projects"
+          class="pointer"
+          @click="this.$router.push('/projects')"
           :value="dashboardStats.all_project"
           :percentage="{
             value: '+505%',
@@ -19,6 +21,8 @@
       </div>
       <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
         <mini-statistics-card
+          class="pointer"
+          @click="this.$router.push('/projects')"
           title="Active Projects"
           :value="dashboardStats.active_projects"
           :percentage="{
@@ -34,6 +38,8 @@
       </div>
       <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
         <mini-statistics-card
+          class="pointer"
+          @click="this.$router.push('/projects')"
           title="Pending Projects"
           :value="dashboardStats.pending_projects"
           :percentage="{
@@ -49,6 +55,8 @@
       </div>
       <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
         <mini-statistics-card
+          class="pointer"
+          @click="this.$router.push('/projects')"
           title="Completed Projects"
           :value="dashboardStats.completed_projects"
           :percentage="{
@@ -64,6 +72,8 @@
       </div>
       <div class="col-xl-4 col-sm-6 mb-xl-0">
         <mini-statistics-card
+          class="pointer"
+          @click="this.$router.push('/managers')"
           title="Managers"
           :value="dashboardStats.managers"
           :percentage="{

@@ -15,7 +15,7 @@ export default {
   },
   data() {
     return {
-      selectedWorkerId: 0,
+      selectedWorkerId: 76,
       showworkerchart: true,
       loading: false,
       isTaskFormOpen: false,
@@ -59,6 +59,7 @@ export default {
         },
         resourceAreaHeaderContent: "Projects",
         resources: this.filteredResources,
+        resourceId: this.selectedWorkerId,
         eventClick: (info) => {
           console.log(info.event);
           if (this.$store.state.user.role === "manager") {
@@ -78,6 +79,10 @@ export default {
           this.isTaskFormOpen = true;
           this.editTaskId = info.event.id;
         },
+        // eslint-disable-next-line no-dupe-keys
+        // eventClick: (infoWorker) => {
+        //   infoWorker.event.extendedProps.workers
+        // }
       },
     };
   },

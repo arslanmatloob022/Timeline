@@ -38,8 +38,8 @@ const routes = [
     component: ProjectTimeline,
   },
   {
-    path: "/mangers",
-    name: "Mangers",
+    path: "/managers",
+    name: "Managers",
     component: Managers,
   },
   {

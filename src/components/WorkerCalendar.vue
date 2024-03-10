@@ -9,7 +9,7 @@
                 <p>Total Tasks: {{ filteredEvents.length }}</p>
               </div>
 
-              <div class="tabs-container">
+              <div class="filter-tabs">
                 <SoftButtonVue
                   @click="
                     () => {
@@ -306,3 +306,12 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.filter-tabs {
+  height: 60px;
+}
+.filter-tabs > button {
+  margin-right: 20px;
+  border: 5px solid transparent;
+}
+</style>

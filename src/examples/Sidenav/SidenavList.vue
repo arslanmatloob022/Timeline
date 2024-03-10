@@ -37,7 +37,7 @@
           </sidenav-collapse>
         </li> -->
         <li class="nav-item" v-if="this.$store.state.user.role == 'admin'">
-          <sidenav-collapse navText="Managers" :to="{ name: 'Mangers' }">
+          <sidenav-collapse navText="Managers" :to="{ name: 'Managers' }">
             <template #icon>
               <credit-card />
             </template>
