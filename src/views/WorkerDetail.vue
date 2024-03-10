@@ -116,7 +116,11 @@
         >
           <h6>Worker's Tasks</h6>
           <p>
-            <SoftButtonVue color="primary" variant="gradient" size="sm"
+            <SoftButtonVue
+              color="primary"
+              @click="sendTasksMailToWorker"
+              variant="gradient"
+              size="sm"
               >Send Mail</SoftButtonVue
             >
           </p>
@@ -224,7 +228,7 @@
                 <p>Total Tasks: {{ filteredEvents.length }}</p>
               </div>
 
-              <div class="tabs-container">
+              <div class="filter-tabs">
                 <SoftButtonVue
                   @click="
                     () => {
@@ -464,6 +468,19 @@ export default {
     };
   },
   methods: {
+    async sendTasksMailToWorker() {
+      try {
+        const resp = api.get(`/api/task/${this.$route.params.id}/worker-mail/`);
+        console.log(resp);
+        this.$notify({
+          type: "success",
+          title: "Email Sent",
+          text: `List of tasks sent to ${this.workerData.username} successfuly`,
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    },
     renderCalender() {
       console.log("calende render");
       console.log(this.tasks);
@@ -583,3 +600,12 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.filter-tabs {
+  height: 60px;
+}
+.filter-tabs > button {
+  margin-right: 20px;
+  border: 5px solid transparent;
+}
+</style>

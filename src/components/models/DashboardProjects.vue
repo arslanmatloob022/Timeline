@@ -3,8 +3,8 @@
     <div class="flex-between mb-1 px-1 py-2">
       <form id="manger-form" @submit.prevent="filterProject(null)">
         <div>
-          <label for="inputField">Search project</label>
-          <br />
+          <!-- <label for="inputField">Search project</label>
+          <br /> -->
           <input
             class="inputField mb-4 px-3 py-2"
             style="
@@ -16,7 +16,7 @@
               width: 300px;
             "
             type="text"
-            placeholder="search ..."
+            placeholder="Search projects..."
             v-model="query"
           />
         </div>

@@ -4,9 +4,27 @@
       <div class="col-12">
         <div class="mb-6" :class="fullWidthView ? 'fullView' : ''">
           <form id="manger-form" @submit.prevent="changeFilterHandler">
-            <div class="flex-between">
+            <h2>Worker Tasks' Chart</h2>
+            <div class="flex-between align-items-center">
               <div>
                 <p>Total Tasks: {{ filteredEvents.length }}</p>
+              </div>
+              <div class="mb-3">
+                <select
+                  style="padding: 6px; width: 220px"
+                  class="inputField"
+                  v-model="selectedWorkerID"
+                >
+                  <option value="" selected>Select Worker</option>
+                  <option
+                    class="dropdownOptions"
+                    v-for="worker in workers"
+                    :key="worker.id"
+                    :value="worker.id"
+                  >
+                    {{ worker.username }}
+                  </option>
+                </select>
               </div>
 
               <div class="filter-tabs">
@@ -52,7 +70,7 @@
                 >
                   Pending
                 </SoftButtonVue>
-                <SoftButtonVue
+                <!-- <SoftButtonVue
                   @click="
                     () => {
                       activeFilter = 'completed';
@@ -65,14 +83,14 @@
                   size="sm"
                 >
                   Completed
-                </SoftButtonVue>
+                </SoftButtonVue> -->
               </div>
 
-              <button class="view-button" @click="showFullView()">
+              <!-- <button class="view-button mb-3" @click="showFullView()">
                 <i
                   :class="fullWidthView ? 'fa fa-compress' : 'fa fa-expand'"
                 ></i>
-              </button>
+              </button> -->
             </div>
           </form>
 
@@ -138,6 +156,8 @@ export default {
   },
   data() {
     return {
+      selectedWorkerID: 0,
+      workers: [],
       modalTitle: "Edit Worker Profile",
       editpreview: null,
       workerData: {},
@@ -184,6 +204,9 @@ export default {
         resources: this.filteredResources,
       },
     };
+  },
+  watch: {
+    selectedWorkerID: "gettasksHandler",
   },
   methods: {
     renderCalender() {
@@ -234,25 +257,35 @@ export default {
     async gettasksHandler() {
       try {
         const response = await api.get(
-          `/api/task/${this.$props.id}/worker-tasks/`,
+          `/api/task/${this.selectedWorkerID}/worker-tasks/`,
           {}
         );
         this.tasks = response.data;
         console.log("worker tasks", this.tasks);
+        this.renderCalender();
       } catch (err) {
         this.tasks = [];
       }
     },
-
     async getWorkerHandler() {
       try {
-        const response = await api.get(`/api/users/${this.$props.id}/`);
+        const response = await api.get(`/api/users/${this.selectedWorkerID}/`);
         this.workerData = response.data;
         console.log("sedii", this.workerData);
       } catch (err) {
         console.log(err);
       }
     },
+    async getWorkersHandler() {
+      try {
+        const response = await api.get(`/api/users/by-role/worker/`);
+        this.workers = response.data;
+        console.log("sedii", this.workers);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
     showFullView() {
       this.fullWidthView = !this.fullWidthView;
     },
@@ -302,6 +335,7 @@ export default {
   async mounted() {
     await this.gettasksHandler();
     this.renderCalender();
+    this.getWorkersHandler();
     this.getWorkerHandler();
   },
 };

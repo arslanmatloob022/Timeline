@@ -194,10 +194,10 @@ export default {
   <div id="fullCalendarView" class="mb-6">
     <div v-if="this.loading" class="calendar-loader"></div>
     <form id="manger-form" @submit.prevent="changeFilterHandler">
-      <div class="flex-between">
+      <div class="flex-between align-items-center mb-3">
         <div>
-          <label for="inputField">Search project</label>
-          <br />
+          <!-- <label for="inputField">Search project</label> -->
+          <!-- <br /> -->
           <input
             class="inputField mb-4 px-3 py-2"
             style="
@@ -209,7 +209,7 @@ export default {
               width: 300px;
             "
             type="text"
-            placeholder="search ..."
+            placeholder="Search projects..."
             v-model="query"
             @input="changeFilterHandler()"
           />
@@ -268,7 +268,7 @@ export default {
             >Completed</SoftButtonVue
           >
         </div>
-        <button class="view-button" @click="toggleFullScreen()">
+        <button class="view-button mb-3" @click="toggleFullScreen()">
           <i :class="fullWidthView ? 'fa fa-compress' : 'fa fa-expand'"></i>
         </button>
       </div>

@@ -77,7 +77,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-xl-8 col-lg-5 col-md-6 mt-n10">
+            <div class="col-xl-8 col-lg-5 col-md-6 mt-n9">
               <img style="width: 100%; height: auto" src="@/assets/Ibex1.png" />
             </div>
           </div>

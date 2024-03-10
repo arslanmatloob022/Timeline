@@ -503,7 +503,7 @@
     <custom-modal ref="customModal" :title="modalTitle">
       <form id="project-form" @submit.prevent="addTaskHandler">
         <div class="flex-between">
-          <div style="width: 45%">
+          <div style="width: 100%">
             <label for="inputField">Title: *</label>
             <input
               class="inputField"
@@ -514,7 +514,7 @@
               size="md"
             />
           </div>
-          <div style="width: 45%">
+          <!-- <div style="width: 45%">
             <label for="inputField">Set status</label>
             <select
               style="padding: 6px 8px"
@@ -531,7 +531,7 @@
                 {{ task.name }}
               </option>
             </select>
-          </div>
+          </div> -->
         </div>
         <div>
           <label for="inputField">Description: *</label>
