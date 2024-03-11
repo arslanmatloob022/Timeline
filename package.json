@@ -24,6 +24,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/vue-fontawesome": "^3.0.6",
     "@fullcalendar/core": "^6.1.11",
+    "@fullcalendar/interaction": "^6.1.11",
     "@fullcalendar/resource": "^6.1.11",
     "@fullcalendar/resource-timeline": "^6.1.11",
     "@fullcalendar/vue3": "^6.1.11",

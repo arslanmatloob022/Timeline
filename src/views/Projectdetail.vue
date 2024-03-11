@@ -880,9 +880,9 @@ export default {
       this.taskData.status = "";
     },
 
-    async getProject(projectId) {
+    async getProject() {
       try {
-        const resp = await api.get(`/api/project/${projectId}/`);
+        const resp = await api.get(`/api/project/${this.projectId}/`);
         this.projectData = resp.data;
         this.preview = resp.data.image;
 
@@ -915,7 +915,7 @@ export default {
         const resp = await api.post("/api/task/", formData);
         this.closeTheModals();
         this.$refs.customModal.closeModal();
-        this.getProject(this.projectId);
+        this.getProject();
         this.getProjectTasks();
         this.$notify({
           type: "success",
@@ -995,13 +995,13 @@ export default {
       }
     },
 
-    openProjectForm(projectId = null) {
+    openProjectForm(projectId) {
       this.isProjectFormOpen = true;
       this.editProjectId = projectId;
     },
 
     closeProjectForm() {
-      this.getProject(this.projectId);
+      this.getProject();
       this.isProjectFormOpen = false;
       this.editProjectId = null; // Reset the editTaskId after closing
     },
@@ -1057,7 +1057,7 @@ export default {
 
     async updateProjectStatus(projectStatus) {
       try {
-        const resp = api.patch(`/api/project/${this.projectID}/`, {
+        const resp = api.patch(`/api/project/${this.projectId}/`, {
           status: projectStatus,
         });
         this.projectData.status = projectStatus;
