@@ -6,21 +6,24 @@
           <form id="manger-form" @submit.prevent="changeFilterHandler">
             <h2>Worker Tasks' Chart</h2>
             <div class="flex-between align-items-center">
-              <div>
-                <p>Total Tasks: {{ filteredEvents.length }}</p>
+              <div class="align-items-center">
+                <p style="font-weight: 700; font-style: italic">
+                  {{ selectedWorker.username }}
+                </p>
+                <p>Tasks: {{ filteredEvents.length }}</p>
               </div>
               <div class="mb-3">
                 <select
                   style="padding: 6px; width: 220px"
                   class="inputField"
-                  v-model="selectedWorkerID"
+                  v-model="selectedWorker"
                 >
                   <option value="" selected>Select Worker</option>
                   <option
                     class="dropdownOptions"
                     v-for="worker in workers"
                     :key="worker.id"
-                    :value="worker.id"
+                    :value="worker"
                   >
                     {{ worker.username }}
                   </option>
@@ -70,27 +73,7 @@
                 >
                   Pending
                 </SoftButtonVue>
-                <!-- <SoftButtonVue
-                  @click="
-                    () => {
-                      activeFilter = 'completed';
-                      changeFilterHandler();
-                    }
-                  "
-                  :class="this.activeFilter == 'completed' ? 'active-btn' : ''"
-                  color="success"
-                  variant="gradient"
-                  size="sm"
-                >
-                  Completed
-                </SoftButtonVue> -->
               </div>
-
-              <!-- <button class="view-button mb-3" @click="showFullView()">
-                <i
-                  :class="fullWidthView ? 'fa fa-compress' : 'fa fa-expand'"
-                ></i>
-              </button> -->
             </div>
           </form>
 
@@ -156,7 +139,7 @@ export default {
   },
   data() {
     return {
-      selectedWorkerID: 0,
+      selectedWorker: {},
       workers: [],
       modalTitle: "Edit Worker Profile",
       editpreview: null,
@@ -206,7 +189,7 @@ export default {
     };
   },
   watch: {
-    selectedWorkerID: "gettasksHandler",
+    selectedWorker: "gettasksHandler",
   },
   methods: {
     renderCalender() {
@@ -257,7 +240,7 @@ export default {
     async gettasksHandler() {
       try {
         const response = await api.get(
-          `/api/task/${this.selectedWorkerID}/worker-tasks/`,
+          `/api/task/${this.selectedWorker.id}/worker-tasks/`,
           {}
         );
         this.tasks = response.data;
