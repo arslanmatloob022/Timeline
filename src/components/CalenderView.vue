@@ -5,6 +5,7 @@ import useApi from "../supportElements/useAPI";
 import SoftButtonVue from "./SoftButton.vue";
 import updateTaskVue from "../views/SupportComponents/updateTask.vue";
 import WorkerCalendarVue from "./WorkerCalendar.vue";
+import interactionPlugin from '@fullcalendar/interaction'
 const api = useApi();
 export default {
   components: {
@@ -23,9 +24,9 @@ export default {
       fullWidthView: false,
       activeFilter: "all",
       colors: {
-        pending: "#fbcf33",
-        active: "#82d616",
-        completed: "#cb0c9f",
+        pending: "#7E90B0",
+        active: "#F77337",
+        completed: "#48C533",
         canceled: "#344767",
       },
       query: "",
@@ -33,7 +34,7 @@ export default {
       filteredResources: [],
       projects: [],
       calendarOptions: {
-        plugins: [resourceTimelinePlugin],
+        plugins: [resourceTimelinePlugin, interactionPlugin],
         schedulerLicenseKey: "0965592368-fcs-1694657447",
         initialView: "resourceTimelineMonth",
         height: "auto",
@@ -60,7 +61,29 @@ export default {
         resourceAreaHeaderContent: "Projects",
         resources: this.filteredResources,
         resourceId: this.selectedWorkerId,
-        eventClick: (info) => {
+        
+        eventDrop: (info)=> {
+          info.revert();
+        },
+        eventResize: (info)=> {
+          console.log("info", info)
+          // alert(info.event.title + " end is now " + info.event.end.toISOString());
+          let start = info.event.start.toISOString().substring(0, 10)
+          let end = info.event.end.toISOString().substring(0, 10)
+          if (!confirm(`Are you sure you want to update the project ${info.event.title} date  from ${start} to ${end}?`)) {
+              info.revert();
+          }else{
+            this.editTask(info.event.id,start,end )
+          }
+        }
+      },
+    };
+  },
+  methods: {
+    workerImageClick(id){
+      console.log("woerker id", id)
+    },
+    eventClick(info) {
           console.log(info.event);
           if (this.$store.state.user.role === "manager") {
             if (
@@ -79,14 +102,27 @@ export default {
           this.isTaskFormOpen = true;
           this.editTaskId = info.event.id;
         },
-        // eslint-disable-next-line no-dupe-keys
-        // eventClick: (infoWorker) => {
-        //   infoWorker.event.extendedProps.workers
-        // }
-      },
-    };
-  },
-  methods: {
+    async editTask(id, start, end) {
+      try {
+        await api.patch(
+          `/api/task/${id}/`,
+          {startDate:start, endDate:end}
+        );
+
+        this.$notify({
+          type: "success",
+          title: "Task Updated",
+          text: "Task updated succesfuly",
+        });
+      } catch (err) {
+        this.$notify({
+          type: "error",
+          title: "Warning",
+          text: "Something went wrong",
+        });
+        console.log(err);
+      } 
+    },
     getManagersById(id) {
       const project = this.projects.find((project) => project.id === id);
       if (project) {
@@ -110,8 +146,19 @@ export default {
         borderColor: this.colors[task.status],
         managers: this.getManagersById(task.project),
       }));
+      const bgEvents = this.projects.map((project) => ({
+        id: project.id,
+        resourceId: project.id,
+        start: project.startDate,
+        end: project.endDate,
+        title: project.title,
+        display:'background',
+        color: this.colors[project.status],
+        
+      }));
+      const allEvents = [...events, ...bgEvents];
       this.calendarOptions.resources = this.projects;
-      this.calendarOptions.events = events;
+      this.calendarOptions.events = allEvents;
     },
     changeFilterHandler() {
       console.log("func caleed", this.activeFilter);
@@ -157,6 +204,7 @@ export default {
         this.tasks = [];
       }
     },
+
 
     toggleFullScreen() {
       this.fullWidthView = !this.fullWidthView;
@@ -309,7 +357,7 @@ export default {
             justify-content: space-between;
           "
         >
-          <p style="font-weight: 500; margin-bottom: 0px; padding-left: 10px">
+          <p style="font-weight: 500; margin-bottom: 0px; padding-left: 10px" @click="eventClick(arg)">
             {{ arg.event.title }}
           </p>
           <div class="avatars">
@@ -318,9 +366,11 @@ export default {
               v-for="worker in arg.event.extendedProps.workers"
               :key="worker.id"
             >
-              <img v-if="worker.avatar" :src="worker.avatar" alt="" />
+           
+              <img v-if="worker.avatar" :src="worker.avatar" alt="" @click="workerImageClick(worker.id)" :title="worker.username" />
               <div
                 v-else
+                @click="workerImageClick(worker.id)"
                 style="
                   width: 100%;
                   height: 100%;
@@ -330,7 +380,7 @@ export default {
                   justify-content: center;
                 "
               >
-                <h6 class="mb-0" style="color: white">
+                <h6 class="mb-0" style="color: white" >
                   {{ worker.username ? worker.username.slice(0, 2) : "AA" }}
                 </h6>
               </div>
