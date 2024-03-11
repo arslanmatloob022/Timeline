@@ -81,6 +81,7 @@
           <span>Press ctrl to selecte multiple</span>
         </div>
       </div>
+
       <div class="button-container">
         <soft-button
           type="button"
@@ -113,6 +114,10 @@ export default {
       default: () => {},
     },
     taskId: {
+      type: Number,
+      default: null,
+    },
+    projectID: {
       type: Number,
       default: null,
     },
@@ -153,8 +158,9 @@ export default {
   watch: {
     isOpen(newVal) {
       if (newVal && this.taskId) {
-        // Fetch task data when the modal is opened and taskId is available
         this.fetchTaskData();
+        this.getWorkershandler();
+      } else {
         this.getWorkershandler();
       }
     },
@@ -165,7 +171,6 @@ export default {
         this.loading = true;
         const response = await api.get(`/api/task/${this.taskId}`);
         this.taskData = response.data;
-
         let Seworkers = [];
         response.data.workers.forEach((item) => {
           Seworkers.push(item.id);

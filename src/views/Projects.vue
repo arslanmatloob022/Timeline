@@ -1,12 +1,8 @@
 <template>
   <div class="container-fluid">
     <DashboardProjects></DashboardProjects>
-    <div class="col-12">
-      <CalenderView />
-    </div>
-    <div class="col-12">
-      <!-- <CalenderView /> -->
-    </div>
+    <CalenderView />
+
     <custom-modal ref="customModal" :title="modalTitle">
       <form id="project-form" @submit.prevent="addNewProject">
         <div>

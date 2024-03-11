@@ -248,7 +248,13 @@
             </div>
           </div>
         </div> -->
-        <div class="mt-4 col-12 col-md-6 col-xl-6 mt-md-0">
+        <div
+          :class="
+            this.$store.state.user.role === 'admin'
+              ? 'col-xl-6 mt-4 col-12 col-md-6 mt-md-0'
+              : 'col-xl-12 mt-4 col-12 col-md-6 mt-md-0'
+          "
+        >
           <profile-info-card
             title="Profile Information"
             :description="`Hi ${this.userData.username}! Your journey starts here. Celebrate achievements, set new goals, and track progress. Every effort counts, no matter how small. Stay focused, and know that we're here to support you.`"
@@ -263,6 +269,7 @@
           />
         </div>
         <div
+          v-if="this.$store.state.user.role == 'admin'"
           style="max-height: 420px; overflow-y: auto"
           class="mt-4 col-12 col-xl-6 h-40 mt-xl-0"
         >
@@ -273,8 +280,7 @@
             >
               <h6 class="mb-0">Admins</h6>
               <i
-                v-if="this.$store.state.user.role == 'admin'"
-                class="fa fa-user-plus"
+                class="fa fa-user-plus pointer"
                 @click="
                   () => {
                     this.$refs.customAdminModal.openModal();
@@ -305,7 +311,14 @@
                   </div>
                   <a
                     v-if="this.$store.state.user.role == 'admin'"
-                    class="mb-0 btn btn-link pe-3 ps-0 ms-auto"
+                    class="mb-0 btn btn-link pe-0 ps-0 ms-auto"
+                    href="javascript:;"
+                    @click="this.openStatusAlert(admin)"
+                    >{{ admin.is_active ? "In-Active" : "Active" }}</a
+                  >/
+                  <a
+                    v-if="this.$store.state.user.role == 'admin'"
+                    class="mb-0 btn btn-link pe-3 ps-0 ms-0"
                     href="javascript:;"
                     @click="this.opendelteAlert(admin.id)"
                     >Delete</a
@@ -443,6 +456,29 @@
         <soft-button-vue
           size="md"
           @click="this.deletAdmin()"
+          :loading="loading"
+        >
+          Confirm
+        </soft-button-vue>
+      </template>
+    </SweetAlert>
+
+    <SweetAlert ref="statusSweetAlert" :alertData="statusAlertData">
+      <template v-slot:actions>
+        <soft-button-vue
+          color="danger"
+          size="md"
+          @click="
+            () => {
+              this.$refs.statusSweetAlert.closeModal();
+            }
+          "
+        >
+          Cancel
+        </soft-button-vue>
+        <soft-button-vue
+          size="md"
+          @click="this.changeUserStatus()"
           :loading="loading"
         >
           Confirm
@@ -694,6 +730,8 @@ export default {
   },
   data() {
     return {
+      selectedIdToChangeStatus: null,
+      selectedStatus: true,
       showPassword: false,
       loading: false,
       preview: null,
@@ -706,6 +744,12 @@ export default {
         alertTitle: "Alert",
         alertDescription:
           "After deleting this Admin, you will not be able to recover it.",
+      },
+      statusAlertData: {
+        icon: "fa fa-warning",
+        alertTitle: "Change user status",
+        alertDescription:
+          "As you set the user to In-Active then user will not be able to sign-in in system and perform any action",
       },
       adminsData: [],
       showMenu: false,
@@ -761,6 +805,35 @@ export default {
       this.adminFormData.password = "";
       this.adminFormData.phoneNumber = "";
       this.adminFormData.avatar = null;
+    },
+    openStatusAlert(user) {
+      this.$refs.statusSweetAlert.openModal();
+      this.selectedIdToChangeStatus = user.id;
+      this.selectedStatus = user.is_active;
+    },
+    async changeUserStatus() {
+      try {
+        const resp = await api.patch(
+          `/api/users/${this.selectedIdToChangeStatus}/`,
+          {
+            is_active: !this.selectedStatus,
+          }
+        );
+        // this.user.is_active = this.selectedStatus;
+        this.getManagershandler();
+        this.$notify({
+          type: !this.selectedStatus ? "success" : "error",
+          title: "Manager",
+          text: !this.selectedStatus
+            ? "Manager set active successfully"
+            : "Manager set Inactive successfully",
+        });
+
+        console.log(resp);
+        this.$refs.statusSweetAlert.closeModal();
+      } catch (err) {
+        console.log(err);
+      }
     },
     closePasswordModal() {
       this.Password.newPassword = "";

@@ -171,7 +171,7 @@
                       </div>
                     </div>
                   </td>
-                  <td style="width: 30%; white-space: wrap">
+                  <td style="width: 28%; white-space: wrap">
                     <h6 class="text-xs font-weight-bold mb-0">
                       {{ item.title ? item.title : "No title added" }}
                     </h6>
