@@ -73,7 +73,7 @@
           </sidenav-collapse>
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item pointer">
           <div @click="handleLogout" class="nav-link" v-bind="$attrs">
             <div
               class="text-center bg-white shadow icon icon-shape icon-sm border-radius-md d-flex align-items-center justify-content-center"

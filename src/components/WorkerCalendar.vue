@@ -6,21 +6,24 @@
           <form id="manger-form" @submit.prevent="changeFilterHandler">
             <h2>Worker Tasks' Chart</h2>
             <div class="flex-between align-items-center">
-              <div>
-                <p>Total Tasks: {{ filteredEvents.length }}</p>
+              <div class="align-items-center">
+                <p class="is-bold-italic">
+                  [ {{ this.selectedWorker.username }} ]
+                </p>
+                <p>Tasks: {{ filteredEvents.length }}</p>
               </div>
               <div class="mb-3">
                 <select
                   style="padding: 6px; width: 220px"
                   class="inputField"
-                  v-model="selectedWorkerID"
+                  v-model="selectedWorker"
                 >
                   <option value="" selected>Select Worker</option>
                   <option
                     class="dropdownOptions"
                     v-for="worker in workers"
                     :key="worker.id"
-                    :value="worker.id"
+                    :value="worker"
                   >
                     {{ worker.username }}
                   </option>
@@ -54,7 +57,7 @@
                   variant="gradient"
                   size="sm"
                 >
-                  Active
+                  Post Construction
                 </SoftButtonVue>
                 <SoftButtonVue
                   @click="
@@ -68,7 +71,7 @@
                   variant="gradient"
                   size="sm"
                 >
-                  Pending
+                  Pre Construction
                 </SoftButtonVue>
                 <!-- <SoftButtonVue
                   @click="
@@ -145,18 +148,21 @@ import SoftButtonVue from "../components/SoftButton.vue";
 
 const api = useApi();
 export default {
+  props: {
+    id: Number,
+    // eslint-disable-next-line vue/require-prop-type-constructor
+    default: 0,
+  },
   components: {
     FullCalendar,
     // SoftBadge,
     SoftButtonVue,
     // CustomModal,
   },
-  props: {
-    id: Number,
-  },
+
   data() {
     return {
-      selectedWorkerID: 0,
+      selectedWorker: {},
       workers: [],
       modalTitle: "Edit Worker Profile",
       editpreview: null,
@@ -206,7 +212,7 @@ export default {
     };
   },
   watch: {
-    selectedWorkerID: "gettasksHandler",
+    selectedWorker: "gettasksHandler",
   },
   methods: {
     renderCalender() {
@@ -257,7 +263,10 @@ export default {
     async gettasksHandler() {
       try {
         const response = await api.get(
-          `/api/task/${this.selectedWorkerID}/worker-tasks/`,
+          // eslint-disable-next-line no-undef
+          `/api/task/${
+            this.selectedWorker.id ? this.selectedWorker.id : this.props.id
+          }/worker-tasks/`,
           {}
         );
         this.tasks = response.data;
@@ -269,7 +278,7 @@ export default {
     },
     async getWorkerHandler() {
       try {
-        const response = await api.get(`/api/users/${this.selectedWorkerID}/`);
+        const response = await api.get(`/api/users/${this.selectedWorker.id}/`);
         this.workerData = response.data;
         console.log("sedii", this.workerData);
       } catch (err) {

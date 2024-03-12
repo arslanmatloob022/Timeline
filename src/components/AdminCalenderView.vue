@@ -1,7 +1,7 @@
 <script>
 import FullCalendar from "@fullcalendar/vue3";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
-import interactionPlugin from '@fullcalendar/interaction'
+import interactionPlugin from "@fullcalendar/interaction";
 import useApi from "../supportElements/useAPI";
 import updateProject from "../views/SupportComponents/updateProject.vue";
 import SoftButtonVue from "./SoftButton.vue";
@@ -76,32 +76,33 @@ export default {
           this.isProjectFormOpen = true;
           this.editProjectId = info.event.id;
         },
-        eventDrop: (info)=> {
+        eventDrop: (info) => {
           info.revert();
         },
-        eventResize: (info)=> {
+        eventResize: (info) => {
           // alert(info.event.title + " end is now " + info.event.end.toISOString());
-          let start = info.event.start.toISOString().substring(0, 10)
-          let end = info.event.end.toISOString().substring(0, 10)
-          if (!confirm(`Are you sure you want to update the project ${info.event.title} date  from ${start} to ${end}?`)) {
-              info.revert();
-          }else{
-            this.editProject(info.event.id,start,end )
+          let start = info.event.start.toISOString().substring(0, 10);
+          let end = info.event.end.toISOString().substring(0, 10);
+          if (
+            !confirm(
+              `Are you sure you want to update the project ${info.event.title} date  from ${start} to ${end}?`
+            )
+          ) {
+            info.revert();
+          } else {
+            this.editProject(info.event.id, start, end);
           }
-        }
-
-
+        },
       },
     };
   },
   methods: {
-  
     async editProject(id, start, end) {
       try {
-        await api.patch(
-          `/api/project/${id}/`,
-          {startDate:start, endDate:end}
-        );
+        await api.patch(`/api/project/${id}/`, {
+          startDate: start,
+          endDate: end,
+        });
 
         this.$notify({
           type: "success",
@@ -115,7 +116,7 @@ export default {
           text: "Something went wrong",
         });
         console.log(err);
-      } 
+      }
     },
     renderCalender() {
       console.log("calende render");
@@ -277,7 +278,7 @@ export default {
             color="warning"
             variant="gradient"
             size="sm"
-            >Active</SoftButtonVue
+            >Post Construction</SoftButtonVue
           >
 
           <SoftButtonVue
@@ -290,7 +291,7 @@ export default {
             color="secondary"
             variant="gradient"
             size="sm"
-            >Pending</SoftButtonVue
+            >Pre Construction</SoftButtonVue
           >
 
           <SoftButtonVue

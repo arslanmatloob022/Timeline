@@ -38,7 +38,7 @@
           color="warning"
           variant="gradient"
           size="sm"
-          >Active</SoftButtonVue
+          >Post Construction</SoftButtonVue
         >
 
         <SoftButtonVue
@@ -47,7 +47,7 @@
           color="secondary"
           variant="gradient"
           size="sm"
-          >Pending</SoftButtonVue
+          >Pre Construction</SoftButtonVue
         >
 
         <SoftButtonVue
@@ -158,7 +158,7 @@
                       :color="ProjectStatuscolor[item.status]"
                       variant="gradient"
                       size="sm"
-                      >{{ item.status }}</soft-badge
+                      >{{ this.getProjectStatus[item.status] }}</soft-badge
                     >
                     -- Total tasks {{ item.total_tasks }}</span
                   >
@@ -407,6 +407,11 @@ export default {
         completed: "success",
       },
       query: "",
+      getProjectStatus: {
+        pending: "Pre Construction",
+        active: "Post Construction",
+        completed: "Completed",
+      },
       filteredProjects: [],
       activeFilter: "all",
       isProjectCompleted: false,

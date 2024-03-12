@@ -5,7 +5,7 @@ import useApi from "../supportElements/useAPI";
 import SoftButtonVue from "./SoftButton.vue";
 import updateTaskVue from "../views/SupportComponents/updateTask.vue";
 import WorkerCalendarVue from "./WorkerCalendar.vue";
-import interactionPlugin from '@fullcalendar/interaction'
+import interactionPlugin from "@fullcalendar/interaction";
 const api = useApi();
 export default {
   components: {
@@ -16,7 +16,7 @@ export default {
   },
   data() {
     return {
-      selectedWorkerId: 76,
+      selectedWorkerId: 0,
       showworkerchart: true,
       loading: false,
       isTaskFormOpen: false,
@@ -60,54 +60,53 @@ export default {
         },
         resourceAreaHeaderContent: "Projects",
         resources: this.filteredResources,
-        resourceId: this.selectedWorkerId,
-        
-        eventDrop: (info)=> {
+        // resourceId: this.selectedWorkerId,
+
+        eventDrop: (info) => {
           info.revert();
         },
-        eventResize: (info)=> {
-          console.log("info", info)
+        eventResize: (info) => {
+          console.log("info", info);
           // alert(info.event.title + " end is now " + info.event.end.toISOString());
-          let start = info.event.start.toISOString().substring(0, 10)
-          let end = info.event.end.toISOString().substring(0, 10)
-          if (!confirm(`Are you sure you want to update the project ${info.event.title} date  from ${start} to ${end}?`)) {
-              info.revert();
-          }else{
-            this.editTask(info.event.id,start,end )
+          let start = info.event.start.toISOString().substring(0, 10);
+          let end = info.event.end.toISOString().substring(0, 10);
+          if (
+            !confirm(
+              `Are you sure you want to update the project ${info.event.title} date  from ${start} to ${end}?`
+            )
+          ) {
+            info.revert();
+          } else {
+            this.editTask(info.event.id, start, end);
           }
-        }
+        },
       },
     };
   },
   methods: {
-    workerImageClick(id){
-      console.log("woerker id", id)
+    workerImageClick(id) {
+      this.selectedWorkerId = id;
     },
     eventClick(info) {
-          console.log(info.event);
-          if (this.$store.state.user.role === "manager") {
-            if (
-              !info.event.extendedProps.managers.includes(
-                this.$store.state.user.id
-              )
-            ) {
-              this.$notify({
-                type: "error",
-                title: "Not allowed.",
-                text: `You can modify the task only for the projects for which you are a manager.`,
-              });
-              return;
-            }
-          }
-          this.isTaskFormOpen = true;
-          this.editTaskId = info.event.id;
-        },
+      console.log(info.event);
+      if (this.$store.state.user.role === "manager") {
+        if (
+          !info.event.extendedProps.managers.includes(this.$store.state.user.id)
+        ) {
+          this.$notify({
+            type: "error",
+            title: "Not allowed.",
+            text: `You can modify the task only for the projects for which you are a manager.`,
+          });
+          return;
+        }
+      }
+      this.isTaskFormOpen = true;
+      this.editTaskId = info.event.id;
+    },
     async editTask(id, start, end) {
       try {
-        await api.patch(
-          `/api/task/${id}/`,
-          {startDate:start, endDate:end}
-        );
+        await api.patch(`/api/task/${id}/`, { startDate: start, endDate: end });
 
         this.$notify({
           type: "success",
@@ -121,7 +120,7 @@ export default {
           text: "Something went wrong",
         });
         console.log(err);
-      } 
+      }
     },
     getManagersById(id) {
       const project = this.projects.find((project) => project.id === id);
@@ -152,9 +151,8 @@ export default {
         start: project.startDate,
         end: project.endDate,
         title: project.title,
-        display:'background',
+        display: "background",
         color: this.colors[project.status],
-        
       }));
       const allEvents = [...events, ...bgEvents];
       this.calendarOptions.resources = this.projects;
@@ -204,7 +202,6 @@ export default {
         this.tasks = [];
       }
     },
-
 
     toggleFullScreen() {
       this.fullWidthView = !this.fullWidthView;
@@ -308,7 +305,7 @@ export default {
             color="warning"
             variant="gradient"
             size="sm"
-            >Active</SoftButtonVue
+            >Post Construction</SoftButtonVue
           >
 
           <SoftButtonVue
@@ -323,7 +320,7 @@ export default {
             color="secondary"
             variant="gradient"
             size="sm"
-            >Pending</SoftButtonVue
+            >Pre Construction</SoftButtonVue
           >
 
           <SoftButtonVue
@@ -357,7 +354,10 @@ export default {
             justify-content: space-between;
           "
         >
-          <p style="font-weight: 500; margin-bottom: 0px; padding-left: 10px" @click="eventClick(arg)">
+          <p
+            style="font-weight: 500; margin-bottom: 0px; padding-left: 10px"
+            @click="eventClick(arg)"
+          >
             {{ arg.event.title }}
           </p>
           <div class="avatars">
@@ -366,8 +366,13 @@ export default {
               v-for="worker in arg.event.extendedProps.workers"
               :key="worker.id"
             >
-           
-              <img v-if="worker.avatar" :src="worker.avatar" alt="" @click="workerImageClick(worker.id)" :title="worker.username" />
+              <img
+                v-if="worker.avatar"
+                :src="worker.avatar"
+                alt=""
+                @click="workerImageClick(worker.id)"
+                :title="worker.username"
+              />
               <div
                 v-else
                 @click="workerImageClick(worker.id)"
@@ -380,7 +385,7 @@ export default {
                   justify-content: center;
                 "
               >
-                <h6 class="mb-0" style="color: white" >
+                <h6 class="mb-0" style="color: white">
                   {{ worker.username ? worker.username.slice(0, 2) : "AA" }}
                 </h6>
               </div>
@@ -397,7 +402,7 @@ export default {
       <h4 class="mt-5 mb-5" style="color: darkgray">No project found</h4>
     </div>
     <hr />
-    <WorkerCalendarVue class="mt-6" />
+    <WorkerCalendarVue :id="this.selectedWorkerId" class="mt-6" />
 
     <update-task-vue
       :isOpen="isTaskFormOpen"
