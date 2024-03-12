@@ -416,7 +416,7 @@ export default {
   height: 60px;
 }
 .filter-tabs > button {
-  margin-right: 20px;
+  margin-right: 12px;
   border: 5px solid transparent;
 }
 .fc-h-event {
