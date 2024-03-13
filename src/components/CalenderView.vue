@@ -16,6 +16,8 @@ export default {
   },
   data() {
     return {
+      projectID:0,
+      startDate:null,
       selectedWorkerId: 0,
       showworkerchart: true,
       loading: false,
@@ -80,6 +82,15 @@ export default {
             this.editTask(info.event.id, start, end);
           }
         },
+        dateClick: (info)=> {
+ 
+       
+          this.editTaskId = 0;
+          this.projectID = info.resource.id
+          this.startDate = info.dateStr
+          this.isTaskFormOpen = true;
+       
+        }
       },
     };
   },
@@ -101,7 +112,9 @@ export default {
           return;
         }
       }
+      this.startDate  = ''
       this.isTaskFormOpen = true;
+      this.projectID = 0
       this.editTaskId = info.event.id;
     },
     async editTask(id, start, end) {
@@ -405,9 +418,12 @@ export default {
     <WorkerCalendarVue :id="this.selectedWorkerId" class="mt-6" />
 
     <update-task-vue
+    v-if = isTaskFormOpen
       :isOpen="isTaskFormOpen"
       :closeModal="closeTaskForm"
       :taskId="editTaskId"
+      :projectID= "projectID"
+      :startDate = "startDate"
     />
   </div>
 </template>

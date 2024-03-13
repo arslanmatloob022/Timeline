@@ -1,80 +1,42 @@
 <template>
-  <custom-modal
-    class="taskModal"
-    v-if="isOpen"
-    :title="modalTitle"
-    @closed="handleModalClosed"
-  >
+  <custom-modal class="taskModal" v-if="isOpen" :title="modalTitle" @closed="handleModalClosed">
     <!-- submitTaskForm -->
     <form id="project-form" @submit.prevent="editTaskHandler">
       <div>
         <label for="inputField">Title: *</label>
-        <input
-          class="inputField"
-          type="text"
-          required
-          :placeholder="loading ? 'Loading...' : 'Titile'"
-          v-model="taskData.title"
-          size="md"
-        />
+        <input class="inputField" type="text" required :placeholder="loading ? 'Loading...' : 'Titile'"
+          v-model="taskData.title" size="md" />
       </div>
 
       <div>
         <label for="inputField">Description: *</label>
-        <textarea
-          rows="4"
-          class="inputField"
-          type="text"
-          :placeholder="loading ? 'Loading...' : 'Description'"
-          v-model="taskData.description"
-          size="md"
-        />
+        <textarea rows="4" class="inputField" type="text" :placeholder="loading ? 'Loading...' : 'Description'"
+          v-model="taskData.description" size="md" />
       </div>
 
       <div style="display: flex; justify-content: space-between">
         <div>
           <label for="inputField">Start Date</label>
-          <input
-            class="inputField"
-            type="date"
-            :placeholder="loading ? 'Loading...' : 'Start date'"
-            v-model="taskData.startDate"
-            size="md"
-          />
+          <input class="inputField" type="date" :placeholder="loading ? 'Loading...' : 'Start date'"
+            v-model="taskData.startDate" size="md" />
         </div>
 
         <div>
           <label for="inputField">End Date</label>
-          <input
-            class="inputField"
-            type="date"
-            :placeholder="loading ? 'Loading...' : 'End date'"
-            v-model="taskData.endDate"
-            size="md"
-          />
+          <input class="inputField" type="date" :placeholder="loading ? 'Loading...' : 'End date'"
+            v-model="taskData.endDate" size="md" />
         </div>
         <div>
           <label for="inputField">Color</label>
-          <input
-            class="inputField"
-            type="color"
-            placeholder="Color"
-            v-model="taskData.color"
-            size="md"
-          />
+          <input class="inputField" type="color" placeholder="Color" v-model="taskData.color" size="md" />
         </div>
       </div>
 
       <div style="display: flex; justify-content: space-between">
         <div style="width: 100%">
           <label for="inputField">Workers : * </label>
-          <select class="inputField" v-model="selectedWorkers" multiple="true">
-            <option
-              class="dropdownOptions"
-              v-for="worker in allWorkers"
-              :key="worker.id"
-              :value="worker.id"
-            >
+          <select class="inputField" v-model="selectedWorkers" multiple="true" required>
+            <option class="dropdownOptions" v-for="worker in allWorkers" :key="worker.id" :value="worker.id">
               {{ worker.username }}
             </option>
           </select>
@@ -83,13 +45,7 @@
       </div>
 
       <div class="button-container">
-        <soft-button
-          type="button"
-          color="danger"
-          size="lg"
-          @click="handleModalClosed"
-          >Close</soft-button
-        >
+        <soft-button type="button" color="danger" size="lg" @click="handleModalClosed">Close</soft-button>
         <soft-button type="submit" :loading="loading" color="success" size="lg">
           Save
         </soft-button>
@@ -111,7 +67,7 @@ export default {
     },
     closeModal: {
       type: Function,
-      default: () => {},
+      default: () => { },
     },
     taskId: {
       type: Number,
@@ -121,6 +77,10 @@ export default {
       type: Number,
       default: null,
     },
+    startDate: {
+      type: Number,
+      default: null
+    }
   },
   data() {
     return {
@@ -155,16 +115,7 @@ export default {
       return this.taskId ? "Edit Task" : "Add Task";
     },
   },
-  watch: {
-    isOpen(newVal) {
-      if (newVal && this.taskId) {
-        this.fetchTaskData();
-        this.getWorkershandler();
-      } else {
-        this.getWorkershandler();
-      }
-    },
-  },
+
 
   methods: {
     async fetchTaskData() {
@@ -189,18 +140,33 @@ export default {
         this.loading = true;
         this.taskData.workers = this.selectedWorkers;
         let formData = convertToFormData(this.taskData, []);
-        const resp = await api.patch(
-          `/api/task/${this.taskData.id}/`,
-          formData
-        );
+        if (this.projectID) {
+          formData.append('project', this.projectID)
+           await api.post(
+            `/api/task/`,
+            formData
+          );
+          this.$notify({
+            type: "success",
+            title: "Task Add",
+            text: "Task added succesfuly",
+          });
+        }
+        else {
 
-        this.$notify({
-          type: "success",
-          title: "Task Updated",
-          text: "Task updated succesfuly",
-        });
+           await api.patch(
+            `/api/task/${this.taskData.id}/`,
+            formData
+          );
+
+          this.$notify({
+            type: "success",
+            title: "Task Updated",
+            text: "Task updated succesfuly",
+          });
+        }
         this.handleModalClosed();
-        console.log("task data", resp);
+      
       } catch (err) {
         this.$notify({
           type: "error",
@@ -247,6 +213,19 @@ export default {
       this.closeModal();
     },
   },
+  mounted(){
+    console.log("mounted inside")
+    if ( this.taskId) {
+        this.fetchTaskData();
+      }
+        this.getWorkershandler();
+  
+      console.log("start date", this.startDate)
+      if(this.startDate){
+        this.taskData.startDate =this.startDate
+        console.log("task data ", this.taskData)
+      }
+  }
 };
 </script>
 
@@ -256,6 +235,7 @@ export default {
   display: flex;
   justify-content: space-around;
 }
+
 .taskModal {
   background-color: #fff;
   box-shadow: 0px 0px 20px 1px #787878;
@@ -268,6 +248,7 @@ export default {
   left: 24%;
   z-index: 99999;
 }
+
 .action-btn {
   background-color: #82d616;
   color: #fff;
@@ -283,14 +264,19 @@ export default {
   border-radius: 8px;
   border: 1px solid #cccccc;
 }
+
 .inputField:focus {
-  border: 2px solid #82d616; /* Change the border color when in focus */
-  outline: none; /* Remove the default focus outline */
+  border: 2px solid #82d616;
+  /* Change the border color when in focus */
+  outline: none;
+  /* Remove the default focus outline */
   box-shadow: 0 0 5px #82d61670;
 }
+
 .inputField:active {
   background-color: #f8f9fa;
 }
+
 .dropdownOptions {
   border-radius: 8px;
 }
@@ -303,7 +289,8 @@ export default {
 
 .dropdown-card {
   position: absolute;
-  left: -150px; /* Adjust as needed */
+  left: -150px;
+  /* Adjust as needed */
   top: 0;
   background-color: #fff;
   border: 1px solid #ccc;
