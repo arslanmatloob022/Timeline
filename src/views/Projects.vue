@@ -171,10 +171,7 @@ export default {
         is_active: false,
         managers: [],
       },
-      managers: [
-        { id: 1, name: "Manager 1" },
-        { id: 9, name: "Manager 9" },
-      ],
+      managers: [{ id: 0, name: "" }],
     };
   },
   components: {

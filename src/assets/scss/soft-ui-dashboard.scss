@@ -94,6 +94,11 @@
   gap: 6px;
 }
 
+.overflow-auto {
+  display: flex;
+  overflow: auto;
+}
+
 .justify-conten-center {
   display: flex;
   flex-direction: column;
@@ -103,50 +108,11 @@
 
 .project-button {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
 
   button {
-    color: #898989;
-    padding: 2px 8px;
-    border-radius: 6px;
-    background-color: #fff;
-    border: 1px solid #89898991;
+    padding: 2px 2px;
     transition: all 0.3s ease-in-out;
-
-    &:hover {
-      transform: scale(1.06);
-
-      &:nth-child(1) {
-        box-shadow: 0 0 6px 0px #82d616;
-        border: 2px solid #82d616;
-      }
-      &:nth-child(2) {
-        box-shadow: 0 0 6px 0px #fbcf33;
-        border: 2px solid #fbcf33;
-      }
-      &:nth-child(3) {
-        box-shadow: 0 0 6px 0px #cb0c9f;
-        border: 2px solid #cb0c9f;
-      }
-    }
-    &.active {
-      color: #ffffff;
-      &:nth-child(1) {
-        background-color: #82d616;
-        box-shadow: 0 0 6px 0px #82d616;
-        border: 1px solid #82d616;
-      }
-      &:nth-child(2) {
-        background-color: #fbcf33;
-        box-shadow: 0 0 6px 0px #fbcf33;
-        border: 1px solid #fbcf3391;
-      }
-      &:nth-child(3) {
-        background-color: #cb0c9f;
-        box-shadow: 0 0 6px 0px #cb0c9f;
-        border: 1px solid #cb0c9f;
-      }
-    }
   }
 }
 

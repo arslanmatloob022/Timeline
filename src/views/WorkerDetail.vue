@@ -13,7 +13,7 @@
           <div class="col-auto">
             <div class="avatar avatar-xl position-relative">
               <img
-                :src="workerData.avatar ? workerData.avatar : img4"
+                :src="workerData.avatar ? workerData.avatar : '/preview.jpeg'"
                 alt="profile_image"
                 class="shadow-sm w-100 border-radius-lg"
               />
@@ -21,11 +21,17 @@
           </div>
           <div class="col-auto my-auto">
             <div class="h-100">
-              <h5 style="color: #fff" class="mb-1">
-                {{ workerData.username }}
-              </h5>
+              <div class="d-flex align-items-center">
+                <h5 style="color: #fff" class="mb-1">
+                  {{ workerData.username }}
+                </h5>
+
+                <p class="mb-0 text-sm font-weight-bold">
+                  ( {{ workerData.role }} )
+                </p>
+              </div>
               <p class="mb-0 text-sm font-weight-bold">
-                {{ workerData.role }}
+                {{ workerData.email }}
               </p>
             </div>
           </div>
@@ -128,7 +134,7 @@
 
         <div class="card-body px-0 pt-0 pb-2">
           <div class="table-responsive p-0">
-            <table v-if="!loading" class="table mb-0">
+            <table v-if="!loading" class="table mb-0 is-responsive">
               <thead>
                 <tr>
                   <th
@@ -220,7 +226,7 @@
         </div>
       </div>
 
-      <div class="col-12">
+      <div class="col-12 col-xl-12 col-md-12 col-sm-12 overflow-auto">
         <div class="mb-6" :class="fullWidthView ? 'fullView' : ''">
           <form id="manger-form" @submit.prevent="changeFilterHandler">
             <div class="flex-between">
@@ -269,7 +275,7 @@
                   variant="gradient"
                   size="sm"
                 >
-                  Pending
+                  Pre Construction
                 </SoftButtonVue>
                 <SoftButtonVue
                   @click="
@@ -287,7 +293,7 @@
                 </SoftButtonVue>
               </div>
 
-              <button class="view-button" @click="showFullView()">
+              <button class="view-button mb-3" @click="showFullView()">
                 <i
                   :class="fullWidthView ? 'fa fa-compress' : 'fa fa-expand'"
                 ></i>

@@ -38,7 +38,7 @@
           color="warning"
           variant="gradient"
           size="sm"
-          >Post Construction</SoftButtonVue
+          >Active</SoftButtonVue
         >
 
         <SoftButtonVue
@@ -409,7 +409,7 @@ export default {
       query: "",
       getProjectStatus: {
         pending: "Pre Construction",
-        active: "Post Construction",
+        active: "Active",
         completed: "Completed",
       },
       filteredProjects: [],

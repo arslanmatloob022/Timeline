@@ -23,7 +23,7 @@
       <div class="pt-0 card-body pt-sm-3">
         <!-- Sidebar Backgrounds -->
         <div>
-          <h6 class="mb-0">Sidebar Colors</h6>
+          <h6 class="mb-0">Sidebar Tabs Colors</h6>
         </div>
         <a href="#" class="switch-trigger background-color">
           <div
@@ -62,6 +62,8 @@
             ></span>
           </div>
         </a>
+        <hr class="my-1 horizontal dark" />
+
         <!-- Sidenav Type -->
         <div class="mt-3">
           <h6 class="mb-0">Sidenav Type</h6>
@@ -85,6 +87,46 @@
             White
           </button>
         </div>
+        <div>
+          <h6 class="mb-0">Sidebar Background Colors</h6>
+        </div>
+        <a href="#" class="switch-trigger background-color">
+          <div
+            class="my-2 badge-colors"
+            :class="this.$store.state.isRTL ? 'text-end' : ' text-start'"
+          >
+            <span
+              class="badge filter bg-gradient-primary active"
+              data-color="primary"
+              @click="sidebarType('bg-primary')"
+            ></span>
+            <span
+              class="badge filter bg-gradient-dark"
+              data-color="dark"
+              @click="sidebarType('bg-dark')"
+            ></span>
+            <span
+              class="badge filter bg-gradient-info"
+              data-color="info"
+              @click="sidebarType('bg-info')"
+            ></span>
+            <span
+              class="badge filter bg-gradient-success"
+              data-color="success"
+              @click="sidebarType('bg-success')"
+            ></span>
+            <span
+              class="badge filter bg-gradient-warning"
+              data-color="warning"
+              @click="sidebarType('bg-warning')"
+            ></span>
+            <span
+              class="badge filter bg-gradient-danger"
+              data-color="danger"
+              @click="sidebarType('bg-danger')"
+            ></span>
+          </div>
+        </a>
         <p class="mt-2 text-sm d-xl-none d-block">
           You can change the sidenav type just on desktop view.
         </p>

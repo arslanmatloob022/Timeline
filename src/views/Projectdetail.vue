@@ -45,7 +45,48 @@
                         ></div>
                       </div>
                       <div class="project-button">
-                        <button
+                        <SoftButtonVue
+                          style="padding: 6px 16px"
+                          @click="updateProjectStatus('active')"
+                          color="warning"
+                          :variant="
+                            projectData.status == 'active'
+                              ? 'gradient'
+                              : 'outline'
+                          "
+                          size="sm"
+                        >
+                          Active
+                        </SoftButtonVue>
+
+                        <SoftButtonVue
+                          style="padding: 6px 16px"
+                          @click="updateProjectStatus('pending')"
+                          color="secondary"
+                          :variant="
+                            projectData.status == 'pending'
+                              ? 'gradient'
+                              : 'outline'
+                          "
+                          size="sm"
+                        >
+                          Pre Construction
+                        </SoftButtonVue>
+                        <SoftButtonVue
+                          style="padding: 6px 16px"
+                          @click="updateProjectStatus('completed')"
+                          color="primary"
+                          :variant="
+                            projectData.status == 'completed'
+                              ? 'gradient'
+                              : 'outline'
+                          "
+                          size="sm"
+                        >
+                          Completed
+                        </SoftButtonVue>
+
+                        <!-- <button
                           @click="updateProjectStatus('active')"
                           :class="
                             projectData.status == 'active' ? 'active' : ''
@@ -61,8 +102,8 @@
                           "
                         >
                           Pending
-                        </button>
-                        <button
+                        </button> -->
+                        <!-- <button
                           @click="updateProjectStatus('completed')"
                           class="project-button"
                           :class="
@@ -70,7 +111,7 @@
                           "
                         >
                           Completed
-                        </button>
+                        </button> -->
                       </div>
                     </div>
                   </div>
@@ -758,7 +799,7 @@ export default {
       assignToMore: false,
       Taskstatus: [
         { value: "active", name: "Active" },
-        { value: "pending", name: "Pending" },
+        { value: "pending", name: "Pre Construction" },
         { value: "completed", name: "Completed" },
         { value: "cancelled", name: "cancelled" },
       ],
@@ -1066,7 +1107,9 @@ export default {
         this.$notify({
           type: "success",
           title: "Task updated",
-          text: `Task set to ${projectStatus} succesfuly`,
+          text: `Task set to ${
+            projectStatus == "pending" ? "Pre Construction" : projectStatus
+          } succesfuly`,
         });
         this.getProject();
       } catch (err) {
