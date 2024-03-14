@@ -8,9 +8,12 @@
             <div class="flex-between align-items-center">
               <div class="align-items-center">
                 <p class="is-bold-italic">
-                  [ {{ this.selectedWorker.username }} ]
+                  [ {{ this.loading ? "Loading..." : this.workerName }} ]
                 </p>
-                <p>Tasks: {{ filteredEvents.length }}</p>
+                <p>
+                  Tasks:
+                  {{ this.loading ? "Loading..." : filteredEvents.length }}
+                </p>
               </div>
               <div class="mb-3">
                 <select
@@ -150,8 +153,7 @@ const api = useApi();
 export default {
   props: {
     id: Number,
-    // eslint-disable-next-line vue/require-prop-type-constructor
-    default: 0,
+    workerName: String,
   },
   components: {
     FullCalendar,
@@ -162,6 +164,7 @@ export default {
 
   data() {
     return {
+      loading: false,
       selectedWorker: {},
       workers: [],
       modalTitle: "Edit Worker Profile",
@@ -212,7 +215,7 @@ export default {
     };
   },
   watch: {
-    selectedWorker: "gettasksHandler",
+    id: "gettasksHandler",
   },
   methods: {
     renderCalender() {
@@ -262,38 +265,40 @@ export default {
 
     async gettasksHandler() {
       try {
+        this.loading = true;
         const response = await api.get(
-          // eslint-disable-next-line no-undef
-          `/api/task/${
-            this.selectedWorker.id ? this.selectedWorker.id : this.props.id
-          }/worker-tasks/`,
+          `/api/task/${this.id}/worker-tasks/`,
           {}
         );
         this.tasks = response.data;
+        await this.renderCalender();
+        console.log("worekrerr".this.id);
         console.log("worker tasks", this.tasks);
-        this.renderCalender();
+        this.loading = false;
       } catch (err) {
         this.tasks = [];
+      } finally {
+        this.loading = false;
       }
     },
-    async getWorkerHandler() {
-      try {
-        const response = await api.get(`/api/users/${this.selectedWorker.id}/`);
-        this.workerData = response.data;
-        console.log("sedii", this.workerData);
-      } catch (err) {
-        console.log(err);
-      }
-    },
-    async getWorkersHandler() {
-      try {
-        const response = await api.get(`/api/users/by-role/worker/`);
-        this.workers = response.data;
-        console.log("sedii", this.workers);
-      } catch (err) {
-        console.log(err);
-      }
-    },
+    // async getWorkerHandler() {
+    //   try {
+    //     const response = await api.get(`/api/users/${this.id}/`);
+    //     this.workerData = response.data;
+    //     console.log("sedii", this.workerData);
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // },
+    // async getWorkersHandler() {
+    //   try {
+    //     const response = await api.get(`/api/users/by-role/worker/`);
+    //     this.workers = response.data;
+    //     console.log("sedii", this.workers);
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // },
 
     showFullView() {
       this.fullWidthView = !this.fullWidthView;
@@ -345,7 +350,6 @@ export default {
     await this.gettasksHandler();
     this.renderCalender();
     this.getWorkersHandler();
-    this.getWorkerHandler();
   },
 };
 </script>

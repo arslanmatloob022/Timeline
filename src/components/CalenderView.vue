@@ -17,6 +17,7 @@ export default {
   data() {
     return {
       projectID: 0,
+      selectedWorkerName: "",
       startDate: null,
       selectedWorkerId: 0,
       showworkerchart: true,
@@ -62,13 +63,27 @@ export default {
         },
         resourceAreaHeaderContent: "Projects",
         resources: this.filteredResources,
-        // resourceId: this.selectedWorkerId,
+        resourceId: this.selectedWorkerId,
 
         eventDrop: (info) => {
           info.revert();
         },
         eventResize: (info) => {
-          console.log("info", info);
+          console.log("info", info.event);
+          if (this.$store.state.user.role === "manager") {
+            if (
+              !info.event.extendedProps.managers.includes(
+                this.$store.state.user.id
+              )
+            ) {
+              this.$notify({
+                type: "error",
+                title: "Not allowed.",
+                text: `You can modify the task only for the projects for which you are a manager.`,
+              });
+              return;
+            }
+          }
           // alert(info.event.title + " end is now " + info.event.end.toISOString());
           let start = info.event.start.toISOString().substring(0, 10);
           let end = info.event.end.toISOString().substring(0, 10);
@@ -92,8 +107,9 @@ export default {
     };
   },
   methods: {
-    workerImageClick(id) {
-      this.selectedWorkerId = id;
+    workerImageClick(worker) {
+      this.selectedWorkerId = worker.id;
+      this.selectedWorkerName = worker.username;
       console.log("iddd", this.selectedWorkerId);
     },
     eventClick(info) {
@@ -381,12 +397,12 @@ export default {
                 v-if="worker.avatar"
                 :src="worker.avatar"
                 alt=""
-                @click="workerImageClick(worker.id)"
+                @click="workerImageClick(worker)"
                 :title="worker.username"
               />
               <div
                 v-else
-                @click="workerImageClick(worker.id)"
+                @click="workerImageClick(worker)"
                 style="
                   width: 100%;
                   height: 100%;
@@ -413,7 +429,11 @@ export default {
       <h4 class="mt-5 mb-5" style="color: darkgray">No project found</h4>
     </div>
     <hr />
-    <WorkerCalendarVue :id="this.selectedWorkerId" class="mt-6" />
+    <WorkerCalendarVue
+      :id="this.selectedWorkerId"
+      :workerName="this.selectedWorkerName"
+      class="mt-6"
+    />
 
     <update-task-vue
       v-if="isTaskFormOpen"
