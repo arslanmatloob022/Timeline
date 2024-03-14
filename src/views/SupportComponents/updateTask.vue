@@ -35,12 +35,22 @@
       <div style="display: flex; justify-content: space-between">
         <div style="width: 100%">
           <label for="inputField">Workers : * </label>
-          <select class="inputField" v-model="selectedWorkers" multiple="true" required>
-            <option class="dropdownOptions" v-for="worker in allWorkers" :key="worker.id" :value="worker.id">
+          <div style="display: flex; flex-wrap: wrap;  font-weight: 500; gap:10px; margin-bottom: 10px; ">
+            <!-- Render tags for selected workers -->
+            <div class="tag" v-for="(worker, index) in selectedWorkers" :key="index" style="position: relative;">
+
+                <div   class="btn mb-0 bg-gradient-info btn-sm null null" variant="gradient" disabled size="sm">{{ worker.username }}
+                  <span class="remove" @click="removeWorker(index)" style="position: absolute; top: 3px; right: 7px;">x</span>
+                </div>
+           
+            </div>
+          </div>
+          <select class="inputField" v-model="selectedWorkers" multiple required style="height: 180px;">
+            <option class="dropdownOptions" v-for="worker in allWorkers" :key="worker.id" :value="worker">
               {{ worker.username }}
             </option>
           </select>
-          <span>Press ctrl to selecte multiple</span>
+          <span>Press ctrl to select multiple</span>
         </div>
       </div>
 
@@ -86,7 +96,6 @@ export default {
     return {
       allWorkers: [],
       loading: false,
-
       selectedWorkers: [],
 
       Taskstatus: [
@@ -109,6 +118,7 @@ export default {
   },
   components: {
     SoftButton,
+  
   },
   computed: {
     modalTitle() {
@@ -118,16 +128,17 @@ export default {
 
 
   methods: {
+
+    removeWorker(index) {
+      this.selectedWorkers.splice(index, 1);
+    },
     async fetchTaskData() {
       try {
         this.loading = true;
         const response = await api.get(`/api/task/${this.taskId}`);
         this.taskData = response.data;
-        let Seworkers = [];
-        response.data.workers.forEach((item) => {
-          Seworkers.push(item.id);
-        });
-        this.selectedWorkers = Seworkers;
+
+        this.selectedWorkers = response.data.workers;
       } catch (err) {
         console.log(err);
       } finally {
@@ -138,11 +149,15 @@ export default {
     async editTaskHandler() {
       try {
         this.loading = true;
-        this.taskData.workers = this.selectedWorkers;
+        let workerIDs = []
+        this.selectedWorkers.forEach((item)=>{
+          workerIDs.push(item.id)
+        })
+        this.taskData.workers = workerIDs;
         let formData = convertToFormData(this.taskData, []);
         if (this.projectID) {
           formData.append('project', this.projectID)
-           await api.post(
+          await api.post(
             `/api/task/`,
             formData
           );
@@ -154,7 +169,7 @@ export default {
         }
         else {
 
-           await api.patch(
+          await api.patch(
             `/api/task/${this.taskData.id}/`,
             formData
           );
@@ -166,7 +181,7 @@ export default {
           });
         }
         this.handleModalClosed();
-      
+
       } catch (err) {
         this.$notify({
           type: "error",
@@ -191,7 +206,7 @@ export default {
     async getWorkershandler() {
       try {
         this.loading = true;
-        const response = await api.get("/api/users/by-role/worker/", {});
+        const response = await api.get("/api/users/by-role-option/worker/", {});
         this.allWorkers = response.data;
       } catch (err) {
         console.log(err);
@@ -213,18 +228,18 @@ export default {
       this.closeModal();
     },
   },
-  mounted(){
+  mounted() {
     console.log("mounted inside")
-    if ( this.taskId) {
-        this.fetchTaskData();
-      }
-        this.getWorkershandler();
-  
-      console.log("start date", this.startDate)
-      if(this.startDate){
-        this.taskData.startDate =this.startDate
-        console.log("task data ", this.taskData)
-      }
+    if (this.taskId) {
+      this.fetchTaskData();
+    }
+    this.getWorkershandler();
+
+    console.log("start date", this.startDate)
+    if (this.startDate) {
+      this.taskData.startDate = this.startDate
+      console.log("task data ", this.taskData)
+    }
   }
 };
 </script>

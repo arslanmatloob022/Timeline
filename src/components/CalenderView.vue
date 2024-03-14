@@ -68,7 +68,19 @@ export default {
           info.revert();
         },
         eventResize: (info) => {
-          console.log("info", info);
+          console.log("info", info.event);
+          if (this.$store.state.user.role === "manager") {
+            if (
+              !info.event.extendedProps.managers.includes(this.$store.state.user.id)
+            ) {
+              this.$notify({
+                type: "error",
+                title: "Not allowed.",
+                text: `You can modify the task only for the projects for which you are a manager.`,
+              });
+              return;
+            }
+          }
           // alert(info.event.title + " end is now " + info.event.end.toISOString());
           let start = info.event.start.toISOString().substring(0, 10);
           let end = info.event.end.toISOString().substring(0, 10);
