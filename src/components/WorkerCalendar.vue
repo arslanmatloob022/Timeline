@@ -19,7 +19,7 @@
                 <select
                   style="padding: 6px; width: 220px"
                   class="inputField"
-                  v-model="selectedWorker"
+                  v-model="this.selectedWorker"
                 >
                   <option value="" selected>Select Worker</option>
                   <option
@@ -216,6 +216,7 @@ export default {
   },
   watch: {
     id: "gettasksHandler",
+    selectedWorker: "gettasksHandler",
   },
   methods: {
     renderCalender() {
@@ -267,7 +268,9 @@ export default {
       try {
         this.loading = true;
         const response = await api.get(
-          `/api/task/${this.id}/worker-tasks/`,
+          `/api/task/${
+            this.id ? this.id : this.selectedWorker.id
+          }/worker-tasks/`,
           {}
         );
         this.tasks = response.data;
@@ -281,24 +284,24 @@ export default {
         this.loading = false;
       }
     },
-    // async getWorkerHandler() {
-    //   try {
-    //     const response = await api.get(`/api/users/${this.id}/`);
-    //     this.workerData = response.data;
-    //     console.log("sedii", this.workerData);
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // },
-    // async getWorkersHandler() {
-    //   try {
-    //     const response = await api.get(`/api/users/by-role/worker/`);
-    //     this.workers = response.data;
-    //     console.log("sedii", this.workers);
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // },
+    async getWorkerHandler() {
+      try {
+        const response = await api.get(`/api/users/${this.id}/`);
+        this.workerData = response.data;
+        console.log("sedii", this.workerData);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async getWorkersHandler() {
+      try {
+        const response = await api.get(`/api/users/by-role/worker/`);
+        this.workers = response.data;
+        console.log("sedii", this.workers);
+      } catch (err) {
+        console.log(err);
+      }
+    },
 
     showFullView() {
       this.fullWidthView = !this.fullWidthView;

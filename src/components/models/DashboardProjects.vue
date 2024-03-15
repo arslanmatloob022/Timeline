@@ -137,9 +137,7 @@
                       class="avatar avatar-xs rounded-circle zoomout"
                       data-bs-toggle="tooltip"
                       data-bs-placement="bottom"
-                      :data-bs-original-title="
-                        manager.username ? manager.username : 'Hi'
-                      "
+                      :title="manager.username"
                     >
                       <img
                         :src="manager.avatar ? manager.avatar : img4"

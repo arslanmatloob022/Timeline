@@ -399,10 +399,21 @@ export default {
                 alt=""
                 @click="workerImageClick(worker)"
                 :title="worker.username"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                :data-bs-original-title="
+                  worker.username ? worker.username : 'Hi'
+                "
               />
               <div
                 v-else
                 @click="workerImageClick(worker)"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                :data-bs-original-title="
+                  worker.username ? worker.username : 'Hi'
+                "
+                :title="worker.username"
                 style="
                   width: 100%;
                   height: 100%;
@@ -412,7 +423,16 @@ export default {
                   justify-content: center;
                 "
               >
-                <h6 class="mb-0" style="color: white">
+                <h6
+                  class="mb-0"
+                  style="color: white"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
+                  :data-bs-original-title="
+                    worker.username ? worker.username : 'Hi'
+                  "
+                  :title="worker.username"
+                >
                   {{ worker.username ? worker.username.slice(0, 2) : "AA" }}
                 </h6>
               </div>

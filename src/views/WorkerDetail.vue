@@ -376,7 +376,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-6">
+          <div class="col-12">
             <label for="inputField">Image</label>
             <input
               class="inputField"
@@ -386,6 +386,20 @@
               size="md"
             />
           </div>
+          <div class="col-6">
+            <div class="mt-4 switch d-flex align-items-center">
+              <div>
+                <input
+                  v-model="workerData.is_sentMail"
+                  type="checkbox"
+                  id="checkbox1"
+                />
+                <label for="checkbox1"></label>
+              </div>
+              <h6>Send Task Notify Email</h6>
+            </div>
+          </div>
+
           <div class="col-6">
             <img
               style="width: 200px; border-radius: 100px; margin-top: 20px"
@@ -416,6 +430,8 @@ import SoftBadge from "../components/SoftBadge.vue";
 import CustomModal from "./components/CustomModal.vue";
 import { convertToFormData } from "../supportElements/common";
 import SoftButtonVue from "../components/SoftButton.vue";
+// import SoftSwitch from "../components/SoftSwitch.vue";
+// import SoftCheckbox from "../components/SoftCheckbox.vue";
 const api = useApi();
 export default {
   components: {
@@ -423,6 +439,8 @@ export default {
     SoftBadge,
     SoftButtonVue,
     CustomModal,
+    // SoftSwitch,
+    // SoftCheckbox,
   },
   data() {
     return {

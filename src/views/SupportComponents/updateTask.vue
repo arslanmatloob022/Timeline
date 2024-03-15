@@ -1,52 +1,121 @@
 <template>
-  <custom-modal class="taskModal" v-if="isOpen" :title="modalTitle" @closed="handleModalClosed">
+  <custom-modal
+    class="taskModal"
+    v-if="isOpen"
+    :title="modalTitle"
+    @closed="handleModalClosed"
+  >
     <!-- submitTaskForm -->
+    <div class="delete-icon mb-3" @click="deleteTask()">
+      <i class="fas fa-trash-alt"></i>
+    </div>
     <form id="project-form" @submit.prevent="editTaskHandler">
       <div>
         <label for="inputField">Title: *</label>
-        <input class="inputField" type="text" required :placeholder="loading ? 'Loading...' : 'Titile'"
-          v-model="taskData.title" size="md" />
+        <input
+          class="inputField"
+          type="text"
+          required
+          :placeholder="loading ? 'Loading...' : 'Titile'"
+          v-model="taskData.title"
+          size="md"
+        />
       </div>
 
       <div>
         <label for="inputField">Description: *</label>
-        <textarea rows="4" class="inputField" type="text" :placeholder="loading ? 'Loading...' : 'Description'"
-          v-model="taskData.description" size="md" />
+        <textarea
+          rows="4"
+          class="inputField"
+          type="text"
+          :placeholder="loading ? 'Loading...' : 'Description'"
+          v-model="taskData.description"
+          size="md"
+        />
       </div>
 
       <div style="display: flex; justify-content: space-between">
         <div>
           <label for="inputField">Start Date</label>
-          <input class="inputField" type="date" :placeholder="loading ? 'Loading...' : 'Start date'"
-            v-model="taskData.startDate" size="md" />
+          <input
+            class="inputField"
+            type="date"
+            :placeholder="loading ? 'Loading...' : 'Start date'"
+            v-model="taskData.startDate"
+            size="md"
+          />
         </div>
 
         <div>
           <label for="inputField">End Date</label>
-          <input class="inputField" type="date" :placeholder="loading ? 'Loading...' : 'End date'"
-            v-model="taskData.endDate" size="md" />
+          <input
+            class="inputField"
+            type="date"
+            :placeholder="loading ? 'Loading...' : 'End date'"
+            v-model="taskData.endDate"
+            size="md"
+          />
         </div>
         <div>
           <label for="inputField">Color</label>
-          <input class="inputField" type="color" placeholder="Color" v-model="taskData.color" size="md" />
+          <input
+            class="inputField"
+            type="color"
+            placeholder="Color"
+            v-model="taskData.color"
+            size="md"
+          />
         </div>
       </div>
 
       <div style="display: flex; justify-content: space-between">
         <div style="width: 100%">
           <label for="inputField">Workers : * </label>
-          <div style="display: flex; flex-wrap: wrap;  font-weight: 500; gap:10px; margin-bottom: 10px; ">
+          <div
+            style="
+              display: flex;
+              flex-wrap: wrap;
+              font-weight: 500;
+              gap: 10px;
+              margin-bottom: 10px;
+            "
+          >
             <!-- Render tags for selected workers -->
-            <div class="tag" v-for="(worker, index) in selectedWorkers" :key="index" style="position: relative;">
-
-                <div   class="btn mb-0 bg-gradient-info btn-sm null null" variant="gradient" disabled size="sm">{{ worker.username }}
-                  <span class="remove" @click="removeWorker(index)" style="position: absolute; top: 3px; right: 7px;">x</span>
-                </div>
-           
+            <div
+              class="tag"
+              v-for="(worker, index) in selectedWorkers"
+              :key="index"
+              style="position: relative"
+            >
+              <div
+                class="btn mb-0 bg-gradient-info btn-sm null null"
+                variant="gradient"
+                disabled
+                size="sm"
+              >
+                {{ worker.username }}
+                <span
+                  class="remove"
+                  @click="removeWorker(index)"
+                  style="position: absolute; top: 3px; right: 7px"
+                  >x</span
+                >
+              </div>
             </div>
           </div>
-          <select class="inputField" v-model="selectedWorkers" multiple required style="height: 180px;">
-            <option class="dropdownOptions" v-for="worker in allWorkers" :key="worker.id" :value="worker">
+          <select
+            class="inputField"
+            v-model="selectedWorkers"
+            multiple
+            required
+            style="height: 100px"
+          >
+            <option
+              class="dropdownOptions"
+              v-for="worker in allWorkers"
+              :key="worker.id"
+              :value="worker"
+            >
               {{ worker.username }}
             </option>
           </select>
@@ -55,7 +124,13 @@
       </div>
 
       <div class="button-container">
-        <soft-button type="button" color="danger" size="lg" @click="handleModalClosed">Close</soft-button>
+        <soft-button
+          type="button"
+          color="danger"
+          size="lg"
+          @click="handleModalClosed"
+          >Close</soft-button
+        >
         <soft-button type="submit" :loading="loading" color="success" size="lg">
           Save
         </soft-button>
@@ -77,7 +152,7 @@ export default {
     },
     closeModal: {
       type: Function,
-      default: () => { },
+      default: () => {},
     },
     taskId: {
       type: Number,
@@ -89,8 +164,8 @@ export default {
     },
     startDate: {
       type: Number,
-      default: null
-    }
+      default: null,
+    },
   },
   data() {
     return {
@@ -118,7 +193,6 @@ export default {
   },
   components: {
     SoftButton,
-  
   },
   computed: {
     modalTitle() {
@@ -126,9 +200,7 @@ export default {
     },
   },
 
-
   methods: {
-
     removeWorker(index) {
       this.selectedWorkers.splice(index, 1);
     },
@@ -149,30 +221,22 @@ export default {
     async editTaskHandler() {
       try {
         this.loading = true;
-        let workerIDs = []
-        this.selectedWorkers.forEach((item)=>{
-          workerIDs.push(item.id)
-        })
+        let workerIDs = [];
+        this.selectedWorkers.forEach((item) => {
+          workerIDs.push(item.id);
+        });
         this.taskData.workers = workerIDs;
         let formData = convertToFormData(this.taskData, []);
         if (this.projectID) {
-          formData.append('project', this.projectID)
-          await api.post(
-            `/api/task/`,
-            formData
-          );
+          formData.append("project", this.projectID);
+          await api.post(`/api/task/`, formData);
           this.$notify({
             type: "success",
             title: "Task Add",
             text: "Task added succesfuly",
           });
-        }
-        else {
-
-          await api.patch(
-            `/api/task/${this.taskData.id}/`,
-            formData
-          );
+        } else {
+          await api.patch(`/api/task/${this.taskData.id}/`, formData);
 
           this.$notify({
             type: "success",
@@ -181,7 +245,6 @@ export default {
           });
         }
         this.handleModalClosed();
-
       } catch (err) {
         this.$notify({
           type: "error",
@@ -194,6 +257,24 @@ export default {
       }
     },
 
+    async deleteTask() {
+      try {
+        this.loading = true;
+        const response = await api.delete(`/api/task/${this.$props.taskId}/`);
+        console.log(response);
+        this.$notify({
+          type: "error",
+          title: "Task Deleted",
+          text: `Task deleted succesfuly`,
+        });
+        this.loading = false;
+        this.handleModalClosed();
+      } catch (err) {
+        console.log(err);
+      } finally {
+        this.loading = false;
+      }
+    },
     submitTaskForm() {
       // Implement your logic to submit the task form
       // Example:
@@ -229,18 +310,18 @@ export default {
     },
   },
   mounted() {
-    console.log("mounted inside")
+    console.log("mounted inside");
     if (this.taskId) {
       this.fetchTaskData();
     }
     this.getWorkershandler();
 
-    console.log("start date", this.startDate)
+    console.log("start date", this.startDate);
     if (this.startDate) {
-      this.taskData.startDate = this.startDate
-      console.log("task data ", this.taskData)
+      this.taskData.startDate = this.startDate;
+      console.log("task data ", this.taskData);
     }
-  }
+  },
 };
 </script>
 

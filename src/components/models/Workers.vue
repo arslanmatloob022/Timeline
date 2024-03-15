@@ -219,14 +219,18 @@
               />
             </div>
             <div class="mt-4">
-              <soft-switch
-                id="flexSwitchCheckDefault1"
-                v-model="userData.is_sentMail"
-                name="Email"
-                label-class="mb-0 text-body ms-3 text-truncate w-80"
-                class="ps-0 ms-auto"
-                >Send task's notify email
-              </soft-switch>
+              <div class="mt-4 switch d-flex align-items-center">
+                <div>
+                  <input
+                    v-model="userData.is_sentMail"
+                    type="checkbox"
+                    id="checkbox1"
+                    name="is_sentMail"
+                  />
+                  <label for="checkbox1"></label>
+                </div>
+                <h6>Send Task Notify Email</h6>
+              </div>
             </div>
           </div>
           <div class="col-6">
@@ -296,7 +300,7 @@ import useApi from "../../supportElements/useAPI";
 import SoftButtonVue from "../SoftButton.vue";
 import { convertToFormData } from "../../supportElements/common";
 import SweetAlert from "@/views/components/customAlert.vue";
-import SoftSwitch from "@/components/SoftSwitch.vue";
+// import SoftSwitch from "@/components/SoftSwitch.vue";
 
 const api = useApi();
 export default {
@@ -342,7 +346,7 @@ export default {
     SoftAvatar,
     SoftBadge,
     CustomModal,
-    SoftSwitch,
+    // SoftSwitch,
     SoftButtonVue,
   },
   methods: {
@@ -409,6 +413,7 @@ export default {
         this.userData.password = manager.password;
         this.userData.avatar = manager.avatar;
         this.preview = manager.avatar;
+        this.userData.is_sentMail = manager.is_sentMail;
         this.userData.phoneNumber = manager.phoneNumber;
       } else {
         this.editModeId = 0;

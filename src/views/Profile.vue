@@ -331,7 +331,7 @@
           </div>
         </div>
       </div>
-      <!-- <div class="mt-4 row">
+      <div class="mt-4 row">
         <div class="col-12">
           <div class="mb-4 card">
             <div class="p-3 pb-0 card-header">
@@ -439,7 +439,7 @@
             </div>
           </div>
         </div>
-      </div> -->
+      </div>
     </div>
 
     <SweetAlert ref="sweetAlert" :alertData="alertData">
@@ -709,7 +709,7 @@ import {
   faTwitter,
   faInstagram,
 } from "@fortawesome/free-brands-svg-icons";
-// import DefaultProjectCard from "./components/DefaultProjectCard.vue";
+import DefaultProjectCard from "./components/DefaultProjectCard.vue";
 // import PlaceHolderCard from "@/examples/Cards/PlaceHolderCard.vue";
 import setNavPills from "@/assets/js/nav-pills.js";
 import setTooltip from "@/assets/js/tooltip.js";
@@ -726,7 +726,7 @@ export default {
     // SoftSwitch,
     ProfileInfoCard,
     SoftAvatar,
-    // DefaultProjectCard,
+    DefaultProjectCard,
     // PlaceHolderCard,
     SweetAlert,
   },
