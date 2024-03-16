@@ -108,10 +108,10 @@ export default {
   },
   methods: {
     workerImageClick(worker) {
+      window.location.hash = "";
       this.selectedWorkerId = worker.id;
       this.selectedWorkerName = worker.username;
       window.location.hash = "workerCalendar";
-      console.log("iddd", this.selectedWorkerId);
     },
     eventClick(info) {
       console.log(info.event);

@@ -16,7 +16,7 @@
                 </p>
               </div>
               <div class="mb-3">
-                <select
+                <!-- <select
                   style="padding: 6px; width: 220px"
                   class="inputField"
                   v-model="this.selectedWorkerId"
@@ -30,7 +30,7 @@
                   >
                     {{ worker.username }}
                   </option>
-                </select>
+                </select> -->
               </div>
 
               <div class="filter-tabs">

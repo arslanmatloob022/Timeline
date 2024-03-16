@@ -23,7 +23,7 @@
             <div class="h-100">
               <div class="d-flex align-items-center">
                 <h5 style="color: #fff" class="mb-1">
-                  {{ workerData.username }}
+                  {{ loading ? "Loading..." : workerData.username }}
                 </h5>
 
                 <p class="mb-0 text-sm font-weight-bold">
@@ -31,11 +31,11 @@
                 </p>
               </div>
               <p class="mb-0 text-sm font-weight-bold">
-                {{ workerData.email }}
+                {{ loading ? "Loading..." : workerData.email }}
               </p>
               <p class="mb-0 text-sm font-weight-bold">
-                Send task email :
-                {{ workerData.is_sentMail ? "Active" : "In-active" }}
+                Task email alert:
+                {{ workerData.is_sentMail ? "Active" : "In-Active" }}
               </p>
             </div>
           </div>
@@ -125,15 +125,15 @@
           "
         >
           <h6>Worker's Tasks</h6>
-          <p>
-            <SoftButtonVue
-              color="primary"
-              @click="sendTasksMailToWorker"
-              variant="gradient"
-              size="sm"
-              >Send Mail</SoftButtonVue
-            >
-          </p>
+
+          <SoftButtonVue
+            v-if="workerData.is_sentMail"
+            color="primary"
+            @click="sendTasksMailToWorker"
+            variant="gradient"
+            size="sm"
+            >Send Mail</SoftButtonVue
+          >
         </div>
 
         <div class="card-body px-0 pt-0 pb-2">
@@ -569,8 +569,10 @@ export default {
 
     async getWorkerHandler() {
       try {
+        this.loading = true;
         const response = await api.get(`/api/users/${this.$route.params.id}`);
         this.workerData = response.data;
+        this.loading = false;
       } catch (err) {
         console.log(err);
       }
