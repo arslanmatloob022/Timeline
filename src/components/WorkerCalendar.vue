@@ -19,14 +19,14 @@
                 <select
                   style="padding: 6px; width: 220px"
                   class="inputField"
-                  v-model="this.selectedWorker"
+                  v-model="this.selectedWorkerId"
                 >
                   <option value="" selected>Select Worker</option>
                   <option
                     class="dropdownOptions"
                     v-for="worker in workers"
                     :key="worker.id"
-                    :value="worker"
+                    :value="worker.id"
                   >
                     {{ worker.username }}
                   </option>
@@ -144,8 +144,6 @@
 import FullCalendar from "@fullcalendar/vue3";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import useApi from "../supportElements/useAPI";
-// import SoftBadge from "../components/SoftBadge.vue";
-// import CustomModal from "./components/CustomModal.vue";
 import { convertToFormData } from "../supportElements/common";
 import SoftButtonVue from "../components/SoftButton.vue";
 
@@ -157,15 +155,13 @@ export default {
   },
   components: {
     FullCalendar,
-    // SoftBadge,
     SoftButtonVue,
-    // CustomModal,
   },
 
   data() {
     return {
       loading: false,
-      selectedWorker: {},
+      selectedWorkerId: 0,
       workers: [],
       modalTitle: "Edit Worker Profile",
       editpreview: null,
@@ -216,7 +212,7 @@ export default {
   },
   watch: {
     id: "gettasksHandler",
-    selectedWorker: "gettasksHandler",
+    selectedWorkerId: "gettasksHandler",
   },
   methods: {
     renderCalender() {
@@ -269,7 +265,7 @@ export default {
         this.loading = true;
         const response = await api.get(
           `/api/task/${
-            this.id ? this.id : this.selectedWorker.id
+            this.id ? this.id : this.selectedWorkerId
           }/worker-tasks/`,
           {}
         );

@@ -6,7 +6,11 @@
     @closed="handleModalClosed"
   >
     <!-- submitTaskForm -->
-    <div class="delete-icon mb-3" @click="deleteTask()">
+    <div
+      v-if="this.$props.taskId"
+      class="delete-icon mb-3"
+      @click="deleteTask()"
+    >
       <i class="fas fa-trash-alt"></i>
     </div>
     <form id="project-form" @submit.prevent="editTaskHandler">
@@ -207,7 +211,7 @@ export default {
     async fetchTaskData() {
       try {
         this.loading = true;
-        const response = await api.get(`/api/task/${this.taskId}`);
+        const response = await api.get(`/api/task/${this.$props.taskId}`);
         this.taskData = response.data;
 
         this.selectedWorkers = response.data.workers;

@@ -33,6 +33,10 @@
               <p class="mb-0 text-sm font-weight-bold">
                 {{ workerData.email }}
               </p>
+              <p class="mb-0 text-sm font-weight-bold">
+                Send task email :
+                {{ workerData.is_sentMail ? "Active" : "In-active" }}
+              </p>
             </div>
           </div>
           <div

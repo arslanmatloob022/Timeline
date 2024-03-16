@@ -351,7 +351,7 @@
           <soft-button-vue
             @click="
               () => {
-                this.$refs.customModal.openModal();
+                this.openTaskForm(null, projectData.id);
               }
             "
             size="md"
@@ -481,7 +481,7 @@
                         class="text-secondary font-weight-bold text-xs"
                         data-toggle="tooltip"
                         data-original-title="Edit user"
-                        @click="this.openTaskForm(task.id)"
+                        @click="this.openTaskForm(task.id, null)"
                         >Edit</a
                       >
                       |
@@ -760,6 +760,8 @@
       :projectId="editProjectId"
     />
     <update-task-vue
+      v-if="isTaskFormOpen"
+      :projectID="currentProjectId"
       :isOpen="isTaskFormOpen"
       :closeModal="closeTaskForm"
       :taskId="editTaskId"
@@ -793,7 +795,8 @@ export default {
       preview: null,
       isProjectFormOpen: false,
       isTaskFormOpen: false,
-      editTaskId: null,
+      editTaskId: "",
+      currentProjectId: "",
       editProjectId: null,
       loading: false,
       assignToMore: false,
@@ -1047,9 +1050,10 @@ export default {
       this.editProjectId = null; // Reset the editTaskId after closing
     },
 
-    openTaskForm(taskId = null) {
+    openTaskForm(taskId = null, projectId = null) {
       this.isTaskFormOpen = true;
       this.editTaskId = taskId;
+      this.currentProjectId = projectId;
     },
 
     closeTaskForm() {
