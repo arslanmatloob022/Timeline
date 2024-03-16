@@ -100,11 +100,11 @@
               data-color="primary"
               @click="sidebarType('bg-primary')"
             ></span>
-            <span
+            <!-- <span
               class="badge filter bg-gradient-dark"
               data-color="dark"
               @click="sidebarType('bg-dark')"
-            ></span>
+            ></span> -->
             <span
               class="badge filter bg-gradient-info"
               data-color="info"
