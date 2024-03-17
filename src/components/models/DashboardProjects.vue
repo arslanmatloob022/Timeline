@@ -177,7 +177,7 @@
                     </div>
                   </div>
                 </td>
-                <td class="align-end">
+                <td class="align-middle text-center text-sm">
                   <div class="dropdown-container">
                     <a
                       @click="this.$router.push(`/projectdetail/${item.id}`)"
