@@ -81,8 +81,8 @@ export default {
         },
         eventResize: (info) => {
           // alert(info.event.title + " end is now " + info.event.end.toISOString());
-          let start = info.event.start.toISOString().substring(0, 10);
-          let end = info.event.end.toISOString().substring(0, 10);
+          let start = info.event.startStr;
+          let end = info.event.endStr;
           if (
             !confirm(
               `Are you sure you want to update the project ${info.event.title} date  from ${start} to ${end}?`
