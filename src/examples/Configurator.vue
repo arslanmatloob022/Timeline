@@ -95,35 +95,35 @@
             class="my-2 badge-colors"
             :class="this.$store.state.isRTL ? 'text-end' : ' text-start'"
           >
-            <span
+            <!-- <span
               class="badge filter bg-gradient-primary active"
               data-color="primary"
               @click="sidebarType('bg-primary')"
-            ></span>
-            <!-- <span
-              class="badge filter bg-gradient-dark"
-              data-color="dark"
-              @click="sidebarType('bg-dark')"
             ></span> -->
+            <span
+              class="badge filter bg-gradient-light"
+              data-color="dark"
+              @click="sidebarType('bg-gradient-light')"
+            ></span>
             <span
               class="badge filter bg-gradient-info"
               data-color="info"
-              @click="sidebarType('bg-info')"
+              @click="sidebarType('bg-gradient-info')"
             ></span>
             <span
               class="badge filter bg-gradient-success"
               data-color="success"
-              @click="sidebarType('bg-success')"
+              @click="sidebarType('bg-gradient-success')"
             ></span>
             <span
               class="badge filter bg-gradient-warning"
               data-color="warning"
-              @click="sidebarType('bg-warning')"
+              @click="sidebarType('bg-gradient-warning')"
             ></span>
             <span
-              class="badge filter bg-gradient-danger"
-              data-color="danger"
-              @click="sidebarType('bg-danger')"
+              class="badge filter bg-gradient-secondary"
+              data-color="secondary"
+              @click="sidebarType('bg-gradient-secondary')"
             ></span>
           </div>
         </a>

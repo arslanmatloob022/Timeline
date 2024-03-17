@@ -72,12 +72,12 @@
                     </div>
                   </div>
                 </td>
-                <td>
+                <td class="align-middle text-start text-sm">
                   <p class="text-xs font-weight-bold mb-0">
                     {{ item.phoneNumber ? item.phoneNumber : "---" }}
                   </p>
                 </td>
-                <td>
+                <td class="align-middle text-start text-sm">
                   <p class="text-xs font-weight-bold mb-0">{{ item.role }}</p>
                   <p class="text-xs text-secondary mb-0">Organization</p>
                 </td>

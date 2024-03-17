@@ -114,6 +114,7 @@
                         size="sm"
                         class="me-3"
                         alt="xd"
+                        borderRadius="sm"
                       />
                     </div>
                     <div class="d-flex flex-column justify-content-center">

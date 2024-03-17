@@ -60,7 +60,7 @@
                         </SoftButtonVue>
 
                         <SoftButtonVue
-                          style="padding: 6px 16px"
+                          style="padding: 6px 8px"
                           @click="updateProjectStatus('pending')"
                           color="secondary"
                           :variant="
