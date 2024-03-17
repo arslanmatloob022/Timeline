@@ -85,9 +85,9 @@ export default {
             }
           }
           // alert(info.event.title + " end is now " + info.event.end.toISOString());
-          let start = info.event.startStr
-          console.log("event", info.event.startStr)
-          let end = info.event.endStr
+          let start = info.event.startStr;
+          console.log("event", info.event.startStr);
+          let end = info.event.endStr;
           if (
             !confirm(
               `Are you sure you want to update the project ${info.event.title} date  from ${start} to ${end}?`

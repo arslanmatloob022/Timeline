@@ -14,16 +14,36 @@
       <i class="fas fa-trash-alt"></i>
     </div>
     <form id="project-form" @submit.prevent="editTaskHandler">
-      <div>
-        <label for="inputField">Title: *</label>
-        <input
-          class="inputField"
-          type="text"
-          required
-          :placeholder="loading ? 'Loading...' : 'Titile'"
-          v-model="taskData.title"
-          size="md"
-        />
+      <div style="display: flex; justify-content: space-between">
+        <div :style="{ width: this.$props.taskId ? '45%' : '100%' }">
+          <label for="inputField">Title: *</label>
+          <input
+            class="inputField"
+            type="text"
+            required
+            :placeholder="loading ? 'Loading...' : 'Titile'"
+            v-model="taskData.title"
+            size="md"
+          />
+        </div>
+        <div v-if="this.$props.taskId" style="width: 45%">
+          <label for="inputField">Set status</label>
+          <select
+            style="padding: 6px 8px"
+            required
+            class="inputField"
+            v-model="taskData.status"
+          >
+            <option
+              class="dropdownOptions"
+              v-for="task in Taskstatus"
+              :key="task.value"
+              :value="task.value"
+            >
+              {{ task.name }}
+            </option>
+          </select>
+        </div>
       </div>
 
       <div>
