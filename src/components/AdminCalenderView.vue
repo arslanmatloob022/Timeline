@@ -82,7 +82,9 @@ export default {
         eventResize: (info) => {
           // alert(info.event.title + " end is now " + info.event.end.toISOString());
           let start = info.event.startStr;
-          let end = info.event.endStr;
+          let end = info.event.end.toISOString().substring(0, 10);
+          
+          console.log(info.event)
           if (
             !confirm(
               `Are you sure you want to update the project ${info.event.title} date  from ${start} to ${end}?`
@@ -90,6 +92,7 @@ export default {
           ) {
             info.revert();
           } else {
+          
             this.editProject(info.event.id, start, end);
           }
         },
@@ -97,13 +100,19 @@ export default {
     };
   },
   methods: {
+    addOneDayToDate (dateString) {
+  let date = new Date(dateString);
+  date.setDate(date.getDate() + 1);
+  let newDateString = date.toISOString().slice(0, 10);
+  return newDateString;
+},
     async editProject(id, start, end) {
       try {
-        await api.patch(`/api/project/${id}/`, {
+        let resp = await api.patch(`/api/project/${id}/`, {
           startDate: start,
           endDate: end,
         });
-
+        console.log(resp)
         this.$notify({
           type: "success",
           title: "Project Updated",
@@ -125,7 +134,7 @@ export default {
         id: project.id,
         resourceId: project.id,
         start: project.startDate,
-        end: project.endDate,
+        end: this.addOneDayToDate(project.endDate),
         title: project.title,
         description: project.description,
         total_tasks: project.total_tasks,
