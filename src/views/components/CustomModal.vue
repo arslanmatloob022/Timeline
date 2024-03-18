@@ -108,7 +108,7 @@ export default {
 .action-btn {
   background-color: #82d616;
   color: #fff;
-  padding: 8px 16px;
+  padding: 8px 8px;
   border: none;
   border-radius: 4px;
   cursor: pointer;

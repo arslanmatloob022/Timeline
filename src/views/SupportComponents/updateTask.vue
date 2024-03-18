@@ -6,26 +6,50 @@
     @closed="handleModalClosed"
   >
     <!-- submitTaskForm -->
-    <div class="delete-icon mb-3" @click="deleteTask()">
+    <div
+      v-if="this.$props.taskId"
+      class="delete-icon mb-3"
+      @click="deleteTask()"
+    >
       <i class="fas fa-trash-alt"></i>
     </div>
     <form id="project-form" @submit.prevent="editTaskHandler">
-      <div>
-        <label for="inputField">Title: *</label>
-        <input
-          class="inputField"
-          type="text"
-          required
-          :placeholder="loading ? 'Loading...' : 'Titile'"
-          v-model="taskData.title"
-          size="md"
-        />
+      <div style="display: flex; justify-content: space-between">
+        <div :style="{ width: this.$props.taskId ? '45%' : '100%' }">
+          <label for="inputField">Title: *</label>
+          <input
+            class="inputField"
+            type="text"
+            required
+            :placeholder="loading ? 'Loading...' : 'Titile'"
+            v-model="taskData.title"
+            size="md"
+          />
+        </div>
+        <div v-if="this.$props.taskId" style="width: 45%">
+          <label for="inputField">Set status</label>
+          <select
+            style="padding: 6px 8px"
+            required
+            class="inputField"
+            v-model="taskData.status"
+          >
+            <option
+              class="dropdownOptions"
+              v-for="task in Taskstatus"
+              :key="task.value"
+              :value="task.value"
+            >
+              {{ task.name }}
+            </option>
+          </select>
+        </div>
       </div>
 
       <div>
         <label for="inputField">Description: *</label>
         <textarea
-          rows="4"
+          rows="3"
           class="inputField"
           type="text"
           :placeholder="loading ? 'Loading...' : 'Description'"
@@ -127,11 +151,11 @@
         <soft-button
           type="button"
           color="danger"
-          size="lg"
+          size="md"
           @click="handleModalClosed"
           >Close</soft-button
         >
-        <soft-button type="submit" :loading="loading" color="success" size="lg">
+        <soft-button type="submit" :loading="loading" color="success" size="md">
           Save
         </soft-button>
       </div>
@@ -207,7 +231,7 @@ export default {
     async fetchTaskData() {
       try {
         this.loading = true;
-        const response = await api.get(`/api/task/${this.taskId}`);
+        const response = await api.get(`/api/task/${this.$props.taskId}`);
         this.taskData = response.data;
 
         this.selectedWorkers = response.data.workers;

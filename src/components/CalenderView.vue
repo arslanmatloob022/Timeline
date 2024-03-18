@@ -85,9 +85,11 @@ export default {
             }
           }
           // alert(info.event.title + " end is now " + info.event.end.toISOString());
+
           let start = info.event.startStr
 
           let end = info.event.end.toISOString().substring(0, 10)
+
           if (
             !confirm(
               `Are you sure you want to update the project ${info.event.title} date  from ${start} to ${end}?`
@@ -115,9 +117,10 @@ export default {
   return newDateString;
 },
     workerImageClick(worker) {
+      window.location.hash = "";
       this.selectedWorkerId = worker.id;
       this.selectedWorkerName = worker.username;
-      console.log("iddd", this.selectedWorkerId);
+      window.location.hash = "workerCalendar";
     },
     eventClick(info) {
       console.log(info.event);
@@ -156,6 +159,7 @@ export default {
         console.log(err);
       }
     },
+
     getManagersById(id) {
       const project = this.projects.find((project) => project.id === id);
       if (project) {
@@ -284,183 +288,187 @@ export default {
 };
 </script>
 <template>
-  <div
-    class="mb-6"
-    id="fullCalendarView"
-    style="background-color: white; padding: 12px 20px; border-radius: 12px"
-  >
-    <div v-if="this.loading" class="calendar-loader"></div>
-    <form id="manger-form" @submit.prevent="changeFilterHandler">
-      <div class="flex-between">
-        <div>
-          <!-- <label for="inputField">Search project</label>
+  <div>
+    <div
+      class="mb-6"
+      id="fullCalendarView"
+      style="background-color: white; padding: 12px 20px; border-radius: 12px"
+    >
+      <div v-if="this.loading" class="calendar-loader"></div>
+      <form id="manger-form" @submit.prevent="changeFilterHandler">
+        <div class="flex-between">
+          <div>
+            <!-- <label for="inputField">Search project</label>
           <br /> -->
-          <input
-            class="inputField mb-4 px-3 py-2"
-            style="
-              border: none;
-              background-color: white;
-              box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-              border-radius: 20px;
-              outline: none;
-              width: 300px;
-            "
-            type="text"
-            placeholder="Search projects..."
-            v-model="query"
-            @input="this.changeFilterHandler()"
-          />
-        </div>
+            <input
+              class="inputField mb-4 px-3 py-2"
+              style="
+                border: none;
+                background-color: white;
+                box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+                border-radius: 20px;
+                outline: none;
+                width: 300px;
+              "
+              type="text"
+              placeholder="Search projects..."
+              v-model="query"
+              @input="this.changeFilterHandler()"
+            />
+          </div>
 
-        <div class="filter-tabs">
-          <SoftButtonVue
-            @click="
-              () => {
-                this.changeFilterHandler();
-                this.activeFilter = 'all';
-              }
-            "
-            :class="this.activeFilter == 'all' ? 'active-btn' : ''"
-            color="info"
-            variant="gradient"
-            size="sm"
-            >All</SoftButtonVue
-          >
-
-          <SoftButtonVue
-            @click="
-              () => {
-                this.changeFilterHandler();
-
-                this.activeFilter = 'active';
-              }
-            "
-            :class="this.activeFilter == 'active' ? 'active-btn' : ''"
-            color="warning"
-            variant="gradient"
-            size="sm"
-            >Active</SoftButtonVue
-          >
-
-          <SoftButtonVue
-            @click="
-              () => {
-                this.changeFilterHandler();
-
-                this.activeFilter = 'pending';
-              }
-            "
-            :class="this.activeFilter == 'pending' ? 'active-btn' : ''"
-            color="secondary"
-            variant="gradient"
-            size="sm"
-            >Pre Construction</SoftButtonVue
-          >
-
-          <SoftButtonVue
-            @click="
-              () => {
-                this.changeFilterHandler();
-
-                this.activeFilter = 'completed';
-              }
-            "
-            :class="this.activeFilter == 'completed' ? 'active-btn' : ''"
-            color="success"
-            variant="gradient"
-            size="sm"
-            >Completed</SoftButtonVue
-          >
-        </div>
-        <button class="view-button mb-3" @click="toggleFullScreen()">
-          <i :class="fullWidthView ? 'fa fa-compress' : 'fa fa-expand'"></i>
-        </button>
-      </div>
-    </form>
-
-    <FullCalendar :options="calendarOptions">
-      <template v-slot:eventContent="arg">
-        <div
-          style="
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-          "
-        >
-          <p
-            style="font-weight: 500; margin-bottom: 0px; padding-left: 10px"
-            @click="eventClick(arg)"
-          >
-            {{ arg.event.title }}
-          </p>
-          <div class="avatars">
-            <div
-              class="avatars__item"
-              v-for="worker in arg.event.extendedProps.workers"
-              :key="worker.id"
+          <div class="filter-tabs">
+            <SoftButtonVue
+              @click="
+                () => {
+                  this.changeFilterHandler();
+                  this.activeFilter = 'all';
+                }
+              "
+              :class="this.activeFilter == 'all' ? 'active-btn' : ''"
+              color="info"
+              variant="gradient"
+              size="sm"
+              >All</SoftButtonVue
             >
-              <img
-                v-if="worker.avatar"
-                :src="worker.avatar"
-                alt=""
-                @click="workerImageClick(worker)"
-                :title="worker.username"
-                data-bs-toggle="tooltip"
-                data-bs-placement="bottom"
-                :data-bs-original-title="
-                  worker.username ? worker.username : 'Hi'
-                "
-              />
+
+            <SoftButtonVue
+              @click="
+                () => {
+                  this.changeFilterHandler();
+
+                  this.activeFilter = 'active';
+                }
+              "
+              :class="this.activeFilter == 'active' ? 'active-btn' : ''"
+              color="warning"
+              variant="gradient"
+              size="sm"
+              >Active</SoftButtonVue
+            >
+
+            <SoftButtonVue
+              @click="
+                () => {
+                  this.changeFilterHandler();
+
+                  this.activeFilter = 'pending';
+                }
+              "
+              :class="this.activeFilter == 'pending' ? 'active-btn' : ''"
+              color="secondary"
+              variant="gradient"
+              size="sm"
+              >Pre Construction</SoftButtonVue
+            >
+
+            <SoftButtonVue
+              @click="
+                () => {
+                  this.changeFilterHandler();
+
+                  this.activeFilter = 'completed';
+                }
+              "
+              :class="this.activeFilter == 'completed' ? 'active-btn' : ''"
+              color="success"
+              variant="gradient"
+              size="sm"
+              >Completed</SoftButtonVue
+            >
+          </div>
+          <button class="view-button mb-3" @click="toggleFullScreen()">
+            <i :class="fullWidthView ? 'fa fa-compress' : 'fa fa-expand'"></i>
+          </button>
+        </div>
+      </form>
+
+      <FullCalendar :options="calendarOptions">
+        <template v-slot:eventContent="arg">
+          <div
+            style="
+              display: flex;
+              flex-wrap: wrap;
+              align-items: center;
+              justify-content: space-between;
+            "
+          >
+            <p
+              style="font-weight: 500; margin-bottom: 0px; padding-left: 10px"
+              @click="eventClick(arg)"
+            >
+              {{ arg.event.title }}
+            </p>
+            <div class="avatars">
               <div
-                v-else
-                @click="workerImageClick(worker)"
-                data-bs-toggle="tooltip"
-                data-bs-placement="bottom"
-                :data-bs-original-title="
-                  worker.username ? worker.username : 'Hi'
-                "
-                :title="worker.username"
-                style="
-                  width: 100%;
-                  height: 100%;
-                  background-color: #292f3c;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                "
+                class="avatars__item"
+                v-for="worker in arg.event.extendedProps.workers"
+                :key="worker.id"
               >
-                <h6
-                  class="mb-0"
-                  style="color: white"
+                <img
+                  v-if="worker.avatar"
+                  :src="worker.avatar"
+                  alt=""
+                  @click="workerImageClick(worker)"
+                  :title="worker.username"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
+                  :data-bs-original-title="
+                    worker.username ? worker.username : 'Hi'
+                  "
+                />
+                <div
+                  v-else
+                  @click="workerImageClick(worker)"
                   data-bs-toggle="tooltip"
                   data-bs-placement="bottom"
                   :data-bs-original-title="
                     worker.username ? worker.username : 'Hi'
                   "
                   :title="worker.username"
+                  style="
+                    width: 100%;
+                    height: 100%;
+                    background-color: #292f3c;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  "
                 >
-                  {{ worker.username ? worker.username.slice(0, 2) : "AA" }}
-                </h6>
+                  <h6
+                    class="mb-0"
+                    style="color: white"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    :data-bs-original-title="
+                      worker.username ? worker.username : 'Hi'
+                    "
+                    :title="worker.username"
+                  >
+                    {{ worker.username ? worker.username.slice(0, 2) : "AA" }}
+                  </h6>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <!-- <p>{{ arg.event.extendedProps.description }}</p> -->
-      </template>
-    </FullCalendar>
-    <div
-      v-if="filteredResources.length == 0"
-      style="display: flex; align-items: center; justify-content: center"
-    >
-      <h4 class="mt-5 mb-5" style="color: darkgray">No project found</h4>
+          <!-- <p>{{ arg.event.extendedProps.description }}</p> -->
+        </template>
+      </FullCalendar>
+      <div
+        v-if="filteredResources.length == 0"
+        style="display: flex; align-items: center; justify-content: center"
+      >
+        <h4 class="mt-5 mb-5" style="color: darkgray">No project found</h4>
+      </div>
+      <hr />
     </div>
-    <hr />
-    <WorkerCalendarVue
-      :id="this.selectedWorkerId"
-      :workerName="this.selectedWorkerName"
-      class="mt-6"
-    />
+    <div id="workerCalendar">
+      <WorkerCalendarVue
+        :id="this.selectedWorkerId"
+        :workerName="this.selectedWorkerName"
+        class="mt-6"
+      />
+    </div>
 
     <update-task-vue
       v-if="isTaskFormOpen"

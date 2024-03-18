@@ -142,19 +142,37 @@ export default {
         this.$store.commit("setUser", user);
         this.$store.dispatch("login", { isAuthenticated: true });
         this.loading = false;
-        this.$notify({
-          type: "success",
-          title: "Welcome Back.",
-          text: `Hello ${response.data.user.username} !`,
-        });
-
-        if (this.$store.state.user.role == "admin") {
-          this.$router.push("/dashboard");
-        } else if (this.$store.state.user.role == "manager") {
-          this.$router.push("/projects");
-        } else {
-          this.$router.push(`/workertasks`);
+        if (response.data.user.is_active) {
+          this.$notify({
+            type: "success",
+            title: "Welcome Back.",
+            text: `Hello ${response.data.user.username} !`,
+          });
         }
+
+        if (
+          this.$store.state.user.role == "admin" &&
+          this.$store.state.user.is_active == true
+        ) {
+          this.$router.push("/dashboard");
+        } else if (
+          this.$store.state.user.role == "manager" &&
+          this.$store.state.user.is_active == true
+        ) {
+          this.$router.push("/projects");
+        } else if (
+          this.$store.state.user.role == "worker" &&
+          this.$store.state.user.is_active == true
+        ) {
+          this.$router.push(`/workertasks`);
+        } else {
+          this.$notify({
+            group: "auth",
+            type: "error",
+            text: "You're not allowed to sign-in inot the system.",
+          });
+        }
+
         console.error("Login success");
       } catch (error) {
         this.$notify({

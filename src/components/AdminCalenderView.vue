@@ -34,7 +34,7 @@ export default {
       calendarOptions: {
         plugins: [resourceTimelinePlugin, interactionPlugin],
         schedulerLicenseKey: "0965592368-fcs-1694657447",
-        initialView: "resourceTimelineYear",
+        initialView: "resourceTimelineMonth",
         height: "auto",
         resourceAreaWidth: "20%",
         selectable: true,

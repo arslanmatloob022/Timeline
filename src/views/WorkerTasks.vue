@@ -13,7 +13,7 @@
           <div class="col-auto">
             <div class="avatar avatar-xl position-relative">
               <img
-                :src="workerData.avatar ? workerData.avatar : img4"
+                :src="workerData.avatar ? workerData.avatar : '/preview.jpeg'"
                 alt="profile_image"
                 class="shadow-sm w-100 border-radius-lg"
               />
@@ -269,50 +269,62 @@
               </div>
 
               <div class="tabs-container">
-                <button
+                <SoftButtonVue
                   @click="
                     () => {
                       activeFilter = 'all';
                       changeFilterHandler();
                     }
                   "
+                  color="info"
+                  variant="gradient"
+                  size="sm"
                   :class="activeFilter == 'all' && 'active'"
                 >
                   All
-                </button>
-                <button
+                </SoftButtonVue>
+                <SoftButtonVue
                   @click="
                     () => {
                       activeFilter = 'active';
                       changeFilterHandler();
                     }
                   "
+                  color="warning"
+                  variant="gradient"
+                  size="sm"
                   :class="activeFilter == 'active' && 'active'"
                 >
                   Active
-                </button>
-                <button
+                </SoftButtonVue>
+                <SoftButtonVue
                   @click="
                     () => {
                       activeFilter = 'pending';
                       changeFilterHandler();
                     }
                   "
+                  color="secondary"
+                  variant="gradient"
+                  size="sm"
                   :class="activeFilter == 'pending' && 'active'"
                 >
-                  Pending
-                </button>
-                <button
+                  Pre Construction
+                </SoftButtonVue>
+                <SoftButtonVue
                   @click="
                     () => {
                       activeFilter = 'completed';
                       changeFilterHandler();
                     }
                   "
+                  color="success"
+                  variant="gradient"
+                  size="sm"
                   :class="activeFilter == 'completed' && 'active'"
                 >
                   Completed
-                </button>
+                </SoftButtonVue>
               </div>
               <button class="view-button" @click="showFullView()">
                 <i
@@ -458,7 +470,7 @@ export default {
   },
   data() {
     return {
-      modalTitle:"Edit Profile",
+      modalTitle: "Edit Profile",
       editpreview: null,
       workerData: {},
       fullWidthView: false,

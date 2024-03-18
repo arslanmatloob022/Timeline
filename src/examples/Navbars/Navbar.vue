@@ -49,7 +49,11 @@
             >
               <img
                 style="width: 30px; height: 30px; border-radius: 50%"
-                :src="this.$store.state.user.avatar"
+                :src="
+                  this.$store.state.user.avatar
+                    ? this.$store.state.user.avatar
+                    : '/preview.jpeg'
+                "
                 :class="this.$store.state.isRTL ? 'ms-sm-2' : 'me-sm-1'"
               />
               <span v-if="this.$store.state.isRTL" class="d-sm-inline d-none"
