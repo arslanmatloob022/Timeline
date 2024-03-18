@@ -86,8 +86,8 @@ export default {
           }
           // alert(info.event.title + " end is now " + info.event.end.toISOString());
           let start = info.event.startStr
-          console.log("event", info.event.startStr)
-          let end = info.event.endStr
+
+          let end = info.event.end.toISOString().substring(0, 10)
           if (
             !confirm(
               `Are you sure you want to update the project ${info.event.title} date  from ${start} to ${end}?`
@@ -108,6 +108,12 @@ export default {
     };
   },
   methods: {
+    addOneDayToDate (dateString) {
+  let date = new Date(dateString);
+  date.setDate(date.getDate() + 1);
+  let newDateString = date.toISOString().slice(0, 10);
+  return newDateString;
+},
     workerImageClick(worker) {
       this.selectedWorkerId = worker.id;
       this.selectedWorkerName = worker.username;
@@ -165,7 +171,7 @@ export default {
         id: task.id,
         resourceId: task.project,
         start: task.startDate,
-        end: task.endDate,
+        end: this.addOneDayToDate(task.endDate),
         title: task.title,
         color: task.color,
         description: task.description,
