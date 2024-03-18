@@ -57,6 +57,34 @@
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
+.bg-gradient-pree {
+  background: #db8bd1; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to bottom,
+    #fff,
+    #db8bd1
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to bottom,
+    #fff,
+    #db8bd1
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.bg-gradient-parrot {
+  background: #fdfc47; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to bottom,
+    #24fe41,
+    #fdfc47
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to bottom,
+    #24fe41,
+    #fdfc47
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
 .bg-gradient-pale {
   background: #eacda3; /* fallback for old browsers */
   background: -webkit-linear-gradient(

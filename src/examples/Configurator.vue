@@ -125,6 +125,11 @@
               data-color="secondary"
               @click="sidebarType('bg-gradient-pale')"
             ></span>
+            <span
+              class="badge filter bg-gradient-pree"
+              data-color="secondary"
+              @click="sidebarType('bg-gradient-pree')"
+            ></span>
           </div>
         </a>
         <p class="mt-2 text-sm d-xl-none d-block">
