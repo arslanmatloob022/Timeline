@@ -106,24 +106,24 @@
               @click="sidebarType('bg-gradient-light')"
             ></span>
             <span
-              class="badge filter bg-gradient-info"
+              class="badge filter bg-gradient-pink"
               data-color="info"
-              @click="sidebarType('bg-gradient-info')"
+              @click="sidebarType('bg-gradient-pink')"
             ></span>
             <span
-              class="badge filter bg-gradient-success"
+              class="badge filter bg-gradient-green"
               data-color="success"
-              @click="sidebarType('bg-gradient-success')"
+              @click="sidebarType('bg-gradient-green')"
             ></span>
             <span
-              class="badge filter bg-gradient-warning"
+              class="badge filter bg-gradient-parrot"
               data-color="warning"
-              @click="sidebarType('bg-gradient-warning')"
+              @click="sidebarType('bg-gradient-parrot')"
             ></span>
             <span
-              class="badge filter bg-gradient-secondary"
+              class="badge filter bg-gradient-pale"
               data-color="secondary"
-              @click="sidebarType('bg-gradient-secondary')"
+              @click="sidebarType('bg-gradient-pale')"
             ></span>
           </div>
         </a>
