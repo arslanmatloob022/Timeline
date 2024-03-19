@@ -83,8 +83,8 @@ export default {
           // alert(info.event.title + " end is now " + info.event.end.toISOString());
           let start = info.event.startStr;
           let end = info.event.end.toISOString().substring(0, 10);
-          
-          console.log(info.event)
+
+          console.log(info.event);
           if (
             !confirm(
               `Are you sure you want to update the project ${info.event.title} date  from ${start} to ${end}?`
@@ -92,7 +92,6 @@ export default {
           ) {
             info.revert();
           } else {
-          
             this.editProject(info.event.id, start, end);
           }
         },
@@ -100,19 +99,19 @@ export default {
     };
   },
   methods: {
-    addOneDayToDate (dateString) {
-  let date = new Date(dateString);
-  date.setDate(date.getDate() + 1);
-  let newDateString = date.toISOString().slice(0, 10);
-  return newDateString;
-},
+    addOneDayToDate(dateString) {
+      let date = new Date(dateString);
+      date.setDate(date.getDate() + 1);
+      let newDateString = date.toISOString().slice(0, 10);
+      return newDateString;
+    },
     async editProject(id, start, end) {
       try {
         let resp = await api.patch(`/api/project/${id}/`, {
           startDate: start,
           endDate: end,
         });
-        console.log(resp)
+        console.log(resp);
         this.$notify({
           type: "success",
           title: "Project Updated",
@@ -239,7 +238,11 @@ export default {
 };
 </script>
 <template>
-  <div id="fullCalendarView" class="mb-6">
+  <div
+    id="fullCalendarView"
+    style="background-color: white; padding: 12px 20px; border-radius: 12px"
+    class="mb-6"
+  >
     <div v-if="this.loading" class="calendar-loader"></div>
     <form id="manger-form" @submit.prevent="changeFilterHandler">
       <div class="flex-between align-items-center mb-3">
