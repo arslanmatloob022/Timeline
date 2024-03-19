@@ -40,7 +40,7 @@
         <mini-statistics-card
           class="pointer"
           @click="this.$router.push('/projects')"
-          title="Pending Projects"
+          title="Pre Construction Projects"
           :value="dashboardStats.pending_projects"
           :percentage="{
             value: '+505%',
