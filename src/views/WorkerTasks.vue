@@ -260,15 +260,46 @@
         </div>
       </div>
 
-      <div class="col-12">
-        <div class="mb-6" :class="fullWidthView ? 'fullView' : ''">
+      <div
+        class="col-12 col-xl-12 col-md-12 col-sm-12"
+        style="
+          background-color: white;
+          padding: 12px 20px;
+          border-radius: 12px;
+          width: 1020px;
+          overflow: auto;
+        "
+        id="fullCalendarView"
+      >
+        <div class="mb-6" style="width: 100%; width: 1020px">
           <form id="manger-form" @submit.prevent="changeFilterHandler">
             <div class="flex-between">
               <div>
                 <p>Total Tasks: {{ filteredEvents.length }}</p>
               </div>
+              <button
+                class="view-button showmobile"
+                @click="toggleLandscapeFullScreen()"
+              >
+                <i :class="fullWidthView ? 'fa fa-laptop' : 'fa fa-mobile'"></i>
+              </button>
+              <select
+                class="inputField showmobile"
+                style="width: fit-content"
+                v-model="activeFilter"
+              >
+                <option selected>Selecte Filter</option>
+                <option
+                  class="dropdownOptions"
+                  v-for="worker in dropdownFilters"
+                  :key="worker.key"
+                  :value="worker"
+                >
+                  {{ worker }}
+                </option>
+              </select>
 
-              <div class="tabs-container">
+              <div class="filter-tabs hidemobile">
                 <SoftButtonVue
                   @click="
                     () => {
@@ -279,7 +310,7 @@
                   color="info"
                   variant="gradient"
                   size="sm"
-                  :class="activeFilter == 'all' && 'active'"
+                  :class="activeFilter == 'all' && 'active-btn'"
                 >
                   All
                 </SoftButtonVue>
@@ -293,7 +324,7 @@
                   color="warning"
                   variant="gradient"
                   size="sm"
-                  :class="activeFilter == 'active' && 'active'"
+                  :class="activeFilter == 'active' && 'active-btn'"
                 >
                   Active
                 </SoftButtonVue>
@@ -307,7 +338,7 @@
                   color="secondary"
                   variant="gradient"
                   size="sm"
-                  :class="activeFilter == 'pending' && 'active'"
+                  :class="activeFilter == 'pending' && 'active-btn'"
                 >
                   Pre Construction
                 </SoftButtonVue>
@@ -326,7 +357,7 @@
                   Completed
                 </SoftButtonVue>
               </div>
-              <button class="view-button" @click="showFullView()">
+              <button class="view-button" @click="toggleFullScreen()">
                 <i
                   :class="fullWidthView ? 'fa fa-compress' : 'fa fa-expand'"
                 ></i>
@@ -474,6 +505,12 @@ export default {
       editpreview: null,
       workerData: {},
       fullWidthView: false,
+      dropdownFilters: {
+        all: "all",
+        active: "active",
+        pending: "pending",
+        completed: "completed",
+      },
       activeFilter: "all",
       colors: {
         pending: "#fbcf33",
@@ -516,6 +553,9 @@ export default {
         resources: this.filteredResources,
       },
     };
+  },
+  watch: {
+    activeFilter: "changeFilterHandler",
   },
   methods: {
     renderCalender() {
@@ -634,6 +674,78 @@ export default {
         reader.readAsDataURL(input.files[0]);
       }
     },
+    toggleFullScreen() {
+      this.fullWidthView = !this.fullWidthView;
+      const fullScreenCalender = document.getElementById("fullCalendarView");
+      if (
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.mozFullScreenElement ||
+        document.msFullscreenElement
+      ) {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
+      } else {
+        if (fullScreenCalender.requestFullscreen) {
+          fullScreenCalender.requestFullscreen();
+        } else if (fullScreenCalender.webkitRequestFullscreen) {
+          fullScreenCalender.webkitRequestFullscreen();
+        } else if (fullScreenCalender.mozRequestFullScreen) {
+          fullScreenCalender.mozRequestFullScreen();
+        } else if (fullScreenCalender.msRequestFullscreen) {
+          fullScreenCalender.msRequestFullscreen();
+        }
+      }
+    },
+    toggleLandscapeFullScreen() {
+      this.fullWidthView = !this.fullWidthView;
+      const fullScreenCalendar = document.getElementById("fullCalendarView");
+      if (
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.mozFullScreenElement ||
+        document.msFullscreenElement
+      ) {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
+      } else {
+        if (fullScreenCalendar.requestFullscreen) {
+          fullScreenCalendar.requestFullscreen();
+        } else if (fullScreenCalendar.webkitRequestFullscreen) {
+          fullScreenCalendar.webkitRequestFullscreen();
+        } else if (fullScreenCalendar.mozRequestFullScreen) {
+          fullScreenCalendar.mozRequestFullScreen();
+        } else if (fullScreenCalendar.msRequestFullscreen) {
+          fullScreenCalendar.msRequestFullscreen();
+        }
+
+        // Additional code to force landscape mode on mobile devices
+        if (window.screen.orientation) {
+          // If the browser supports screen orientation API
+          window.screen.orientation.lock("landscape");
+        } else if (screen.orientation && screen.orientation.lock) {
+          // Fallback for older browsers that support screen.orientation
+          screen.orientation.lock("landscape");
+        } else if (screen.lockOrientation) {
+          // Fallback for browsers that support screen.lockOrientation
+          screen.lockOrientation("landscape");
+        }
+      }
+    },
   },
 
   async mounted() {
@@ -643,3 +755,39 @@ export default {
   },
 };
 </script>
+<style scoped lang="scss">
+.filter-tabs {
+  height: 60px;
+}
+.filter-tabs > button {
+  margin-right: 12px;
+  border: 5px solid transparent;
+}
+
+.hidemobile {
+  display: flex;
+}
+
+.showmobile {
+  display: flex;
+}
+
+@media only screen and (max-width: 768px) {
+  .hidemobile {
+    display: none;
+  }
+
+  .showmobile {
+    display: flex;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .hidemobile {
+    display: block;
+  }
+
+  .showmobile {
+    display: none;
+  }
+}
+</style>
