@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-6">
+  <div class="mb-6 mobileWidth">
     <div class="flex-between mb-1 px-1 py-2">
       <form id="manger-form" @submit.prevent="filterProject(null)">
         <div>

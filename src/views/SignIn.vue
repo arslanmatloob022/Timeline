@@ -1,10 +1,18 @@
 <template>
   <main class="mt-0 main-content main-content-bg">
     <section>
-      <div class="page-header min-vh-75">
+      <div class="page-header">
         <div class="container">
-          <div class="row">
-            <div class="mx-auto col-xl-4 col-lg-5 col-md-6 d-flex flex-column">
+          <div class="row align-items-centre">
+            <div
+              class="mx-auto col-xl-12 col-lg-12 col-md-12 d-flex flex-column"
+            >
+              <img
+                style="width: auto; height: 180px"
+                src="@/assets/Ibex1.png"
+              />
+            </div>
+            <div class="mx-auto col-xl-6 col-lg-5 col-md-6 d-flex flex-column">
               <div class="mt-8 card card-plain">
                 <div class="pb-0 card-header text-start">
                   <h3 class="font-weight-bolder text-success text-gradient">
@@ -77,8 +85,11 @@
                 </div>
               </div>
             </div>
-            <div class="col-xl-8 col-lg-5 col-md-6 mt-n9">
-              <img style="width: 100%; height: auto" src="@/assets/Ibex1.png" />
+            <div class="col-xl-6 col-lg-5 col-md-6 mt-n6 hideonMobile">
+              <img
+                style="width: auto; height: 680px"
+                src="@/assets/Ibex1.png"
+              />
             </div>
           </div>
         </div>
@@ -208,4 +219,15 @@ export default {
 .inputField:active {
   background-color: #f8f9fa;
 }
+
+@media only screen and (max-width: 768px) {
+  .hideonMobile {
+    display: none;
+  }
+
+  .showmobile {
+    display: flex;
+  }
+}
+@m;
 </style>

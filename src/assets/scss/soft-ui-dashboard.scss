@@ -363,3 +363,32 @@
 .active-color {
   color: #82d616;
 }
+
+.hidemobile {
+  display: block;
+}
+
+.showmobile {
+  display: block;
+}
+
+@media only screen and (max-width: 768px) {
+  .hidemobile {
+    display: none;
+  }
+  .mobileWidth {
+    width: 1080px;
+  }
+  .showmobile {
+    display: block;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .hidemobile {
+    display: block;
+  }
+
+  .showmobile {
+    display: none;
+  }
+}

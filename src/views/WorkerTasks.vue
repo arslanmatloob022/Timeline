@@ -271,7 +271,7 @@
         "
         id="fullCalendarView"
       >
-        <div class="mb-6" style="width: 100%; width: 1020px">
+        <div class="mb-6" style="width: 1020px">
           <form id="manger-form" @submit.prevent="changeFilterHandler">
             <div class="flex-between">
               <div>
@@ -762,32 +762,5 @@ export default {
 .filter-tabs > button {
   margin-right: 12px;
   border: 5px solid transparent;
-}
-
-.hidemobile {
-  display: flex;
-}
-
-.showmobile {
-  display: flex;
-}
-
-@media only screen and (max-width: 768px) {
-  .hidemobile {
-    display: none;
-  }
-
-  .showmobile {
-    display: flex;
-  }
-}
-@media only screen and (min-width: 768px) {
-  .hidemobile {
-    display: block;
-  }
-
-  .showmobile {
-    display: none;
-  }
 }
 </style>

@@ -24,6 +24,12 @@ export default {
       loading: false,
       isTaskFormOpen: false,
       editTaskId: 0,
+      dropdownFilters: {
+        all: "all",
+        active: "active",
+        pending: "pending",
+        completed: "completed",
+      },
       fullWidthView: false,
       activeFilter: "all",
       colors: {
@@ -86,9 +92,9 @@ export default {
           }
           // alert(info.event.title + " end is now " + info.event.end.toISOString());
 
-          let start = info.event.startStr
+          let start = info.event.startStr;
 
-          let end = info.event.end.toISOString().substring(0, 10)
+          let end = info.event.end.toISOString().substring(0, 10);
 
           if (
             !confirm(
@@ -109,13 +115,16 @@ export default {
       },
     };
   },
+  watch: {
+    activeFilter: "changeFilterHandler",
+  },
   methods: {
-    addOneDayToDate (dateString) {
-  let date = new Date(dateString);
-  date.setDate(date.getDate() + 1);
-  let newDateString = date.toISOString().slice(0, 10);
-  return newDateString;
-},
+    addOneDayToDate(dateString) {
+      let date = new Date(dateString);
+      date.setDate(date.getDate() + 1);
+      let newDateString = date.toISOString().slice(0, 10);
+      return newDateString;
+    },
     workerImageClick(worker) {
       window.location.hash = "";
       this.selectedWorkerId = worker.id;
@@ -290,7 +299,7 @@ export default {
 <template>
   <div>
     <div
-      class="mb-6"
+      class="mb-6 mobileWidth"
       id="fullCalendarView"
       style="background-color: white; padding: 12px 20px; border-radius: 12px"
     >
@@ -316,8 +325,28 @@ export default {
               @input="this.changeFilterHandler()"
             />
           </div>
-
-          <div class="filter-tabs">
+          <button
+            class="view-button showmobile"
+            @click="toggleLandscapeFullScreen()"
+          >
+            <i :class="fullWidthView ? 'fa fa-laptop' : 'fa fa-mobile'"></i>
+          </button>
+          <select
+            class="inputField showmobile"
+            style="width: fit-content"
+            v-model="activeFilter"
+          >
+            <option selected>Selecte Filter</option>
+            <option
+              class="dropdownOptions"
+              v-for="worker in dropdownFilters"
+              :key="worker.key"
+              :value="worker"
+            >
+              {{ worker }}
+            </option>
+          </select>
+          <div class="filter-tabs hidemobile">
             <SoftButtonVue
               @click="
                 () => {
