@@ -367,7 +367,9 @@
 .hidemobile {
   display: block;
 }
-
+.hideLaptop {
+  display: none;
+}
 .showmobile {
   display: block;
 }
@@ -379,6 +381,9 @@
   .mobileWidth {
     width: 1080px;
   }
+  .hideLaptop {
+    display: block;
+  }
   .showmobile {
     display: block;
   }
@@ -387,7 +392,9 @@
   .hidemobile {
     display: block;
   }
-
+  .hideLaptop {
+    display: none;
+  }
   .showmobile {
     display: none;
   }

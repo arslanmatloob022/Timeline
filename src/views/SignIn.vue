@@ -5,9 +5,10 @@
         <div class="container">
           <div class="row align-items-centre">
             <div
-              class="mx-auto col-xl-12 col-lg-12 col-md-12 d-flex flex-column"
+              class="mx-auto col-xl-12 col-lg-12 col-md-12 d-flex flex-column hideLaptop"
             >
               <img
+                class="hideLaptop"
                 style="width: auto; height: 180px"
                 src="@/assets/Ibex1.png"
               />
