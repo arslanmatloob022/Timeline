@@ -76,6 +76,8 @@ export default {
                 this.$store.state.user.id
               )
             ) {
+              info.revert();
+
               this.$notify({
                 type: "error",
                 title: "Not allowed.",
