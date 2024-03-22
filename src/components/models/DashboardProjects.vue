@@ -120,7 +120,11 @@
                     <div class="d-flex flex-column justify-content-center">
                       <h6 class="mb-0 text-sm">{{ item.title }}</h6>
                       <p class="mb-0 text-sm">
-                        {{ item.description.slice(0, 40) }}...
+                        {{
+                          item.description
+                            ? item.description.slice(0, 40)
+                            : "...."
+                        }}
                       </p>
                       <p class="text-xs text-secondary mb-0">
                         <i class="fa fa-map-marker" aria-hidden="true"></i>
