@@ -77,7 +77,24 @@ export default {
           this.editProjectId = info.event.id;
         },
         eventDrop: (info) => {
-          info.revert();
+          let start = info.event.startStr
+
+            let end = info.event.end.toISOString().substring(0, 10)
+            console.log("resource ids", info.event._def.resourceIds[0])
+            console.log(info.event.extendedProps.project)
+            if(info.event.extendedProps.project !=info.event._def.resourceIds[0]){
+              info.revert();
+              return
+            }
+            if (
+              !confirm(
+                `Are you sure you want to update the project ${info.event.title} date  from ${start} to ${end}?`
+              )
+            ) {
+              info.revert();
+            } else {
+              this.editProject(info.event.id, start, end);
+            }
         },
         eventResize: (info) => {
           // alert(info.event.title + " end is now " + info.event.end.toISOString());
@@ -132,6 +149,7 @@ export default {
       const events = this.projects.map((project) => ({
         id: project.id,
         resourceId: project.id,
+        project:project.id,
         start: project.startDate,
         end: this.addOneDayToDate(project.endDate),
         title: project.title,

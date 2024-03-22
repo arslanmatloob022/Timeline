@@ -66,7 +66,42 @@ export default {
         resourceId: this.selectedWorkerId,
 
         eventDrop: (info) => {
-          info.revert();
+          console.log(info.event)
+          if (this.$store.state.user.role === "manager") {
+            if (
+              !info.event.extendedProps.managers.includes(
+                this.$store.state.user.id
+              )
+            ) {
+              info.revert();
+
+              this.$notify({
+                type: "error",
+                title: "Not allowed.",
+                text: `You can modify the task only for the projects for which you are a manager.`,
+              });
+              return;
+            }
+          }
+          let start = info.event.startStr
+
+          let end = info.event.end.toISOString().substring(0, 10)
+          console.log("resource ids", info.event._def.resourceIds[0])
+          console.log(info.event.extendedProps.project)
+          if(info.event.extendedProps.project !=info.event._def.resourceIds[0]){
+            info.revert();
+            return
+          }
+          if (
+            !confirm(
+              `Are you sure you want to update the project ${info.event.title} date  from ${start} to ${end}?`
+            )
+          ) {
+            info.revert();
+          } else {
+            this.editTask(info.event.id, start, end);
+          }
+          // info.revert();
         },
         eventResize: (info) => {
           console.log("info", info.event);
@@ -176,6 +211,7 @@ export default {
       const events = this.tasks.map((task) => ({
         id: task.id,
         resourceId: task.project,
+        project:task.project,
         start: task.startDate,
         end: this.addOneDayToDate(task.endDate),
         title: task.title,
