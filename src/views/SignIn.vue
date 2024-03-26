@@ -14,7 +14,78 @@
               />
             </div>
             <div class="mx-auto col-xl-6 col-lg-5 col-md-6 d-flex flex-column">
-              <div class="mt-8 card card-plain">
+              <div class="mt-2 hideLaptop card card-plain">
+                <div class="pb-0 card-header text-start">
+                  <h3 class="font-weight-bolder text-success text-gradient">
+                    Welcome back
+                  </h3>
+                  <p class="mb-0">Enter your email and password to sign in</p>
+                </div>
+                <div class="card-body">
+                  <form
+                    role="form"
+                    @submit.prevent="handleLogin"
+                    class="text-start"
+                  >
+                    <div>
+                      <label for="inputField">User name</label>
+                      <input
+                        class="inputField mb-2"
+                        type="text"
+                        placeholder="Email"
+                        v-model="username"
+                      />
+                    </div>
+
+                    <div>
+                      <label for="inputField">Password</label>
+                      <input
+                        class="inputField mb-3"
+                        v-model="password"
+                        :type="showPassword ? 'text' : 'password'"
+                        placeholder="Password"
+                      />
+                    </div>
+
+                    <div class="flex-between">
+                      <div
+                        style="
+                          display: flex;
+                          gap: 12px;
+                          margin: 6px;
+                          align-items: center;
+                        "
+                      >
+                        <i
+                          @click="togglePasswordVisibility()"
+                          :class="
+                            showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'
+                          "
+                          class="pointer"
+                          aria-hidden="true"
+                        ></i>
+                        Show Password
+                      </div>
+                      <!-- <soft-switch id="rememberMe" name="rememberMe" checked>
+                        Remember me
+                      </soft-switch> -->
+                    </div>
+
+                    <div class="text-center">
+                      <soft-button
+                        :loading="loading"
+                        class="my-4 mb-2"
+                        variant="gradient"
+                        color="success"
+                        type="submit"
+                        full-width
+                        >Sign in
+                      </soft-button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="mt-8 hidemobile card card-plain">
                 <div class="pb-0 card-header text-start">
                   <h3 class="font-weight-bolder text-success text-gradient">
                     Welcome back
@@ -168,8 +239,12 @@ export default {
         ) {
           this.$router.push("/dashboard");
         } else if (
-          this.$store.state.user.role == "manager" &&
-          this.$store.state.user.is_active == true
+          (this.$store.state.user.role == "manager" &&
+            this.$store.state.user.is_active == true) ||
+          (this.$store.state.user.role == "client" &&
+            this.$store.state.user.is_active == true) ||
+          (this.$store.state.user.role == "contractor" &&
+            this.$store.state.user.is_active == true)
         ) {
           this.$router.push("/projects");
         } else if (

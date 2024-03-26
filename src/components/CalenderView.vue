@@ -72,7 +72,7 @@ export default {
         resourceId: this.selectedWorkerId,
 
         eventDrop: (info) => {
-          console.log(info.event)
+          console.log(info.event);
           if (this.$store.state.user.role === "manager") {
             if (
               !info.event.extendedProps.managers.includes(
@@ -89,14 +89,16 @@ export default {
               return;
             }
           }
-          let start = info.event.startStr
+          let start = info.event.startStr;
 
-          let end = info.event.end.toISOString().substring(0, 10)
-          console.log("resource ids", info.event._def.resourceIds[0])
-          console.log(info.event.extendedProps.project)
-          if(info.event.extendedProps.project !=info.event._def.resourceIds[0]){
+          let end = info.event.end.toISOString().substring(0, 10);
+          console.log("resource ids", info.event._def.resourceIds[0]);
+          console.log(info.event.extendedProps.project);
+          if (
+            info.event.extendedProps.project != info.event._def.resourceIds[0]
+          ) {
             info.revert();
-            return
+            return;
           }
           if (
             !confirm(
@@ -220,7 +222,7 @@ export default {
       const events = this.tasks.map((task) => ({
         id: task.id,
         resourceId: task.project,
-        project:task.project,
+        project: task.project,
         start: task.startDate,
         end: this.addOneDayToDate(task.endDate),
         title: task.title,
@@ -362,6 +364,18 @@ export default {
               v-model="query"
               @input="this.changeFilterHandler()"
             />
+            <!-- <div class="mt-1 switch d-flex align-items-center input-group">
+              <div>
+                <input
+                  v-model=""
+                  type="checkbox"
+                  id="checkbox1"
+                  name="is_sentMail"
+                />
+                <label for="checkbox1"></label>
+              </div>
+              <h6 style="white-space: nowrap">Schedule mode</h6>
+            </div> -->
           </div>
           <button
             class="view-button showmobile"

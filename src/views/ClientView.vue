@@ -1,69 +1,21 @@
 <template>
   <div class="container-fluid">
-    <DashboardProjects></DashboardProjects>
-    <CalenderView />
+    <ClientProjectdetail></ClientProjectdetail>
   </div>
 </template>
 
 <script>
-import DashboardProjects from "../components/models/DashboardProjects.vue";
-
 import { useAPI } from "@/supportElements/useAPI.js";
-import img1 from "@/assets/img/home-decor-1.jpg";
-import img2 from "@/assets/img/home-decor-2.jpg";
-import img3 from "@/assets/img/home-decor-3.jpg";
 import setTooltip from "@/assets/js/tooltip.js";
-import img4 from "@/assets/img/team-3.jpg";
-import img5 from "@/assets/img/team-4.jpg";
-import img6 from "@/assets/img/small-logos/logo-atlassian.svg";
-import img7 from "@/assets/img/team-2.jpg";
-import img8 from "@/assets/img/team-4.jpg";
-import img9 from "@/assets/img/small-logos/logo-slack.svg";
-import img10 from "@/assets/img/team-3.jpg";
-import img11 from "@/assets/img/team-1.jpg";
-import img12 from "@/assets/img/small-logos/logo-spotify.svg";
-import img13 from "@/assets/img/team-4.jpg";
-import img14 from "@/assets/img/team-3.jpg";
-import img15 from "@/assets/img/team-4.jpg";
-import img16 from "@/assets/img/team-1.jpg";
-import img17 from "@/assets/img/small-logos/logo-jira.svg";
-import img18 from "@/assets/img/team-4.jpg";
-import img19 from "@/assets/img/small-logos/logo-invision.svg";
-import img20 from "@/assets/img/team-1.jpg";
-import img21 from "@/assets/img/team-4.jpg";
 import { mapState } from "vuex";
 import { convertToFormData } from "../supportElements/common";
 import useApi from "../supportElements/useAPI";
-// import CustomModal from "@/views/components/CustomModal.vue";
-// import SoftButtonVue from "../components/SoftButton.vue";
-import CalenderView from "../components/CalenderView.vue";
-// import WorkerCalendarVue from "../components/WorkerCalendar.vue";
+import ClientProjectdetail from "../components/ClientProjectdetail.vue";
 const api = useApi();
 export default {
   name: "projects-card",
   data() {
     return {
-      img1,
-      img2,
-      img3,
-      img4,
-      img5,
-      img6,
-      img7,
-      img8,
-      img9,
-      img10,
-      img11,
-      img12,
-      img13,
-      img14,
-      img15,
-      img16,
-      img17,
-      img18,
-      img19,
-      img20,
-      img21,
       useAPI,
       modalTitle: "Add New Project",
       inputFieldValue: "",
@@ -83,12 +35,7 @@ export default {
     };
   },
   components: {
-    // SoftButtonVue,
-    // CustomModal,
-    // updateProject,
-    DashboardProjects,
-    CalenderView,
-    // WorkerCalendarVue,
+    ClientProjectdetail,
   },
   computed: {
     ...mapState(["token"]),

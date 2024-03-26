@@ -38,11 +38,7 @@
                           <h5>{{ projectData.title }}</h5>
                         </a>
                         <p class="mb-4 text-sm">
-                          {{
-                            projectData.description
-                              ? projectData.description
-                              : "Not mentioned"
-                          }}
+                          {{ projectData.description }}
                         </p>
                         <div
                           class="d-flex align-items-center justify-content-between"
@@ -77,7 +73,6 @@
                           Pre Construction
                         </SoftButtonVue>
                         <SoftButtonVue
-                          v-if="this.$store.state.user.role == 'admin'"
                           style="padding: 6px 16px"
                           @click="updateProjectStatus('completed')"
                           color="primary"
@@ -90,33 +85,6 @@
                         >
                           Completed
                         </SoftButtonVue>
-
-                        <!-- <button
-                          @click="updateProjectStatus('active')"
-                          :class="
-                            projectData.status == 'active' ? 'active' : ''
-                          "
-                        >
-                          Active
-                        </button>
-                        <button
-                          @click="updateProjectStatus('pending')"
-                          class="project-button"
-                          :class="
-                            projectData.status == 'pending' ? 'active' : ''
-                          "
-                        >
-                          Pending
-                        </button> -->
-                        <!-- <button
-                          @click="updateProjectStatus('completed')"
-                          class="project-button"
-                          :class="
-                            projectData.status == 'completed' ? 'active' : ''
-                          "
-                        >
-                          Completed
-                        </button> -->
                       </div>
                     </div>
                   </div>
@@ -145,11 +113,7 @@
                                   </h6>
                                   <p class="mb-0 text-xs text-secondary">
                                     <i class="fa fa-clock me-1"></i>
-                                    {{
-                                      projectData.startDate
-                                        ? projectData.startDate
-                                        : "Not mentioned"
-                                    }}
+                                    {{ projectData.startDate }}
                                   </p>
                                 </div>
                               </div>
@@ -172,11 +136,7 @@
                                   </h6>
                                   <p class="mb-0 text-xs text-secondary">
                                     <i class="fa fa-clock me-1"></i>
-                                    {{
-                                      projectData.endDate
-                                        ? projectData.endDate
-                                        : "Not metioned"
-                                    }}
+                                    {{ projectData.endDate }}
                                   </p>
                                 </div>
                               </div>
@@ -226,9 +186,7 @@
                                   </h6>
                                   <p class="mb-0 text-xs text-secondary">
                                     <i class="fa fa-list me-1"></i>
-                                    {{
-                                      this.activeTasks ? this.activeTasks : 0
-                                    }}
+                                    {{ this.activeTasks }}
                                     Tasks
                                   </p>
                                 </div>
@@ -254,11 +212,7 @@
                                     class="mb-0 text-xs text-secondary"
                                   >
                                     <i class="fa fa-home me-1"></i>
-                                    {{
-                                      projectData.address
-                                        ? projectData.address
-                                        : "Not mentioned"
-                                    }}
+                                    {{ projectData.address }}
                                   </p>
                                 </div>
                               </div>
@@ -274,7 +228,7 @@
                     style="border-left: 1px solid #8989893b"
                   >
                     <div class="card card-blog card-plain">
-                      <h5>Managers</h5>
+                      <h5>Manager (s)</h5>
                       <div class="px-0 pb-0 card-body">
                         <div
                           class="show dropdown-menu-end me-sm-n4"
@@ -304,17 +258,11 @@
                                     <h6 class="mb-1 text-sm font-weight-normal">
                                       <span class="font-weight-bold">{{
                                         manager.username
-                                          ? manager.username
-                                          : "Not mentioned"
                                       }}</span>
                                     </h6>
                                     <p class="mb-0 text-xs text-secondary">
                                       <i class="fa fa-envelope me-1"></i>
-                                      {{
-                                        manager.email
-                                          ? manager.email
-                                          : "Not mentioned"
-                                      }}
+                                      {{ manager.email }}
                                     </p>
                                   </div>
                                 </div>
@@ -353,14 +301,13 @@
                         </div>
                       </div>
                     </div>
-                    <hr class="horizontal dark my-sm-0" />
                     <div class="card card-blog card-plain">
+                      <h5>Contractor</h5>
                       <div class="px-0 pb-0 card-body">
                         <div
                           class="show dropdown-menu-end me-sm-n4"
                           aria-labelledby="dropdownMenuButton"
                         >
-                          <h5>Contractor</h5>
                           <div v-if="projectData.managers.length > 0">
                             <div
                               v-for="manager in projectData.managers"
@@ -385,17 +332,11 @@
                                     <h6 class="mb-1 text-sm font-weight-normal">
                                       <span class="font-weight-bold">{{
                                         manager.username
-                                          ? manager.username
-                                          : "Not mentioned"
                                       }}</span>
                                     </h6>
                                     <p class="mb-0 text-xs text-secondary">
                                       <i class="fa fa-envelope me-1"></i>
-                                      {{
-                                        manager.email
-                                          ? manager.email
-                                          : "Not mentioned"
-                                      }}
+                                      {{ manager.email }}
                                     </p>
                                   </div>
                                 </div>
@@ -434,14 +375,13 @@
                         </div>
                       </div>
                     </div>
-                    <hr class="horizontal dark my-sm-0" />
                     <div class="card card-blog card-plain">
+                      <h5>Client</h5>
                       <div class="px-0 pb-0 card-body">
                         <div
                           class="show dropdown-menu-end me-sm-n4"
                           aria-labelledby="dropdownMenuButton"
                         >
-                          <h5>Client</h5>
                           <div v-if="projectData.managers.length > 0">
                             <div
                               v-for="manager in projectData.managers"

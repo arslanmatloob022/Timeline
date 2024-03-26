@@ -67,7 +67,13 @@
         style="display: flex; justify-content: space-between"
       >
         <h6>Projects</h6>
-        <SoftButtonVue @click="openCustomModal"
+        <!-- openProjectForm -->
+        <SoftButtonVue
+          @click="
+            () => {
+              this.$router.push('/addproject');
+            }
+          "
           ><slot>Add Project</slot></SoftButtonVue
         >
       </div>
@@ -238,105 +244,6 @@
       </div>
     </div>
 
-    <custom-modal ref="customModal" :title="modalTitle">
-      <form id="project-form" @submit.prevent="addNewProject">
-        <div>
-          <label for="inputField">Title: *</label>
-          <input
-            class="inputField"
-            type="text"
-            required
-            placeholder="Project title"
-            v-model="project.title"
-            size="md"
-          />
-        </div>
-
-        <div>
-          <label for="inputField">Image</label>
-          <input
-            class="inputField"
-            id="avatarInput"
-            type="file"
-            placeholder=""
-            @change="handleFileChange"
-            size="md"
-          />
-        </div>
-
-        <div style="display: flex; justify-content: space-between">
-          <div>
-            <label for="inputField">Start Date</label>
-            <input
-              class="inputField"
-              type="date"
-              placeholder="Start date"
-              v-model="project.startDate"
-              size="md"
-            />
-          </div>
-
-          <div>
-            <label for="inputField">End Date</label>
-            <input
-              class="inputField"
-              type="date"
-              placeholder="End date"
-              v-model="project.endDate"
-              size="md"
-            />
-          </div>
-        </div>
-        <!-- <div>
-          <input
-            style="width: 40px; width: 40px"
-            class="custom-checkbox"
-            id="inputField"
-            type="checkbox"
-            placeholder="Active"
-            v-model="project.is_active"
-          />
-          <label for="inputField">Set Project Active</label>
-        </div> -->
-        <div>
-          <label for="inputField">Description: *</label>
-          <textarea
-            rows="3"
-            class="inputField"
-            type="text"
-            placeholder="Project description"
-            v-model="project.description"
-            size="md"
-          />
-        </div>
-
-        <div>
-          <label for="inputField">Managers : *</label>
-          <select
-            required
-            class="inputField"
-            v-model="project.managers"
-            multiple="true"
-          >
-            <option
-              class="dropdownOptions"
-              v-for="(manager, index) in managers"
-              :key="manager.id"
-              :value="manager.id"
-            >
-              <p>{{ index + 1 }}).</p>
-              {{ manager.username }}
-            </option>
-          </select>
-        </div>
-      </form>
-      <template v-slot:actions>
-        <SoftButtonVue form="project-form" type="submit" :loading="loading">
-          Add Project
-        </SoftButtonVue>
-      </template>
-    </custom-modal>
-
     <SweetAlert ref="sweetAlert" :alertData="alertData">
       <template v-slot:actions>
         <soft-button-vue
@@ -363,10 +270,16 @@
         </soft-button-vue>
       </template>
     </SweetAlert>
+    <updateProject
+      :isOpen="isProjectFormOpen"
+      :closeModal="closeProjectForm"
+      :projectId="editProjectId"
+    />
   </div>
 </template>
 
 <script>
+import updateProject from "../../views/SupportComponents/updateProject.vue";
 import SweetAlert from "@/views/components/customAlert.vue";
 import { useAPI } from "@/supportElements/useAPI.js";
 import SoftAvatar from "@/components/SoftAvatar.vue";
@@ -394,16 +307,15 @@ import img18 from "@/assets/img/team-4.jpg";
 import img19 from "@/assets/img/small-logos/logo-invision.svg";
 import img20 from "@/assets/img/team-1.jpg";
 import img21 from "@/assets/img/team-4.jpg";
-import CustomModal from "@/views/components/CustomModal.vue";
 
 import SoftButtonVue from "../SoftButton.vue";
-import { convertToFormData } from "../../supportElements/common";
 import useApi from "../../supportElements/useAPI";
 const api = useApi();
 export default {
   name: "projects-card",
   data() {
     return {
+      isProjectFormOpen: false,
       ProjectStatuscolor: {
         pending: "secondary",
         active: "warning",
@@ -467,9 +379,9 @@ export default {
   components: {
     SoftAvatar,
     SoftProgress,
-    CustomModal,
     SoftButtonVue,
     SweetAlert,
+    updateProject,
     SoftBadge,
   },
 
@@ -518,6 +430,15 @@ export default {
       this.closeProjectModalHandler();
       this.$refs.customModal.openModal();
     },
+    openProjectForm() {
+      this.isProjectFormOpen = true;
+    },
+
+    closeProjectForm() {
+      this.getProjectHandler();
+      this.isProjectFormOpen = false;
+      this.editProjectId = null; // Reset the editTaskId after closing
+    },
 
     saveAndClose() {
       console.log("Input Field Value:", this.inputFieldValue);
@@ -526,33 +447,6 @@ export default {
 
     handleFileChange(event) {
       this.project.image = event.target.files[0];
-    },
-
-    async addNewProject() {
-      try {
-        this.loading = true;
-        let formData = convertToFormData(this.project, ["image"]);
-
-        const response = await api.post("/api/project/", formData);
-        this.$notify({
-          type: "success",
-          title: "Project added",
-          text: "Project added succesfuly",
-        });
-        this.getProjectHandler();
-        console.log(response);
-        this.loading = false;
-        this.saveAndClose();
-      } catch (err) {
-        this.loading = false;
-        this.$notify({
-          type: "error",
-          title: "Something went wrong",
-          text: err,
-        });
-      } finally {
-        this.loading = false;
-      }
     },
 
     async getProjectHandler() {

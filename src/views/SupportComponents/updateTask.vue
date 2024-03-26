@@ -251,6 +251,7 @@ export default {
         });
         this.taskData.workers = workerIDs;
         let formData = convertToFormData(this.taskData, []);
+
         if (this.projectID) {
           formData.append("project", this.projectID);
           await api.post(`/api/task/`, formData);
@@ -260,6 +261,7 @@ export default {
             text: "Task added succesfuly",
           });
         } else {
+          formData.append("schedule_mode", this.$store.state.isScheduleMode);
           await api.patch(`/api/task/${this.taskData.id}/`, formData);
 
           this.$notify({

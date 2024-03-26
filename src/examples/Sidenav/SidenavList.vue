@@ -50,6 +50,13 @@
             </template>
           </sidenav-collapse>
         </li>
+        <li class="nav-item" v-if="this.$store.state.user.role == 'admin'">
+          <sidenav-collapse navText="Contractors" :to="{ name: 'Contractors' }">
+            <template #icon>
+              <Document />
+            </template>
+          </sidenav-collapse>
+        </li>
 
         <li
           class="nav-item"
@@ -61,6 +68,13 @@
           <sidenav-collapse navText="Workers" :to="{ name: 'Workers' }">
             <template #icon>
               <customer-support />
+            </template>
+          </sidenav-collapse>
+        </li>
+        <li class="nav-item" v-if="this.$store.state.user.role == 'admin'">
+          <sidenav-collapse navText="Clients" :to="{ name: 'Clients' }">
+            <template #icon>
+              <multi-users />
             </template>
           </sidenav-collapse>
         </li>
@@ -100,7 +114,8 @@ import CreditCard from "../../components/Icon/CreditCard.vue";
 import CustomerSupport from "../../components/Icon/CustomerSupport.vue";
 import Spaceship from "../../components/Icon/Spaceship.vue";
 import Settings from "../../components/Icon/Settings.vue";
-// import MultiUsers from "../../components/Icon/MultiUsers.vue";
+import MultiUsers from "../../components/Icon/Users.vue";
+import Document from "../../components/Icon/Document.vue";
 export default {
   name: "SidenavList",
   props: {
@@ -115,7 +130,8 @@ export default {
   },
   components: {
     SidenavCollapse,
-    // MultiUsers,
+    MultiUsers,
+    Document,
     Shop,
     Office,
     CreditCard,

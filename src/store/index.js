@@ -1,8 +1,9 @@
 import { createStore } from "vuex";
 import bootstrap from "bootstrap/dist/js/bootstrap.min.js";
-
+const localStorageKey = "isSwitchOn";
 export default createStore({
   state: {
+    isScheduleMode: localStorage.getItem(localStorageKey) == "true",
     hideConfigButton: false,
     isPinned: true,
     showConfig: false,
@@ -38,6 +39,12 @@ export default createStore({
     },
   },
   mutations: {
+    toggleSwitch(state) {
+      state.isScheduleMode = !state.isScheduleMode;
+      localStorage.setItem(localStorageKey, state.isScheduleMode.toString());
+      console.log("store", state.isScheduleMode);
+    },
+
     setToken(state, token) {
       state.token = token;
       localStorage.setItem("token", token);

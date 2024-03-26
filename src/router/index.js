@@ -15,7 +15,9 @@ import SignIn from "@/views/SignIn.vue";
 import SignUp from "@/views/SignUp.vue";
 import WorkerDetail from "@/views/WorkerDetail.vue";
 import WorkerTasks from "@/views/WorkerTasks.vue";
-
+import AddProject from "@/views/AddProject.vue";
+import Contractors from "@/views/Contractors.vue";
+import Clients from "@/views/Clients.vue";
 const routes = [
   {
     path: "/",
@@ -26,6 +28,11 @@ const routes = [
     path: "/dashboard",
     name: "Dashboard",
     component: Dashboard,
+  },
+  {
+    path: "/addproject",
+    name: "AddProject",
+    component: AddProject,
   },
   {
     path: "/projects",
@@ -41,6 +48,16 @@ const routes = [
     path: "/managers",
     name: "Managers",
     component: Managers,
+  },
+  {
+    path: "/clients",
+    name: "Clients",
+    component: Clients,
+  },
+  {
+    path: "/contractors",
+    name: "Contractors",
+    component: Contractors,
   },
   {
     path: "/workers",

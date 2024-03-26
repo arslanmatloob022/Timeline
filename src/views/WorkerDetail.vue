@@ -499,7 +499,9 @@ export default {
   methods: {
     async sendTasksMailToWorker() {
       try {
-        const resp = api.get(`/api/task/${this.$route.params.id}/worker-mail/`);
+        const resp = api.post(`/api/task/worker-mail/`, {
+          worker: this.$route.params.id,
+        });
         console.log(resp);
         this.$notify({
           type: "success",

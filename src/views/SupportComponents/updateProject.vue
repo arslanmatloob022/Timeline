@@ -51,6 +51,7 @@
             :src="preview ? preview : '/home-placeload.png'"
             alt="asdas"
           />
+
           <input
             class="inputField"
             type="file"
@@ -59,16 +60,47 @@
           />
         </div>
       </div>
-      <!-- <div>
-        <label for="inputField">Description: *</label>
-        <input
-          class="inputField"
-          type="text"
-          placeholder="Project description"
-          v-model="projectData.description"
-          size="md"
-        />
-      </div> -->
+      <div class="row d-flex">
+        <div class="col-6">
+          <div class="mt-1 switch d-flex align-items-center">
+            <div>
+              <input
+                v-model="workwithContractor"
+                type="checkbox"
+                id="checkbox1"
+                name="is_sentMail"
+              />
+              <label for="checkbox1"></label>
+            </div>
+            <h6>Work with Contractor</h6>
+          </div>
+        </div>
+        <div
+          v-if="workwithContractor"
+          class="col-6 justify-conten-center d-flex"
+          style="display: flex; justify-content: center"
+        >
+          <div>
+            <div class="">
+              <label for="inputField">Contractors : </label>
+            </div>
+            <select class="inputField" v-model="selectedManagers">
+              <option
+                class="dropdownOptions"
+                v-for="manager in allManagers"
+                :key="manager.id"
+                :value="manager.id"
+              >
+                {{ manager.username }}
+              </option>
+            </select>
+          </div>
+          <div>
+            <SoftButton size="sm">Add New</SoftButton>
+          </div>
+        </div>
+      </div>
+
       <div>
         <label for="inputField">Address</label>
         <input
@@ -103,9 +135,11 @@
             rows="3"
             class="inputField"
             type="text"
+            required
             placeholder="Project description"
             v-model="projectData.description"
           />
+          <span>Press enter to start in new line</span>
         </div>
       </div>
 
@@ -114,7 +148,12 @@
           type="button"
           color="danger"
           size="lg"
-          @click="handleModalClosed"
+          @click="
+            () => {
+              this.$props.isOpen = false;
+              this.handleModalClosed();
+            }
+          "
           >Close</soft-button
         >
         <soft-button type="submit" :loading="loading" color="success" size="lg">
@@ -145,8 +184,10 @@ export default {
       default: null,
     },
   },
+
   data() {
     return {
+      workwithContractor: false,
       allManagers: [],
       preview: null,
       selectedManagers: [],
@@ -183,11 +224,16 @@ export default {
     isOpen(newVal) {
       if (newVal && this.projectId) {
         this.fetchProjectData(this.projectId);
-        this.getManagersershandler();
       }
+      this.getManagersershandler();
     },
+    workwithContractor: "showToggle",
   },
+  onMounted() {},
   methods: {
+    showToggle() {
+      console.log("tree", this.workwithContractor);
+    },
     handleFileChange(event) {
       this.projectData.image = event.target.files[0];
     },
@@ -211,15 +257,52 @@ export default {
       }
     },
 
+    async addNewProject() {
+      try {
+        this.loading = true;
+        let formData = convertToFormData(this.projectData, ["image"]);
+        Object.keys(this.projectData).forEach((key) => {
+          formData.append(key, this.projectData[key]);
+        });
+        const response = await api.post("/api/project/", formData);
+        this.$notify({
+          type: "success",
+          title: "Project added",
+          text: "Project added succesfuly",
+        });
+        console.log(response);
+        this.loading = false;
+      } catch (err) {
+        this.loading = false;
+        this.$notify({
+          type: "error",
+          title: "Something went wrong",
+          text: err,
+        });
+      } finally {
+        this.loading = false;
+      }
+    },
     async editProject() {
       try {
         this.loading = true;
         this.projectData.managers = this.selectedManagers;
         let formData = convertToFormData(this.projectData, ["image"]);
-        const resp = await api.patch(
-          `/api/project/${this.projectId}/`,
-          formData
-        );
+        if (this.$props.projectId) {
+          const resp = await api.patch(
+            `/api/project/${this.projectId}/`,
+            formData
+          );
+          console.log("prject data", resp);
+        } else {
+          const response = await api.post("/api/project/", formData);
+          this.$notify({
+            type: "success",
+            title: "Project added",
+            text: "Project added succesfuly",
+          });
+          console.log("prject data", response);
+        }
 
         this.$notify({
           type: "success",
@@ -227,7 +310,6 @@ export default {
           text: "Task updated succesfuly",
         });
         this.handleModalClosed();
-        console.log("prject data", resp);
       } catch (err) {
         this.$notify({
           type: "error",
@@ -271,6 +353,7 @@ export default {
         project: "",
         managers: [],
       };
+
       this.closeModal();
     },
   },

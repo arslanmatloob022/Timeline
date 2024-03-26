@@ -27,6 +27,19 @@
           class="pe-md-3 d-flex align-items-center"
           :class="this.$store.state.isRTL ? 'me-md-auto' : 'ms-md-auto'"
         >
+          <div class="mt-1 switch d-flex align-items-center input-group">
+            <div>
+              <input
+                v-model="isSwitchOn"
+                @change="toggleSwitch"
+                type="checkbox"
+                id="isSwitchOn"
+                name="isSwitchOn"
+              />
+              <label for="isSwitchOn"></label>
+            </div>
+            <h6 style="white-space: nowrap">Schedule mode</h6>
+          </div>
           <div class="input-group">
             <span class="input-group-text text-body"
               ><i class="fas fa-search" aria-hidden="true"></i
@@ -241,6 +254,15 @@ export default {
       this.toggleSidebarColor("bg-white");
       this.navbarMinimize();
     },
+    toggleSwitch() {
+      console.log("calling", this.isSwitchOn);
+      this.$store.commit("toggleSwitch");
+      this.$notify({
+        type: "success",
+        title: "Schedule Mode",
+        text: `Schedule mode is ${this.isSwitchOn == true ? "ON" : "OFF"} `,
+      });
+    },
   },
   components: {
     // Breadcrumbs,
@@ -248,6 +270,11 @@ export default {
   computed: {
     currentRouteName() {
       return this.$route.name;
+    },
+    isSwitchOn: {
+      get() {
+        return this.$store.state.isScheduleMode;
+      },
     },
   },
   updated() {
