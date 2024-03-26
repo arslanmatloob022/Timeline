@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <!-- submitTaskForm -->
     <h3>Enter project detail below:</h3>
-    <form id="project-form" @submit.prevent="editProject">
+    <form id="project-form" @submit.prevent="addNewProject">
       <div class="row">
         <div class="col-6 col-xl-6 col-md-12 col-sm-12">
           <div class="mb-3">
@@ -16,21 +16,23 @@
             />
           </div>
           <div class="mb-3">
-            <label for="inputField">Start Date</label>
+            <label for="inputField">Start Date *</label>
             <input
               class="inputField"
               type="date"
               placeholder="Start date"
+              required
               v-model="projectData.startDate"
             />
           </div>
 
           <div class="mb-3">
-            <label for="inputField">End Date</label>
+            <label for="inputField">End Date *</label>
             <input
               class="inputField"
               type="date"
               placeholder="End date"
+              required
               v-model="projectData.endDate"
             />
           </div>
@@ -84,7 +86,7 @@
           <div class="flex-between">
             <label for="inputField">Managers : </label>
           </div>
-          <select class="inputField" v-model="selectedManagers" multiple="true">
+          <select class="inputField" v-model="projectData.managers" multiple="true">
             <option
               class="dropdownOptions"
               v-for="manager in allManagers"
@@ -101,7 +103,29 @@
         <div class="col-6">
           <h3>Client Information:</h3>
         </div>
-        <div class="col-6">
+        <div class="d-flex" >
+          <button
+            id="btn-white"
+            type ='button'
+            class="px-3 mb-2 mr-2 btn  ms-2"
+            :class="isSelectClient == false ? 'bg-gradient-success' : 'bg-gradient-secondary'"
+            @click="isSelectClient = false; projectData.client='' "
+          >
+            Create new
+          </button>
+          <button
+          
+            id="btn-transparent"
+            type ='button'
+            class="px-3 mb-2 btn "
+            :class="isSelectClient == true ? 'bg-gradient-success' : 'bg-gradient-secondary'"
+            @click="isSelectClient = true"
+          >
+            Select existing
+          </button>
+          
+        </div>
+        <div class="col-6" v-if ="isSelectClient==true">
           <div
             class="justify-conten-center d-flex"
             style="display: flex; justify-content: center"
@@ -122,7 +146,8 @@
             </div>
           </div>
         </div>
-        <div class="divider mt-3">Or add new client</div>
+        <div class = "row" v-else>
+        <!-- <div class="divider mt-3">Or add new client</div> -->
         <div class="col-5 col-xl-6 col-md-12 col-sm-12">
           <div class="mb-3">
             <label for="inputField">Name: *</label>
@@ -207,6 +232,7 @@
             placeholder="Password"
           />
         </div>
+      </div>
       </div>
 
       <div class="row mt-5">
@@ -364,7 +390,6 @@
 <script>
 import useApi from "../supportElements/useAPI";
 import SoftButton from "../components/SoftButton.vue";
-import { convertToFormData } from "../supportElements/common";
 
 const api = useApi();
 export default {
@@ -385,6 +410,7 @@ export default {
 
   data() {
     return {
+      isSelectClient:false,
       showPassword: false,
       showContractorFields: false,
       workwithContractor: false,
@@ -474,17 +500,33 @@ export default {
 
     async addNewProject() {
       try {
-        this.loading = true;
-        let formData = convertToFormData(
-          this.projectData,
-          ["image"],
-          this.projectData.clientInfo,
-          ["avatar"],
-          this.projectData.contractorInfo["avatar"]
-        );
-        Object.keys(this.projectData).forEach((key) => {
-          formData.append(key, this.projectData[key]);
-        });
+      
+        let formData = new FormData();
+
+        for(let dataKey in this.projectData) {
+            if(dataKey === 'clientInfo' || dataKey ==='contractorInfo') {
+              for (let previewKey in this.projectData[dataKey]) {
+                formData.append(`${dataKey}[${previewKey}]`, this.projectData[dataKey][previewKey]);
+              }
+            }
+            else if(this.projectData[dataKey]=='' || this.projectData[dataKey]==null){
+              continue
+            }
+            else {
+              if(dataKey !='image' || typeof this.projectData.image ==='object'){
+                let value = this.projectData[dataKey]
+                if (dataKey ==='managers') {
+                  value.forEach((item) => {
+                    formData.append('managers', item);
+                  });
+                } else{
+                  formData.append(dataKey, this.projectData[dataKey]);
+                }
+
+              }
+            }
+          }
+          console.log("form data", formData)
         const response = await api.post("/api/project/", formData);
         this.$notify({
           type: "success",
@@ -494,7 +536,9 @@ export default {
         console.log(response);
         this.loading = false;
       } catch (err) {
+        console.log(err)
         this.loading = false;
+
         this.$notify({
           type: "error",
           title: "Something went wrong",
@@ -504,53 +548,9 @@ export default {
         this.loading = false;
       }
     },
-    async editProject() {
-      try {
-        this.loading = true;
-        this.projectData.managers = this.selectedManagers;
-        let formData = convertToFormData(this.projectData, ["image"]);
-        if (this.$props.projectId) {
-          const resp = await api.patch(
-            `/api/project/${this.projectId}/`,
-            formData
-          );
-          console.log("prject data", resp);
-        } else {
-          const response = await api.post("/api/project/", formData);
-          this.$notify({
-            type: "success",
-            title: "Project added",
-            text: "Project added succesfuly",
-          });
-          console.log("prject data", response);
-        }
+    
 
-        this.$notify({
-          type: "success",
-          title: "Task Updated",
-          text: "Task updated succesfuly",
-        });
-        this.handleModalClosed();
-      } catch (err) {
-        this.$notify({
-          type: "error",
-          title: "Warning",
-          text: "Something went wrong",
-        });
-        console.log(err);
-      } finally {
-        this.loading = false;
-      }
-    },
 
-    submitTaskForm() {
-      // Implement your logic to submit the task form
-      // Example:
-      // api.post("/api/task/", this.projectData).then(() => {
-      //   this.handleModalClosed();
-      //   // Additional logic after form submission
-      // });
-    },
 
     async getManagersershandler() {
       try {
