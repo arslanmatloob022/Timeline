@@ -86,7 +86,11 @@
           <div class="flex-between">
             <label for="inputField">Managers : </label>
           </div>
-          <select class="inputField" v-model="projectData.managers" multiple="true">
+          <select
+            class="inputField"
+            v-model="projectData.managers"
+            multiple="true"
+          >
             <option
               class="dropdownOptions"
               v-for="manager in allManagers"
@@ -103,29 +107,39 @@
         <div class="col-6">
           <h3>Client Information:</h3>
         </div>
-        <div class="d-flex" >
+        <div class="d-flex">
           <button
             id="btn-white"
-            type ='button'
-            class="px-3 mb-2 mr-2 btn  ms-2"
-            :class="isSelectClient == false ? 'bg-gradient-success' : 'bg-gradient-secondary'"
-            @click="isSelectClient = false; projectData.client='' "
+            type="button"
+            class="px-3 mb-2 mr-2 btn ms-2"
+            :class="
+              isSelectClient == false
+                ? 'bg-gradient-success'
+                : 'bg-gradient-secondary'
+            "
+            @click="
+              isSelectClient = false;
+              projectData.client = '';
+            "
           >
             Create new
           </button>
           <button
-          
             id="btn-transparent"
-            type ='button'
-            class="px-3 mb-2 btn "
-            :class="isSelectClient == true ? 'bg-gradient-success' : 'bg-gradient-secondary'"
+            type="button"
+            :variant="isSelectClient == true ? 'gradient' : 'outline'"
+            class="px-3 mb-2 btn"
+            :class="
+              isSelectClient == true
+                ? 'bg-gradient-success'
+                : 'bg-gradient-secondary'
+            "
             @click="isSelectClient = true"
           >
             Select existing
           </button>
-          
         </div>
-        <div class="col-6" v-if ="isSelectClient==true">
+        <div class="col-6" v-if="isSelectClient == true">
           <div
             class="justify-conten-center d-flex"
             style="display: flex; justify-content: center"
@@ -146,113 +160,151 @@
             </div>
           </div>
         </div>
-        <div class = "row" v-else>
-        <!-- <div class="divider mt-3">Or add new client</div> -->
-        <div class="col-5 col-xl-6 col-md-12 col-sm-12">
-          <div class="mb-3">
-            <label for="inputField">Name: *</label>
-            <input
-              class="inputField"
-              type="text"
-              required
-              :placeholder="loading ? 'Loading...' : 'Contractor name'"
-              v-model="projectData.clientInfo.username"
-            />
-          </div>
-          <div class="mb-3">
-            <label for="inputField">Email: *</label>
-            <input
-              required
-              class="inputField"
-              type="email"
-              placeholder="Enter email"
-              v-model="projectData.clientInfo.email"
-            />
-          </div>
+        <div class="row" v-else>
+          <div class="col-5 col-xl-6 col-md-12 col-sm-12">
+            <div class="mb-3">
+              <label for="inputField">Name: *</label>
+              <input
+                class="inputField"
+                type="text"
+                required
+                :placeholder="loading ? 'Loading...' : 'Contractor name'"
+                v-model="projectData.clientInfo.username"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="inputField">Email: *</label>
+              <input
+                required
+                class="inputField"
+                type="email"
+                placeholder="Enter email"
+                v-model="projectData.clientInfo.email"
+              />
+            </div>
 
-          <div class="mb-3">
-            <label for="inputField">Phone</label>
-            <input
-              class="inputField"
-              type="text"
-              placeholder="Phone number"
-              v-model="projectData.clientInfo.phoneNumber"
-            />
-          </div>
-        </div>
-
-        <div class="col-6 justify-conten-center">
-          <img
-            class="mb-3 ml-5"
-            style="
-              width: 140px;
-              height: 140px;
-              border-radius: 50%;
-              margin-top: 10px;
-            "
-            :src="preview ? preview : './preview.jpeg'"
-            alt="asdas"
-          />
-
-          <input
-            class="inputField"
-            type="file"
-            accept="image/*"
-            @change="handleFileChange"
-          />
-        </div>
-        <div class="col-6">
-          <label for="inputField">Password</label>
-          <input
-            class="inputField mb-3"
-            v-model="projectData.clientInfo.password"
-            :type="showPassword ? 'text' : 'password'"
-            placeholder="Password"
-          />
-          <div class="flex-between">
-            <div
-              style="display: flex; gap: 12px; margin: 6px; align-items: center"
-            >
-              <i
-                @click="togglePasswordVisibility()"
-                :class="showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'"
-                class="pointer"
-                aria-hidden="true"
-              ></i>
-              Show Password
+            <div class="mb-3">
+              <label for="inputField">Phone</label>
+              <input
+                class="inputField"
+                type="text"
+                placeholder="Phone number"
+                v-model="projectData.clientInfo.phoneNumber"
+              />
             </div>
           </div>
-        </div>
-        <div class="col-6">
-          <label for="inputField">Cofirm Password</label>
-          <input
-            class="inputField mb-3"
-            v-model="projectData.clientInfo.password"
-            :type="showPassword ? 'text' : 'password'"
-            placeholder="Password"
-          />
-        </div>
-      </div>
-      </div>
+          <!-- 
+          <div class="col-6 justify-conten-center">
+            <img
+              class="mb-3 ml-5"
+              style="
+                width: 140px;
+                height: 140px;
+                border-radius: 50%;
+                margin-top: 10px;
+              "
+              :src="preview ? preview : './preview.jpeg'"
+              alt="asdas"
+            />
 
-      <div class="row mt-5">
-        <div class="col-12">
-          <div class="row">
-            <div class="mt-1 col-6 switch d-flex align-items-center">
-              <div class="mb-2">
-                <input
-                  v-model="workwithContractor"
-                  type="checkbox"
-                  id="showcontractor"
-                  name="showcontractor"
-                />
-                <label for="showcontractor"></label>
+            <input
+              class="inputField"
+              type="file"
+              accept="image/*"
+              @change="handleFileChange"
+            />
+          </div> -->
+          <div class="col-6">
+            <label for="inputField">Password</label>
+            <input
+              class="inputField mb-3"
+              v-model="projectData.clientInfo.password"
+              :type="showPassword ? 'text' : 'password'"
+              placeholder="Password"
+            />
+            <div class="flex-between">
+              <div
+                style="
+                  display: flex;
+                  gap: 12px;
+                  margin: 6px;
+                  align-items: center;
+                "
+              >
+                <i
+                  @click="togglePasswordVisibility()"
+                  :class="showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'"
+                  class="pointer"
+                  aria-hidden="true"
+                ></i>
+                Show Password
               </div>
-              <h6>Work with Contractor</h6>
             </div>
+          </div>
+          <div class="col-6">
+            <label for="inputField">Cofirm Password</label>
+            <input
+              class="inputField mb-3"
+              v-model="projectData.clientInfo.password"
+              :type="showPassword ? 'text' : 'password'"
+              placeholder="Password"
+            />
+          </div>
+        </div>
+      </div>
 
+      <div class="mt-1 col-6 switch d-flex align-items-center">
+        <div class="mb-2">
+          <input
+            v-model="workwithContractor"
+            type="checkbox"
+            id="showcontractor"
+            name="showcontractor"
+          />
+          <label for="showcontractor"></label>
+        </div>
+        <h6>Work with Contractor</h6>
+      </div>
+
+      <div v-if="workwithContractor" class="row mt-5">
+        <div class="col-6">
+          <h3>Contractor Information:</h3>
+        </div>
+        <div class="d-flex">
+          <button
+            id="btn-white"
+            type="button"
+            class="px-3 mb-2 mr-2 btn ms-2"
+            :class="
+              isSelectContractor == false
+                ? 'bg-gradient-success'
+                : 'bg-gradient-secondary'
+            "
+            @click="
+              isSelectContractor = false;
+              projectData.contractor = '';
+            "
+          >
+            Create new
+          </button>
+          <button
+            id="btn-transparent"
+            type="button"
+            :variant="isSelectContractor == true ? 'gradient' : 'outline'"
+            class="px-3 mb-2 btn"
+            :class="
+              isSelectContractor == true
+                ? 'bg-gradient-success'
+                : 'bg-gradient-secondary'
+            "
+            @click="isSelectContractor = true"
+          >
+            Select existing
+          </button>
+        </div>
+        <div v-if="isSelectContractor == true" class="col-12">
+          <div class="row">
             <div
-              v-if="workwithContractor"
               class="col-6 mb-3 justify-conten-center d-flex"
               style="display: flex; justify-content: center"
             >
@@ -275,94 +327,93 @@
             </div>
           </div>
         </div>
-      </div>
-      <div v-if="workwithContractor" class="divider mt-3">
-        Or add new contractor
-      </div>
-      <div class="row" v-if="workwithContractor">
-        <h3>Contractor Information:</h3>
-        <div class="col-5 col-xl-6 col-md-12 col-sm-12">
-          <div class="mb-3">
-            <label for="inputField">Name: *</label>
-            <input
-              class="inputField"
-              type="text"
-              required
-              :placeholder="loading ? 'Loading...' : 'Contractor name'"
-              v-model="projectData.contractorInfo.username"
-            />
-          </div>
-          <div class="mb-3">
-            <label for="inputField">Email: *</label>
-            <input
-              required
-              class="inputField"
-              type="email"
-              placeholder="Enter email"
-              v-model="projectData.contractorInfo.email"
-            />
-          </div>
+        <div class="row" v-else>
+          <div class="col-5 col-xl-6 col-md-12 col-sm-12">
+            <div class="mb-3">
+              <label for="inputField">Name: *</label>
+              <input
+                class="inputField"
+                type="text"
+                :placeholder="loading ? 'Loading...' : 'Contractor name'"
+                v-model="projectData.contractorInfo.username"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="inputField">Email: *</label>
+              <input
+                class="inputField"
+                type="email"
+                placeholder="Enter email"
+                v-model="projectData.contractorInfo.email"
+              />
+            </div>
 
-          <div class="mb-3">
-            <label for="inputField">Phone</label>
-            <input
-              class="inputField"
-              type="text"
-              placeholder="Phone number"
-              v-model="projectData.contractorInfo.phoneNumber"
-            />
-          </div>
-        </div>
-        <div class="col-6 justify-conten-center">
-          <img
-            class="mb-3 ml-5"
-            style="
-              width: 140px;
-              height: 140px;
-              border-radius: 50%;
-              margin-top: 10px;
-            "
-            :src="preview ? preview : './preview.jpeg'"
-            alt="asdas"
-          />
-
-          <input
-            class="inputField"
-            type="file"
-            accept="image/*"
-            @change="handleFileChange"
-          />
-        </div>
-        <div class="col-6">
-          <label for="inputField">Password</label>
-          <input
-            class="inputField mb-3"
-            v-model="projectData.contractorInfo.password"
-            :type="showPassword ? 'text' : 'password'"
-            placeholder="Password"
-          />
-          <div class="flex-between">
-            <div
-              style="display: flex; gap: 12px; margin: 6px; align-items: center"
-            >
-              <i
-                @click="togglePasswordVisibility()"
-                :class="showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'"
-                class="pointer"
-                aria-hidden="true"
-              ></i>
-              Show Password
+            <div class="mb-3">
+              <label for="inputField">Phone</label>
+              <input
+                class="inputField"
+                type="text"
+                placeholder="Phone number"
+                v-model="projectData.contractorInfo.phoneNumber"
+              />
             </div>
           </div>
-        </div>
-        <div class="col-6">
-          <label for="inputField">Cofirm Password</label>
-          <input
-            class="inputField mb-3"
-            v-model="projectData.contractorInfo.password"
-            :type="showPassword ? 'text' : 'password'"
-            placeholder="Password"
-          />
+          <!-- <div class="col-6 justify-conten-center">
+            <img
+              class="mb-3 ml-5"
+              style="
+                width: 140px;
+                height: 140px;
+                border-radius: 50%;
+                margin-top: 10px;
+              "
+              :src="preview ? preview : './preview.jpeg'"
+              alt="asdas"
+            />
+
+            <input
+              class="inputField"
+              type="file"
+              accept="image/*"
+              @change="handleFileChange"
+            />
+          </div> -->
+          <div class="col-6">
+            <label for="inputField">Password</label>
+            <input
+              class="inputField mb-3"
+              v-model="projectData.contractorInfo.password"
+              :type="showPassword ? 'text' : 'password'"
+              placeholder="Password"
+            />
+            <div class="flex-between">
+              <div
+                style="
+                  display: flex;
+                  gap: 12px;
+                  margin: 6px;
+                  align-items: center;
+                "
+              >
+                <i
+                  @click="togglePasswordVisibility()"
+                  :class="showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'"
+                  class="pointer"
+                  aria-hidden="true"
+                ></i>
+                Show Password
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <label for="inputField">Cofirm Password</label>
+            <input
+              class="inputField mb-3"
+              v-model="projectData.contractorInfo.password"
+              :type="showPassword ? 'text' : 'password'"
+              placeholder="Password"
+            />
+          </div>
         </div>
       </div>
 
@@ -410,7 +461,8 @@ export default {
 
   data() {
     return {
-      isSelectClient:false,
+      isSelectClient: false,
+      isSelectContractor: false,
       showPassword: false,
       showContractorFields: false,
       workwithContractor: false,
@@ -437,13 +489,11 @@ export default {
           username: "",
           email: "",
           password: "",
-          avatar: File | String | null,
         },
         contractorInfo: {
           username: "",
           email: "",
           password: "",
-          avatar: File | String | null,
         },
       },
     };
@@ -500,33 +550,37 @@ export default {
 
     async addNewProject() {
       try {
-      
         let formData = new FormData();
 
-        for(let dataKey in this.projectData) {
-            if(dataKey === 'clientInfo' || dataKey ==='contractorInfo') {
-              for (let previewKey in this.projectData[dataKey]) {
-                formData.append(`${dataKey}[${previewKey}]`, this.projectData[dataKey][previewKey]);
-              }
+        for (let dataKey in this.projectData) {
+          if (dataKey === "clientInfo" || dataKey === "contractorInfo") {
+            let jsonData = {};
+            for (let previewKey in this.projectData[dataKey]) {
+              jsonData[previewKey] = this.projectData[dataKey][previewKey];
             }
-            else if(this.projectData[dataKey]=='' || this.projectData[dataKey]==null){
-              continue
-            }
-            else {
-              if(dataKey !='image' || typeof this.projectData.image ==='object'){
-                let value = this.projectData[dataKey]
-                if (dataKey ==='managers') {
-                  value.forEach((item) => {
-                    formData.append('managers', item);
-                  });
-                } else{
-                  formData.append(dataKey, this.projectData[dataKey]);
-                }
-
+            formData.append(dataKey, JSON.stringify(jsonData));
+          } else if (
+            this.projectData[dataKey] == "" ||
+            this.projectData[dataKey] == null
+          ) {
+            continue;
+          } else {
+            if (
+              dataKey != "image" ||
+              typeof this.projectData.image === "object"
+            ) {
+              let value = this.projectData[dataKey];
+              if (dataKey === "managers") {
+                value.forEach((item) => {
+                  formData.append("managers", item);
+                });
+              } else {
+                formData.append(dataKey, this.projectData[dataKey]);
               }
             }
           }
-          console.log("form data", formData)
+        }
+        console.log("form data", formData);
         const response = await api.post("/api/project/", formData);
         this.$notify({
           type: "success",
@@ -536,7 +590,7 @@ export default {
         console.log(response);
         this.loading = false;
       } catch (err) {
-        console.log(err)
+        console.log(err);
         this.loading = false;
 
         this.$notify({
@@ -548,9 +602,6 @@ export default {
         this.loading = false;
       }
     },
-    
-
-
 
     async getManagersershandler() {
       try {

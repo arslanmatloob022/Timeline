@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div>
     <div class="tasks-info">
       <div class="card mb-4">
         <div
@@ -61,7 +61,11 @@
                       <div class="d-flex flex-column justify-content-center">
                         <h6 class="mb-0 text-sm">{{ task.title }}</h6>
                         <p class="text-xs text-secondary mb-0">
-                          {{ task.description.slice(0, 42) }}
+                          {{
+                            task.description
+                              ? task.description.slice(0, 42)
+                              : "Not mentioned"
+                          }}
                         </p>
                       </div>
                     </div>
@@ -85,14 +89,14 @@
                           alt="image"
                         />
                         <P style="position: absolute; bottom: 7px">{{
-                          manager.username
+                          manager.username ? manager.username : "-- -- ----"
                         }}</P>
                       </a>
                     </div>
                   </td>
                   <td class="align-middle text-center text-sm">
                     <span class="text-secondary text-xs font-weight-bold">{{
-                      task.endDate
+                      task.endDate ? task.endDate : "-- -- ----"
                     }}</span>
                   </td>
                   <td class="align-middle text-center">
@@ -187,7 +191,7 @@
 
     <update-task-vue
       v-if="isTaskFormOpen"
-      :projectID="currentProjectId"
+      :projectID="this.projectid"
       :isOpen="isTaskFormOpen"
       :closeModal="closeTaskForm"
       :taskId="editTaskId"
@@ -219,6 +223,8 @@ export default {
     return {
       deleteTaskId: 0,
       activeTasks: 0,
+      projectid: 0,
+      taskData: {},
       selectedManagers: [],
       preview: null,
       isProjectFormOpen: false,
@@ -250,7 +256,6 @@ export default {
       },
       workersData: [{ id: 0, username: "", email: "", phoneNumber: "" }],
 
-      projectId: this.$props.projectID,
       projectTasks: [
         {
           id: 0,
@@ -332,9 +337,7 @@ export default {
 
     async getProjectTasks() {
       try {
-        const resp = await api.get(
-          `api/task/${this.$props.projectID}/project/`
-        );
+        const resp = await api.get(`api/task/${this.projectid}/project/`);
         this.projectTasks = resp.data;
         console.log(resp.data);
         this.getActiveTasks();
@@ -407,7 +410,7 @@ export default {
   },
 
   mounted() {
-    this.projectId = this.$props.projectID;
+    this.projectid = this.$props.projectID;
     this.getProjectTasks();
   },
 };

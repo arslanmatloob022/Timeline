@@ -852,7 +852,18 @@ export default {
         status: "",
         address: "",
         total_tasks: 0,
-
+        clientInfo: {
+          username: "",
+          email: "",
+          password: "",
+          avatar: File | String | null,
+        },
+        contractorInfo: {
+          username: "",
+          email: "",
+          password: "",
+          avatar: File | String | null,
+        },
         managers: [
           {
             id: 0,
